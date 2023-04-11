@@ -6,11 +6,11 @@
 
 [The project's `docker-compose.yml`](../docker-compose.yml) holds everything that the computer should know, as it points to subdirectories below `keycloak/` (using volume mounts) to perform all the first-run initialization. The following information might help the developer:
 
-- As we wouldn't want to have to recreate all the realms, roles and users everytime we `docker compose up`, we selected MariaDB to persist the Keycloak state (*not* for the Rails app, which uses SQLite; unfortunately SQLite [was not an option](https://www.keycloak.org/server/db) for Keycloak.) Keycloak itself is stateless, i.e. you can freely delete and restart its container without any data loss.
+- As we wouldn't want to have to recreate all the realms, roles and users everytime we `docker compose up`, we selected MariaDB to persist the Keycloak state (unfortunately SQLite [was not an option](https://www.keycloak.org/server/db) for Keycloak.) Keycloak itself is stateless, i.e. you can freely delete and restart its container without any data loss.
   - In fact, you can kick the MariaDB container at will as well, because it uses a *Docker volume* for its own persistent state. See below if you do want to delete that state.
 - Keycloak will gladly create the SQL schema on startup, but it cannot create the database or user in MariaDB. That is the job of [initdb.d/keycloak-database-and-user.sql](initdb.d/keycloak-database-and-user.sql) which gets mounted at `docker-entrypoint-initdb.d` in the MariaDB container as per [the documentation](https://hub.docker.com/_/mariadb) (under § “Initializing a fresh instance”).
   - Technically, MariaDB loading `initdb.d/keycloak-database-and-user.sql` races with Keycloak attempting to create the schema — But since the latter is written in Java, MariaDB always wins ☺ which is what we want
-- In addition to an empty SQL schema, we want to create a `rails` realm with a couple of test users. This what files under `import` are for, thanks to [Keycloak's `--import-realm` feature](https://www.keycloak.org/server/importExport#_importing_a_realm_during_startup).
+- In addition to an empty SQL schema, we want to create a `react-starter-kit` realm with a couple of test users. This what files under `import` are for, thanks to [Keycloak's `--import-realm` feature](https://www.keycloak.org/server/importExport#_importing_a_realm_during_startup).
 
 # How-to's
 
@@ -18,16 +18,14 @@
 
 ```
 docker compose down
-docker volume rm hellorails_mariadb
+docker volume rm react_starter_kit_mariadb
 docker compose up
 ```
-
-💡 You need to stop and restart the Rails server (`./bin/dev`) as well, otherwise it will try and fail to validate the OpenID-Connect tokens using the old public key it obtained from the former incarnation of Keycloak.
 
 ## Commit a new and improved Keycloak state to Git
 
 1. Ensure that Keycloak is running: <pre>docker compose up</pre>💡 See further instructions in [../README.md](../README.md)
-2. Run <pre>docker exec hellorails-keycloak-1 /opt/keycloak/bin/kc.sh export --dir /opt/keycloak/data/import/ --users realm_file</pre>
+2. Run <pre>docker exec react_starter_kit-keycloak-1 /opt/keycloak/bin/kc.sh export --dir /opt/keycloak/data/import/ --users realm_file</pre>
 3. Delete `keycloak/import/master-realm.json`
 4. Now commences the legwork. Repeatedly do <pre>git diff</pre> to whittle down the diff, pruning all non-essential information from the newly exported JSON file (i.e. UUIDs, and stuff that wasn't changed from the default values)
 5. Test that your changes load into Keycloak correctly:

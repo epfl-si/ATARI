@@ -2,11 +2,11 @@
 # is *not* meant for production.
 
 version: '3'
-name: hellorails
+name: react_starter_kit
 
 services:
   # Keycloak is an OpenID-Connect IdP (Identity Provider) that is easy
-  # to set up. It mocks out that feature in the Rails application,
+  # to set up. It mocks out that feature in the react-starter-kit application,
   # allowing testing with arbitrary users and groups. See further
   # details on the startup sequence of Keycloak (and the
   # --import-realm flag) in ./keycloak/README.md
@@ -28,7 +28,7 @@ services:
       - "127.0.0.1:8080:8080"
     volumes:
       - ./keycloak/import:/opt/keycloak/data/import
-  # MariaDB is used by Keycloak for persistence. The Rails application
+  # MariaDB is used by Keycloak for persistence. The react-starter-kit application
   # itself uses sqlite in development (which unfortunately, is not an
   # option for Keycloak at the moment).
   mariadb:

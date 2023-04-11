@@ -1,5 +1,5 @@
 {
-  "realm" : "rails",
+  "realm" : "react-starter-kit",
   "enabled" : true,
   "users" : [ {
     "username" : "demo",
@@ -16,7 +16,7 @@
     } ],
     "disableableCredentialTypes" : [ ],
     "requiredActions" : [ ],
-    "realmRoles" : [ "default-roles-rails" ],
+    "realmRoles" : [ "default-roles-react-starter-kit" ],
     "notBefore" : 0,
     "groups" : [ ]
   } ],
@@ -35,7 +35,7 @@
       "protocol" : "openid-connect"
     },
     {
-      "clientId" : "hello_rails",
+      "clientId" : "react-starter-kit",
       "baseUrl" : "http://localhost:3000/",
       "enabled" : true,
       "redirectUris" : [ "*" ],
