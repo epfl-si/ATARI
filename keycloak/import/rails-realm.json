@@ -2,6 +2,13 @@
   "realm" : "react-starter-kit",
   "enabled" : true,
   "loginTheme": "EPFL",
+  "groups" : [ {
+    "name" : "react-starter-kit_acces_lecture",
+    "path" : "/react-starter-kit_acces_lecture",
+    "attributes" : {
+      "groups" : [ "react-starter-kit_acces_lecture" ]
+    }
+  } ],
   "users" : [ {
     "username" : "demo",
     "enabled" : true,
@@ -19,7 +26,7 @@
     "requiredActions" : [ ],
     "realmRoles" : [ "default-roles-react-starter-kit" ],
     "notBefore" : 0,
-    "groups" : [ ]
+    "groups" : [ "/react-starter-kit_acces_lecture" ]
   } ],
   "clients" : [
     {
@@ -46,7 +53,21 @@
       "directAccessGrantsEnabled" : true,
       "publicClient" : true,
       "frontchannelLogout" : true,
-      "protocol" : "openid-connect"
+      "protocol" : "openid-connect",
+      "protocolMappers": [
+        {
+          "name": "Groups Mapper",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-group-membership-mapper",
+          "config": {
+            "full.path": false,
+            "id.token.claim": true,
+            "access.token.claim": true,
+            "claim.name": "groups",
+            "userinfo.token.claim": true
+          }
+        }
+      ]
     }
   ]
 }
