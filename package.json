@@ -17,6 +17,7 @@
   "devDependencies": {
     "@types/meteor": "^2.9.2",
     "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.0"
+    "@types/react-dom": "^18.2.0",
+    "patch-package": "^7.0.0"
   }
 }
