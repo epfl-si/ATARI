@@ -11,7 +11,8 @@ export default function Home() {
       <OIDCContext authServerUrl = { 'http://localhost:8080/realms/react-starter-kit/' }
                       client = { { clientId: "react-starter-kit",
                                    redirectUri: "http://localhost:3000/" } }
-                                   onNewToken={ ( token ) => oidcLogin(token) }>
+                                   onNewToken={ ( token ) => oidcLogin(token) }
+                                   onLogout={ () => Accounts.logout() }>
       <LoginButton inProgressLabel={ <>⏳</> }/>
       <IfOIDCState is={ StateEnum.LoggedIn }>
         <p>Hello, <LoggedInUser field="preferred_username" />!</p>
