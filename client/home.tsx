@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import { Base } from '@epfl/epfl-sti-react-library'
 import { OIDCContext, StateEnum, LoginButton, IfOIDCState, LoggedInUser } from '@epfl-si/react-appauth'
-
+import Links from './components/Links'
 
 export default function Home() {
   return (
@@ -14,6 +14,7 @@ export default function Home() {
       <IfOIDCState is={ StateEnum.LoggedIn }>
         <p>Hello, <LoggedInUser field="preferred_username" />!</p>
       </IfOIDCState>
+      <Links/>
     </OIDCContext>
     </Base>
   )
