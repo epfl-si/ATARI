@@ -31,7 +31,19 @@ Meteor.startup(async () => {
 
   // We publish the entire Links collection to all clients.
   // In order to be fetched in real-time to the clients
-  Meteor.publish("links", function () {
+  publishUnderPolicy("links", function () {
     return LinksCollection.find();
   });
 });
+
+
+function publishUnderPolicy (name : string, publishFunc : Function) {
+  Meteor.publish(name, function (...details) {
+      if (! isAllowed(Meteor.user(), name, details)) return [];
+      return publishFunc(...details);
+  })
+}
+
+function isAllowed(subject, object, details) {
+  return !! subject;
+}
