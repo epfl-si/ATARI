@@ -1,6 +1,7 @@
 {
   "realm" : "react-starter-kit",
   "enabled" : true,
+  "loginTheme": "EPFL",
   "users" : [ {
     "username" : "demo",
     "enabled" : true,
