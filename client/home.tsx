@@ -4,6 +4,9 @@ import { Base } from '@epfl/epfl-sti-react-library'
 import { OIDCContext, StateEnum, LoginButton, IfOIDCState, LoggedInUser } from '@epfl-si/react-appauth'
 import Links from './components/Links'
 import { Accounts } from 'meteor/accounts-base'
+import { useTracker } from 'meteor/react-meteor-data'
+import { Meteor } from 'meteor/meteor'
+import '../imports/types/UserInfo'
 
 export default function Home() {
   return (
@@ -14,13 +17,19 @@ export default function Home() {
                                    onNewToken={ ( token ) => oidcLogin(token) }
                                    onLogout={ () => Accounts.logout() }>
       <LoginButton inProgressLabel={ <>⏳</> }/>
-      <IfOIDCState is={ StateEnum.LoggedIn }>
-        <p>Hello, <LoggedInUser field="preferred_username" />!</p>
-      </IfOIDCState>
+      <WelcomeUser/>
       <Links/>
     </OIDCContext>
     </Base>
   )
+}
+
+const WelcomeUser: React.FC = () => {
+  const user = useTracker(() => Meteor.user())
+  
+  return <IfOIDCState is={StateEnum.LoggedIn}>
+    {user ? `Hello, ${user.given_name} ${user.family_name}!` : `Hello! For some reason you are logged into OIDC, but not on Meteor.` }
+  </IfOIDCState>
 }
 
 const oidcLogin = (token: string) => {
