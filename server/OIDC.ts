@@ -1,15 +1,10 @@
 import { Meteor } from 'meteor/meteor'
 import { Accounts } from 'meteor/accounts-base'
-import { Issuer } from 'openid-client';
+import { Issuer } from 'openid-client'
+import { UserInfo } from '../imports/types/UserInfo'
 
 type Options = { oidcToken: string }
 type LoginStatus = Accounts.LoginMethodResult | undefined
-type UserInfo = {
-	sub: string;
-	given_name: string;
-	family_name: string;
-	groups: string[];
-};
 
 registerLoginHandlerAsync("OIDC", checkTokenAndUpsertUser)
 
@@ -19,15 +14,11 @@ async function checkTokenAndUpsertUser (options: Options) : Promise<LoginStatus>
       return undefined    // This login attempt is for another handler, not us.
     }
   
-    const userId = "fred"    // TODO: probably needs improvement
-    const userName = "Fred"  // TODO: same.
-  
     const issuer_ = await issuer();
     const client = new issuer_.Client({ client_id: 'react-starter-kit' });
     const userinfo: UserInfo = await client.userinfo(options.oidcToken);
-    console.log(userinfo); // TODO: upsert from info in userinfo, rather than Fred.
-    
-    await Meteor.users.upsertAsync(userId, {$set: {id: userId, username: userName}})
+    const userId = userinfo.preferred_username
+    await Meteor.users.upsertAsync(userId, {$set: { username: userId }})
     return { userId }
 }
 
