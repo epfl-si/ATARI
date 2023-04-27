@@ -14,8 +14,8 @@
     "enabled" : true,
     "totp" : false,
     "emailVerified" : false,
-    "firstName" : "",
-    "lastName" : "",
+    "firstName" : "Dé",
+    "lastName" : "Mo",
     "credentials" : [ {
       "type" : "password",
       "userLabel" : "The password is “demo”",
