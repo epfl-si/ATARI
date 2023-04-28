@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "postinstall": "patch-package"
+    "postinstall": "set -e  -x; patch-package; rm -rf node_modules/@epfl/epfl-sti-react-library/node_modules/react-router-dom"
   },
   "author": "",
   "license": "ISC",

@@ -27,3 +27,25 @@ index 2fa6af9..8971b69 100644
  
  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
  
+diff --git a/node_modules/@epfl/epfl-sti-react-library/package.json b/node_modules/@epfl/epfl-sti-react-library/package.json
+index 83ae8e5..f61dd04 100644
+--- a/node_modules/@epfl/epfl-sti-react-library/package.json
++++ b/node_modules/@epfl/epfl-sti-react-library/package.json
+@@ -46,7 +48,6 @@
+     "lodash.filter": "^4.6.0",
+     "react-cookie": "4.0.3",
+     "react-plotly.js": "2.5.1",
+-    "react-router-dom": "5.2.0",
+     "react-scroll": "^1.8.6",
+     "react-slick": "^0.28.1",
+     "rimraf": "3.0.2",
+@@ -89,6 +90,9 @@
+     "standard": "^16.0.4",
+     "web-vitals": "0.2.4"
+   },
++  "peerDependencies": {
++    "react-router-dom": "5.2.0"
++  },
+   "eslintConfig": {
+     "extends": [
+       "react-app",
