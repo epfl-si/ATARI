@@ -7,20 +7,51 @@ import { Accounts } from 'meteor/accounts-base'
 import { useTracker } from 'meteor/react-meteor-data'
 import { Meteor } from 'meteor/meteor'
 import '../imports/types/UserInfo'
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 export default function Home() {
   return (
-    <Base asideMenuItems={[]}>
-      <OIDCContext authServerUrl = { 'http://localhost:8080/realms/react-starter-kit/' }
-                      client = { { clientId: "react-starter-kit",
-                                   redirectUri: "http://localhost:3000/" } }
-                                   onNewToken={ ( token ) => oidcLogin(token) }
-                                   onLogout={ () => Accounts.logout() }>
-      <LoginButton inProgressLabel={ <>⏳</> }/>
-      <WelcomeUser/>
-      <Links/>
-    </OIDCContext>
-    </Base>
+    <BrowserRouter>
+      <Base useReactLinks asideMenuItems={[{
+      "heading": "Mock Main Section",
+      "menus": [
+        {
+          "anchor": "Public",
+          "link": "/public"
+        },
+        {
+          "anchor": "Authenticated",
+          "link": "/authenticated"
+        },
+        {
+          "anchor": "Belongs to group : react-starter-kit_acces_lecture",
+          "link": "/react-starter-kit_acces_lecture"
+        },
+        {
+          "anchor": "Belongs to role : nameOfTherole",
+          "link": "/nameOfTherole"
+        },
+      ]
+    }]}>
+
+        <OIDCContext authServerUrl = { 'http://localhost:8080/realms/react-starter-kit/' }
+                        client = { { clientId: "react-starter-kit",
+                                    redirectUri: "http://localhost:3000/" } }
+                                    onNewToken={ ( token ) => oidcLogin(token) }
+                                    onLogout={ () => Accounts.logout() }>
+        <LoginButton inProgressLabel={ <>⏳</> }/>
+        <WelcomeUser/>
+              <Routes>
+                <Route path="/" >
+                      <Route index element={<>Bonjour, veuillez cliquer sur le menu de gauche</>}/>
+                    <Route path="authenticated">
+                      <Route index element={<Links/>} />
+                    </Route>
+                </Route>
+              </Routes>
+        </OIDCContext>
+      </Base>
+    </BrowserRouter>
   )
 }
 
