@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor'
 import { Accounts } from 'meteor/accounts-base'
-import { Issuer } from 'openid-client'
-import { UserInfo } from '../imports/types/UserInfo'
+import { client, getUserInfos } from './Client'
 
 type Options = { oidcToken: string }
 type LoginStatus = Accounts.LoginMethodResult | undefined
@@ -13,12 +12,9 @@ async function checkTokenAndUpsertUser (options: Options) : Promise<LoginStatus>
     if (! options.oidcToken) {
       return undefined    // This login attempt is for another handler, not us.
     }
-  
-    const issuer_ = await issuer();
-    const client = new issuer_.Client({ client_id: 'react-starter-kit' });
-    const userinfo: UserInfo = await client.userinfo(options.oidcToken);
+    const userinfo = await getUserInfos(options.oidcToken)
     const userId = userinfo.preferred_username
-    await Meteor.users.upsertAsync(userId, {$set: { username: userId, given_name: userinfo.given_name, family_name: userinfo.family_name }})
+    await Meteor.users.upsertAsync(userId, {$set: { username: userId, given_name: userinfo.given_name, family_name: userinfo.family_name, groups: userinfo.groups}})
     return { userId }
 }
 
@@ -37,19 +33,6 @@ Meteor.publish(null, function () {
     });
   })
 
-let _issuer: Issuer | undefined = undefined;
-
-async function issuer() {
-	if (_issuer) return _issuer;
-
-	_issuer = await Issuer.discover(
-    // TODO: this constant is also in the client; plus it is specific to the test platform.
-    // We should 12-factor it (using Meteor.settings).
-		'http://localhost:8080/realms/react-starter-kit/'
-	);
-
-	return _issuer;
-}
 
 function registerLoginHandlerAsync (name: string, handlerAsync: (options: any) => Promise<LoginStatus>)
 {
