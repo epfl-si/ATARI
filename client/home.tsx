@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import { Base } from '@epfl/epfl-sti-react-library'
-import { StateEnum, LoginButton, IfOIDCState } from '@epfl-si/react-appauth'
+import { StateEnum, LoginButton, IfOIDCState, useOpenIDConnectContext } from '@epfl-si/react-appauth'
 import Links from './components/Links'
 import { Accounts } from 'meteor/accounts-base'
 import { useTracker } from 'meteor/react-meteor-data'
@@ -10,6 +10,10 @@ import '../imports/types/UserInfo'
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 export default function Home() {
+    const isLogged = useOpenIDConnectContext().state === StateEnum.LoggedIn
+    if (!isLogged) {
+      Meteor.logout()
+    }
   return (
     <BrowserRouter>
       <Base useReactLinks asideMenuItems={[{
