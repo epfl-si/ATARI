@@ -14,6 +14,11 @@ export default function Home() {
     if (!isLogged) {
       Meteor.logout()
     }
+    const onReload = (e, isLogged) => {
+          if(isLogged) return e.preventDefault("");
+    }
+    window.onbeforeunload = (e)=>onReload(e, isLogged)
+  
   return (
     <BrowserRouter>
       <Base useReactLinks asideMenuItems={[{
