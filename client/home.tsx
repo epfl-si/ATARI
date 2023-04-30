@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import { Base } from '@epfl/epfl-sti-react-library'
-import { OIDCContext, StateEnum, LoginButton, IfOIDCState, LoggedInUser } from '@epfl-si/react-appauth'
+import { StateEnum, LoginButton, IfOIDCState } from '@epfl-si/react-appauth'
 import Links from './components/Links'
 import { Accounts } from 'meteor/accounts-base'
 import { useTracker } from 'meteor/react-meteor-data'
@@ -34,11 +34,7 @@ export default function Home() {
       ]
     }]}>
 
-        <OIDCContext authServerUrl = { 'http://localhost:8080/realms/react-starter-kit/' }
-                        client = { { clientId: "react-starter-kit",
-                                    redirectUri: "http://localhost:3000/" } }
-                                    onNewToken={ ( token ) => oidcLogin(token) }
-                                    onLogout={ () => Accounts.logout() }>
+        
         <LoginButton inProgressLabel={ <>⏳</> }/>
         <WelcomeUser/>
               <Routes>
@@ -49,7 +45,6 @@ export default function Home() {
                     </Route>
                 </Route>
               </Routes>
-        </OIDCContext>
       </Base>
     </BrowserRouter>
   )
@@ -63,22 +58,6 @@ const WelcomeUser: React.FC = () => {
   </IfOIDCState>
 }
 
-const oidcLogin = (token: string) => {
-  Accounts.callLoginMethod({
-  methodArguments: [
-    {
-      oidcToken: token,
-    },
-  ],
-  userCallback: serverSideError => {
-      if (serverSideError) {
-        // Only happens when the OIDC login has succeeded but then the Meteor server fails to validate it somehow.
-        const { error, reason, details, message } = serverSideError
-        alert(`Error ${error} on the server\n\nreason: ${reason}\ndetails: ${details}\n message: ${details}\n`)
-      }
-    },
-  });
-}
 
 (window as any).attack = function() {
   Accounts.callLoginMethod({
