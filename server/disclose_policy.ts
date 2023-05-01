@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor'
-import { readOnlyGroup } from '../imports/12factor'
+import { hasReadRole } from '../imports/api/policy'
 import '../imports/types/UserInfo'
 
 // Publish the new fields that `checkTokenAndUpsertUser` added to the database.
@@ -12,7 +12,3 @@ Meteor.publish(null, function () {
                                has_read_role: hasReadRole(me)
                               });
   })
-
-function hasReadRole(user : Meteor.User) {
-  return user.groups.some((g) => g === readOnlyGroup())
-}
