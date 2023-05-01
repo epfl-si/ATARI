@@ -9,6 +9,10 @@ Meteor.publish(null, function () {
     if (! this.userId) return
   const [me] = Meteor.users.find({_id: this.userId}).fetch()
   this.added('users', me._id, {given_name: me.given_name, family_name: me.family_name,
-                               has_read_role: me.groups.some((g) => g === readOnlyGroup())
-    });
+                               has_read_role: hasReadRole(me)
+                              });
   })
+
+function hasReadRole(user : Meteor.User) {
+  return user.groups.some((g) => g === readOnlyGroup())
+}
