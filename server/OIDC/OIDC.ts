@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor'
 import { Accounts } from 'meteor/accounts-base'
 import { getUserInfos } from './UserInfo'
+import { readOnlyGroup } from '../../imports/12factor'
 
 type Options = { oidcToken: string }
 type LoginStatus = Accounts.LoginMethodResult | undefined
@@ -23,7 +24,9 @@ async function checkTokenAndUpsertUser (options: Options) : Promise<LoginStatus>
 Meteor.publish(null, function () {
     if (! this.userId) return
   const [me] = Meteor.users.find({_id: this.userId}).fetch()
-  this.added('users', me._id, {given_name: me.given_name, family_name: me.family_name});
+  this.added('users', me._id, {given_name: me.given_name, family_name: me.family_name,
+                               has_read_role: me.groups.some((g) => g === readOnlyGroup())
+    });
   })
 
 

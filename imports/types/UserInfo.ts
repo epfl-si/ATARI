@@ -18,7 +18,8 @@ declare module "meteor/meteor" {
 		interface User {
 			given_name: String
 			family_name : String
-                  groups: String[]
+                  groups: String[]   // Server only
+                  has_read_role: boolean  // Client only
 		}
 	}
 }
