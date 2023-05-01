@@ -1,16 +1,15 @@
 import { Meteor } from 'meteor/meteor'
 import { Accounts } from 'meteor/accounts-base'
-import { client, getUserInfos } from './Client'
+import { getUserInfos } from './Client'
 
 type Options = { oidcToken: string }
 type LoginStatus = Accounts.LoginMethodResult | undefined
 
-registerLoginHandlerAsync("OIDC", checkTokenAndUpsertUser)
+registerLoginHandlerAsync<Options>("OIDC", checkTokenAndUpsertUser)
 
 async function checkTokenAndUpsertUser (options: Options) : Promise<LoginStatus> {
-    console.log("registerLoginHandler")
     if (! options.oidcToken) {
-      return undefined    // This login attempt is for another handler, not us.
+      return undefined    // This login attempt is for another login handler, not us.
     }
     const userinfo = await getUserInfos(options.oidcToken)
     const userId = userinfo.preferred_username
@@ -34,10 +33,9 @@ Meteor.publish(null, function () {
   })
 
 
-function registerLoginHandlerAsync (name: string, handlerAsync: (options: any) => Promise<LoginStatus>)
-{
+function registerLoginHandlerAsync <Options = any> (name: string, handlerAsync: (options: Options) => Promise<LoginStatus>) {
     // Adapted from https://blog.meteor.com/meteor-fibers-meet-promises-meet-callbacks-a-practical-guide-e134db15afcb#37e5
-    return Accounts.registerLoginHandler(Meteor.wrapAsync((options, callback) => {
+    return Accounts.registerLoginHandler(name, Meteor.wrapAsync((options : Options, callback: (error : Error, result?: Accounts.LoginMethodResult) => void) => {
         handlerAsync(options)
             .then((result) => {
                 callback(null, result);
