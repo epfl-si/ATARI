@@ -18,6 +18,7 @@ declare module "meteor/meteor" {
 		interface User {
 			given_name: String
 			family_name : String
+                  groups: String[]
 		}
 	}
 }
