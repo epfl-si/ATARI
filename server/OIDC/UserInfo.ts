@@ -15,10 +15,9 @@ async function issuer() {
 	return _issuer;
 }
 
-const issuer_ = await issuer();
-export const client = new issuer_.Client({ client_id: 'react-starter-kit' });
+export async function getUserInfos(oidcToken: string) : Promise<UserInfo> {
+  const issuer_ = await issuer();
+  const client = new issuer_.Client({ client_id: 'react-starter-kit' });
 
-export async function getUserInfos(oidcToken: string){
-    const userinfo: UserInfo = await client.userinfo(oidcToken);
-		return userinfo
+    return await client.userinfo(oidcToken);
 }

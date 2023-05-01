@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor'
 import { Accounts } from 'meteor/accounts-base'
-import { getUserInfos } from './Client'
+import { getUserInfos } from './UserInfo'
 
 type Options = { oidcToken: string }
 type LoginStatus = Accounts.LoginMethodResult | undefined
