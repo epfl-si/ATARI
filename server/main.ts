@@ -1,38 +1,54 @@
 import { Meteor } from 'meteor/meteor';
-import { Link, LinksCollection } from '/imports/api/links';
+import { DigestUser, DigestUsersCollection } from '../imports/api/DigestUser';
 
-async function insertLink({ title, url }: Pick<Link, 'title' | 'url'>) {
-  await LinksCollection.insertAsync({ title, url, createdAt: new Date() });
+async function insertDigestUser({ first_name, last_name, phone_number, sciper, gaspar, mail }: Pick<DigestUser, 'first_name' | 'last_name' | 'phone_number' | 'sciper' | 'gaspar' | 'mail'>) {
+  await DigestUsersCollection.insertAsync({ first_name, last_name, phone_number, sciper, gaspar, mail });
 }
 
 Meteor.startup(async () => {
-  // If the Links collection is empty, add some data.
-  if (await LinksCollection.find().countAsync() === 0) {
-    await insertLink({
-      title: 'Do the Tutorial',
-      url: 'https://www.meteor.com/tutorials/react/creating-an-app',
+  // If the DigestUser collection is empty, add some data.
+  if (await DigestUsersCollection.find().countAsync() === 0) {
+    await insertDigestUser({
+      first_name: 'Toto',
+      last_name: 'Le Poto',
+      phone_number: '0788945231',
+      sciper: '123456',
+      gaspar: 'lepoto',
+      mail: 'toto.lepoto@example.com',
     });
 
-    await insertLink({
-      title: 'Follow the Guide',
-      url: 'https://guide.meteor.com',
+    await insertDigestUser({
+      first_name: 'Tutu',
+      last_name: 'La Tortue',
+      phone_number: '0788945231',
+      sciper: '654321',
+      gaspar: 'latortue',
+      mail: 'tutu.latortue@example.com',
     });
 
-    await insertLink({
-      title: 'Read the Docs',
-      url: 'https://docs.meteor.com',
+    await insertDigestUser({
+      first_name: 'Paul',
+      last_name: 'Le Poulpe',
+      phone_number: '0788945231',
+      sciper: '111111',
+      gaspar: 'lepoulpe',
+      mail: 'paul.lepoulpe@example.com',
     });
 
-    await insertLink({
-      title: 'Discussions',
-      url: 'https://forums.meteor.com',
+    await insertDigestUser({
+      first_name: 'Gigi',
+      last_name: 'La Girafe',
+      phone_number: '0788945231',
+      sciper: '222222',
+      gaspar: 'lagirafe',
+      mail: 'gigi.lagirafe@example.com',
     });
   }
 
-  // We publish the entire Links collection to all clients.
+  // We publish the entire DigestUser collection to all clients.
   // In order to be fetched in real-time to the clients
-  publishUnderPolicy("links", function () {
-    return LinksCollection.find();
+  publishUnderPolicy("digestusers", function () {
+    return DigestUsersCollection.find();
   });
 });
 
