@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSubscribe, useFind } from 'meteor/react-meteor-data';
-import { LinksCollection } from '../../imports/api/links';
+import { LinksCollection } from '../../imports/api/DigestUser';
 
 
 function Links() {

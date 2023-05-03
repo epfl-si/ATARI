@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import { Base } from '@epfl/epfl-sti-react-library'
 import { StateEnum, LoginButton, IfOIDCState, useOpenIDConnectContext } from '@epfl-si/react-appauth'
-import Links from './components/Links'
+import Search from './components/Search'
 import { Accounts } from 'meteor/accounts-base'
 import { useTracker } from 'meteor/react-meteor-data'
 import { Meteor } from 'meteor/meteor'
@@ -37,8 +37,8 @@ export default function Home() {
               <Routes>
                 <Route path="/" >
                       <Route index element={<>Bonjour, veuillez cliquer sur le menu de gauche</>}/>
-                      <Route path="authenticated">
-                        <Route index element={<Links/>} />
+                      <Route path="search">
+                        <Route index element={<Search/>} />
                       </Route>
                 </Route>
               </Routes>
