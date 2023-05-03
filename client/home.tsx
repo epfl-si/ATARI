@@ -8,8 +8,6 @@ import { useTracker } from 'meteor/react-meteor-data'
 import { Meteor } from 'meteor/meteor'
 import '../imports/types/UserInfo'
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import SpecificGroup from './components/SpecificGroup'
-import SpecificRole from './components/SpecificRole'
 
 export default function Home() {
     const isLogged = useOpenIDConnectContext().state === StateEnum.LoggedIn
@@ -24,23 +22,11 @@ export default function Home() {
     return (
     <BrowserRouter>
       <Base useReactLinks asideMenuItems={[{
-      "heading": "Mock Main Section",
+      "heading": "IDP-EXOP",
       "menus": [
         {
-          "anchor": "Public",
-          "link": "/public"
-        },
-        {
-          "anchor": "Authenticated",
-          "link": "/authenticated"
-        },
-        {
-          "anchor": "Belongs to group : react-starter-kit_acces_lecture",
-          "link": "/belongsToASpecificGroup"
-        },
-        {
-          "anchor": "Belongs to role : nameOfTherole",
-          "link": "/belongsToASpecificRole"
+          "anchor": "Search",
+          "link": "/search"
         },
       ]
     }]}>
@@ -53,12 +39,6 @@ export default function Home() {
                       <Route index element={<>Bonjour, veuillez cliquer sur le menu de gauche</>}/>
                       <Route path="authenticated">
                         <Route index element={<Links/>} />
-                      </Route>
-                      <Route path="belongsToASpecificGroup">
-                        <Route index element={<SpecificGroup/>} />
-                      </Route>
-                      <Route path="belongsToASpecificRole">
-                        <Route index element={<SpecificRole/>} />
                       </Route>
                 </Route>
               </Routes>
