@@ -27,9 +27,8 @@ function renderRow(props: ListChildComponentProps) {
   }
 
   return (
-    
     <Typography component="li" {...dataSet[0]} noWrap style={inlineStyle}>
-      {`${dataSet[1]}`}
+      {`#${dataSet[2] + 1} - ${dataSet[1]}`}
     </Typography>
   );
 }
@@ -60,7 +59,7 @@ const ListboxComponent = React.forwardRef<
   const itemData: React.ReactChild[] = [];
   (children as React.ReactChild[]).forEach(
     (item: React.ReactChild & { children?: React.ReactChild[] }) => {
-      // itemData.push(item);
+      itemData.push(item);
       itemData.push(...(item.children || []));
     },
   );
@@ -83,10 +82,6 @@ const ListboxComponent = React.forwardRef<
   const getHeight = () => {
     if (itemCount > 8) {
       return 8 * itemSize;
-    }
-    console.log('La taille de la liste change')
-    if(itemData.length === 1) {
-      console.log("Il ne reste plus qu' un seul résultat, c'est le moment d'afficher la personne !")
     }
     return itemData.map(getChildSize).reduce((a, b) => a + b, 0);
   };
@@ -136,48 +131,38 @@ const StyledPopper = styled(Popper)({
   },
 });
 
-export default function Virtualize(props:{OPTIONS: string[], handleOneLastResult: Function}) {
-  const emptyStringArray:string[] = []
-  const [value, setValue] = React.useState(emptyStringArray)
+const OPTIONS = Array.from(new Array(10000))
+  .map(() => random(10 + Math.ceil(Math.random() * 20)))
+  .sort((a: string, b: string) => a.toUpperCase().localeCompare(b.toUpperCase()));
+
+export default function Virtualize() {
+  const [value, setValue] = React.useState('')
   return (
     <Autocomplete
       id="virtualize-demo"
-      freeSolo
       sx={{ width: 300 }}
       disableListWrap
       PopperComponent={StyledPopper}
       ListboxComponent={ListboxComponent}
-      options={value}
+      options={OPTIONS}
       groupBy={(option) => option[0].toUpperCase()}
-      renderInput={(params) => <TextField {...params} label="Search for a person" />}
+      renderInput={(params) => <TextField {...params} label="10,000 options" />}
       renderOption={(props, option, state) =>
         [props, option, state.index] as React.ReactNode
       }
       onInputChange={
-        (e,inputValue) => {
-          const phoneNumbers: string[] = [ '123456789', '987654321' ]
-          const scipers: string[] = ['316898', '123456']
-          const fullNames: string[] = ["Toto Le Poto", "Tutu La Tortue", "Paul Le Poulpe", "Gigi La Girafe"]
-          const gaspar: string[] = ['lepoto', 'latortue', 'lepoulpe', 'lagirafe']
-          const mailAdresses: string[] = ['toto.lepoto@example.com', 'tutu.latortue@example.ch']
-          const phoneSciper: string[] = Array.prototype.concat(phoneNumbers, scipers)
-          const gasparMailFullNames: string[] = Array.prototype.concat(gaspar, mailAdresses, fullNames)
-          const isOnlyDigits = new RegExp(/^\d+$/).test(inputValue);
-          const isMailAdress = new RegExp(/[.|@]/).test(inputValue);
-          const containsOnlyLetters = new RegExp(/^[a-zA-Z]+$/).test(inputValue);
-          if (isOnlyDigits) {
-            // Is a number or a sciper
-            setValue(phoneSciper)
-          } else if (isMailAdress) {
-            // Is a mail address
-            console.log(isMailAdress)
-            setValue(mailAdresses)
-          } else if (containsOnlyLetters) {
-            // Contains only letters
-            setValue(gasparMailFullNames)
-          } else {
-            // Not valid or empty string
-            setValue([])
+        (e,y) => {
+          console.log(y)
+          // if number => search on phone number, or sciper
+          const reg = new RegExp(/^\d+$/);
+          const myArray = reg.test(y);
+          console.log(myArray);
+          
+          // if text => search on gaspar, firstname, lastname, or email
+          // if contains . or @, automatically search on email list
+          setValue(y)
+          if (typeof y === "string") {
+            console.log('string!  ')
           }
         }
       }

@@ -21,15 +21,21 @@ export default function Home() {
   
     return (
     <BrowserRouter>
-      <Base useReactLinks asideMenuItems={[{
-      "heading": "IDP-EXOP",
-      "menus": [
-        {
-          "anchor": "Search",
-          "link": "/search"
-        },
-      ]
-    }]}>
+      <Base useReactLinks useLightFooter={true} Breadcrumbs={[
+  {
+    "link": "https://www.epfl.ch/schools/",
+    "anchor": "Schools"
+  },
+  {
+    "link": "https://sti.epfl.ch/",
+    "anchor": "School of Engineeringssssssss"
+  },
+  {
+    "link": "",
+    "active": true,
+    "anchor": "Test link"
+  }
+]}>
 
         
         <LoginButton inProgressLabel={ <>⏳</> }/>
