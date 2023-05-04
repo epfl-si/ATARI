@@ -137,6 +137,7 @@ export default function Virtualize(props:{OPTIONS: string[]}) {
   return (
     <Autocomplete
       id="virtualize-demo"
+      freeSolo
       sx={{ width: 300 }}
       disableListWrap
       PopperComponent={StyledPopper}
