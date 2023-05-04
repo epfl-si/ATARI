@@ -131,11 +131,7 @@ const StyledPopper = styled(Popper)({
   },
 });
 
-const OPTIONS = Array.from(new Array(10000))
-  .map(() => random(10 + Math.ceil(Math.random() * 20)))
-  .sort((a: string, b: string) => a.toUpperCase().localeCompare(b.toUpperCase()));
-
-export default function Virtualize() {
+export default function Virtualize(props:{OPTIONS:string[]}) {
   return (
     <Autocomplete
       id="virtualize-demo"
@@ -143,9 +139,9 @@ export default function Virtualize() {
       disableListWrap
       PopperComponent={StyledPopper}
       ListboxComponent={ListboxComponent}
-      options={OPTIONS}
+      options={props.OPTIONS}
       groupBy={(option) => option[0].toUpperCase()}
-      renderInput={(params) => <TextField {...params} label="10,000 options" />}
+      renderInput={(params) => <TextField {...params} label="Search an element" />}
       renderOption={(props, option, state) =>
         [props, option, state.index] as React.ReactNode
       }
