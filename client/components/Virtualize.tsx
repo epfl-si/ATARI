@@ -131,7 +131,9 @@ const StyledPopper = styled(Popper)({
   },
 });
 
-export default function Virtualize(props:{OPTIONS:string[]}) {
+export default function Virtualize(props:{OPTIONS: string[]}) {
+  const emptyStringArray:string[] = []
+  const [value, setValue] = React.useState(emptyStringArray)
   return (
     <Autocomplete
       id="virtualize-demo"
@@ -139,11 +141,39 @@ export default function Virtualize(props:{OPTIONS:string[]}) {
       disableListWrap
       PopperComponent={StyledPopper}
       ListboxComponent={ListboxComponent}
-      options={props.OPTIONS}
+      options={value}
       groupBy={(option) => option[0].toUpperCase()}
-      renderInput={(params) => <TextField {...params} label="Search an element" />}
+      renderInput={(params) => <TextField {...params} label="Search for a person" />}
       renderOption={(props, option, state) =>
         [props, option, state.index] as React.ReactNode
+      }
+      onInputChange={
+        (e,inputValue) => {
+          const phoneNumbers: string[] = [ '123456789', '987654321' ]
+          const scipers: string[] = ['316898', '123456']
+          const fullNames: string[] = ["Toto Le Poto", "Tutu La Tortue", "Paul Le Poulpe", "Gigi La Girafe"]
+          const gaspar: string[] = ['lepoto', 'latortue', 'lepoulpe', 'lagirafe']
+          const mailAdresses: string[] = ['toto.lepoto@example.com', 'tutu.latortue@example.ch']
+          const phoneSciper: string[] = Array.prototype.concat(phoneNumbers, scipers)
+          const gasparMailFullNames: string[] = Array.prototype.concat(gaspar, mailAdresses, fullNames)
+          const isOnlyDigits = new RegExp(/^\d+$/).test(inputValue);
+          const isMailAdress = new RegExp(/[.|@]/).test(inputValue);
+          const containsOnlyLetters = new RegExp(/^[a-zA-Z]+$/).test(inputValue);
+          if (isOnlyDigits) {
+            // Is a number or a sciper
+            setValue(phoneSciper)
+          } else if (isMailAdress) {
+            // Is a mail address
+            console.log(isMailAdress)
+            setValue(mailAdresses)
+          } else if (containsOnlyLetters) {
+            // Contains only letters
+            setValue(gasparMailFullNames)
+          } else {
+            // Not valid or empty string
+            setValue([])
+          }
+        }
       }
       // TODO: Post React 18 update - validate this conversion, look like a hidden bug
       renderGroup={(params) => params as unknown as React.ReactNode}
