@@ -28,7 +28,7 @@ function renderRow(props: ListChildComponentProps) {
 
   return (
     <Typography component="li" {...dataSet[0]} noWrap style={inlineStyle}>
-      {`#${dataSet[2] + 1} - ${dataSet[1]}`}
+      {`${dataSet[1]}`}
     </Typography>
   );
 }
@@ -59,7 +59,6 @@ const ListboxComponent = React.forwardRef<
   const itemData: React.ReactChild[] = [];
   (children as React.ReactChild[]).forEach(
     (item: React.ReactChild & { children?: React.ReactChild[] }) => {
-      itemData.push(item);
       itemData.push(...(item.children || []));
     },
   );
