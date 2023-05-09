@@ -23,7 +23,7 @@ function renderRow(props: ListChildComponentProps) {
 
   return (
     <Typography component="li" {...dataSet[0]} noWrap >
-      {`${dataSet[1].first_name}, ${dataSet[1].last_name} ${dataSet[1].sciper} ${dataSet[1].email} ${dataSet[1].gaspar} ${dataSet[1].phone_number}`}
+      {`${dataSet[1].first_name} ${dataSet[1].last_name} ${dataSet[1].sciper} ${dataSet[1].email} ${dataSet[1].gaspar} ${dataSet[1].phone_number}`}
     </Typography>
   );
 }
@@ -130,8 +130,8 @@ const ListboxComponent = React.forwardRef<
   const [OPTIONS, setOPTIONS] = React.useState(stateProps.OPTIONS)
   const [digestUsers, setUserDigest] = React.useState(OPTIONS.map(x=>`${x.first_name} ${x.last_name} ${x.sciper} ${x.email} ${x.phone_number} ${x.gaspar}`))
   const filterOptions = createFilterOptions({
-  matchFrom: 'start',
-  stringify: (option: DigestUser) => option.first_name,
+  // matchFrom: 'start',
+  stringify: (option: DigestUser) => option.first_name + option.last_name + option.sciper + option.email + option.gaspar + option.phone_number
 });
   
   return (
