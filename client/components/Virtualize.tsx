@@ -8,6 +8,10 @@ import { useTheme, styled } from '@mui/material/styles';
 import { VariableSizeList, ListChildComponentProps } from 'react-window';
 import Typography from '@mui/material/Typography';
 
+export default function Virtualize(props:{OPTIONS: string[], handleOneLastResult: Function}) {
+
+
+
 const LISTBOX_PADDING = 8; // px
 
 function renderRow(props: ListChildComponentProps) {
@@ -82,6 +86,11 @@ const ListboxComponent = React.forwardRef<
     if (itemCount > 8) {
       return 8 * itemSize;
     }
+      console.log('La taille de la liste change')
+      if(itemData.length === 1) {
+        console.log("Il ne reste plus qu' un seul résultat, c'est le moment d'afficher la personne !")
+        stateProps.handleOneLastResult()
+      }
     return itemData.map(getChildSize).reduce((a, b) => a + b, 0);
   };
 
@@ -130,9 +139,9 @@ const StyledPopper = styled(Popper)({
   },
 });
 
-export default function Virtualize(props:{OPTIONS: string[]}) {
   const emptyStringArray:string[] = []
   const [value, setValue] = React.useState(emptyStringArray)
+  const [stateProps, setStateProps] = React.useState(props)
   return (
     <Autocomplete
       id="virtualize-demo"
