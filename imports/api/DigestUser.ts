@@ -7,7 +7,7 @@ export interface DigestUser {
   phone_number: string;
   sciper: string;
   gaspar: string;
-  mail: string;
+  email: string;
 }
 
 export const DigestUsersCollection = new Mongo.Collection<DigestUser>('digestusers');

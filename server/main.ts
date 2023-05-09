@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { DigestUser, DigestUsersCollection } from '../imports/api/DigestUser';
 
-async function insertDigestUser({ first_name, last_name, phone_number, sciper, gaspar, mail }: Pick<DigestUser, 'first_name' | 'last_name' | 'phone_number' | 'sciper' | 'gaspar' | 'mail'>) {
-  await DigestUsersCollection.insertAsync({ first_name, last_name, phone_number, sciper, gaspar, mail });
+async function insertDigestUser({ first_name, last_name, phone_number, sciper, gaspar, email }: Pick<DigestUser, 'first_name' | 'last_name' | 'phone_number' | 'sciper' | 'gaspar' | 'email'>) {
+  await DigestUsersCollection.insertAsync({ first_name, last_name, phone_number, sciper, gaspar, email });
 }
 
 Meteor.startup(async () => {
@@ -14,7 +14,7 @@ Meteor.startup(async () => {
       phone_number: '0788945231',
       sciper: '123456',
       gaspar: 'lepoto',
-      mail: 'toto.lepoto@example.com',
+      email: 'toto.lepoto@example.com',
     });
 
     await insertDigestUser({
@@ -23,7 +23,7 @@ Meteor.startup(async () => {
       phone_number: '0788945231',
       sciper: '654321',
       gaspar: 'latortue',
-      mail: 'tutu.latortue@example.com',
+      email: 'tutu.latortue@example.com',
     });
 
     await insertDigestUser({
@@ -32,7 +32,7 @@ Meteor.startup(async () => {
       phone_number: '0788945231',
       sciper: '111111',
       gaspar: 'lepoulpe',
-      mail: 'paul.lepoulpe@example.com',
+      email: 'paul.lepoulpe@example.com',
     });
 
     await insertDigestUser({
@@ -41,7 +41,7 @@ Meteor.startup(async () => {
       phone_number: '0788945231',
       sciper: '222222',
       gaspar: 'lagirafe',
-      mail: 'gigi.lagirafe@example.com',
+      email: 'gigi.lagirafe@example.com',
     });
   }
 

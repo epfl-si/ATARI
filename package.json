@@ -15,6 +15,7 @@
     "@epfl-si/react-appauth": "^0.8.2",
     "@epfl/epfl-sti-react-library": "^5.0.2",
     "@mui/material": "^5.12.3",
+    "fs": "0.0.1-security",
     "openid-client": "^5.4.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -23,6 +24,7 @@
   },
   "devDependencies": {
     "@types/meteor": "^2.9.2",
+    "@types/node": "^20.1.1",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "patch-package": "^7.0.0"

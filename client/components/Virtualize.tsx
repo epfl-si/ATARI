@@ -1,15 +1,15 @@
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
-import Autocomplete, { autocompleteClasses } from '@mui/material/Autocomplete';
+import Autocomplete, { autocompleteClasses, createFilterOptions } from '@mui/material/Autocomplete';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import ListSubheader from '@mui/material/ListSubheader';
 import Popper from '@mui/material/Popper';
 import { useTheme, styled } from '@mui/material/styles';
 import { VariableSizeList, ListChildComponentProps } from 'react-window';
 import Typography from '@mui/material/Typography';
+import { DigestUser } from '../../imports/api/DigestUser';
 
-export default function Virtualize(props:{OPTIONS: string[], handleOneLastResult: Function}) {
-
+export default function Virtualize(props:{OPTIONS: DigestUser[], handleOneLastResult: Function}) {
 
 
 const LISTBOX_PADDING = 8; // px
@@ -17,22 +17,13 @@ const LISTBOX_PADDING = 8; // px
 function renderRow(props: ListChildComponentProps) {
   const { data, index, style } = props;
   const dataSet = data[index];
-  const inlineStyle = {
-    ...style,
-    top: (style.top as number) + LISTBOX_PADDING,
-  };
+  // console.log("dataSet");
+  // console.log(dataSet[1] as DigestUser);
 
-  if (dataSet.hasOwnProperty('group')) {
-    return (
-      <ListSubheader key={dataSet.key} component="div" style={inlineStyle}>
-        {dataSet.group}
-      </ListSubheader>
-    );
-  }
 
   return (
-    <Typography component="li" {...dataSet[0]} noWrap style={inlineStyle}>
-      {`${dataSet[1]}`}
+    <Typography component="li" {...dataSet[0]} noWrap >
+      {`${dataSet[1].first_name}, ${dataSet[1].last_name} ${dataSet[1].sciper} ${dataSet[1].email} ${dataSet[1].gaspar} ${dataSet[1].phone_number}`}
     </Typography>
   );
 }
@@ -66,7 +57,8 @@ const ListboxComponent = React.forwardRef<
       itemData.push(...(item.children || []));
     },
   );
-
+  // console.log("----------------------------");
+  
   const theme = useTheme();
   const smUp = useMediaQuery(theme.breakpoints.up('sm'), {
     noSsr: true,
@@ -89,6 +81,9 @@ const ListboxComponent = React.forwardRef<
       console.log('La taille de la liste change')
       if(itemData.length === 1) {
         console.log("Il ne reste plus qu' un seul résultat, c'est le moment d'afficher la personne !")
+        console.log(itemData[0][0].key.split(' ')[2])
+        console.log(itemData[0][1] as DigestUser)
+        setValue(itemData[0][1] as DigestUser)
         stateProps.handleOneLastResult()
       }
     return itemData.map(getChildSize).reduce((a, b) => a + b, 0);
@@ -117,61 +112,54 @@ const ListboxComponent = React.forwardRef<
   );
 });
 
-const StyledPopper = styled(Popper)({
-  [`& .${autocompleteClasses.listbox}`]: {
-    boxSizing: 'border-box',
-    '& ul': {
-      padding: 0,
-      margin: 0,
-    },
-  },
-});
+// const StyledPopper = styled(Popper)({
+//   [`& .${autocompleteClasses.listbox}`]: {
+//     boxSizing: 'border-box',
+//     '& ul': {
+//       padding: 0,
+//       margin: 0,
+//     },
+//   },
+// });
 
   const emptyStringArray:string[] = []
-  const [value, setValue] = React.useState(emptyStringArray)
+  const emptyDigestUserArray:DigestUser[] = []
+  const emptyDigestUser:DigestUser = {"_id":"10","first_name":"","last_name":"","email":"slammertz9@nsw.gov.au","sciper":"80236","phone_number":"6673984279","gaspar":"Lammertz"}
+  const [value, setValue] = React.useState<DigestUser|undefined>(undefined)
   const [stateProps, setStateProps] = React.useState(props)
+  const [OPTIONS, setOPTIONS] = React.useState(stateProps.OPTIONS)
+  const [digestUsers, setUserDigest] = React.useState(OPTIONS.map(x=>`${x.first_name} ${x.last_name} ${x.sciper} ${x.email} ${x.phone_number} ${x.gaspar}`))
+  const filterOptions = createFilterOptions({
+  matchFrom: 'start',
+  stringify: (option: DigestUser) => option.first_name,
+});
+  
   return (
     <Autocomplete
+      value={value === undefined ? '' : value}
       id="virtualize-demo"
       freeSolo
-      sx={{ width: 300 }}
-      disableListWrap
-      PopperComponent={StyledPopper}
+      fullWidth
+      // disableListWrap
+      // PopperComponent={StyledPopper}
       ListboxComponent={ListboxComponent}
-      options={value}
-      groupBy={(option) => option[0].toUpperCase()}
+      options={OPTIONS}
+      groupBy={(option:DigestUser) => option.first_name[0].toUpperCase()}
       renderInput={(params) => <TextField {...params} label="Search for a person" />}
       renderOption={(props, option, state) =>
         [props, option, state.index] as React.ReactNode
       }
+      filterOptions = {filterOptions}
+      getOptionLabel={x => x === '' ? '' : (x.first_name + " " + x.last_name)}
+      // filterOptions={(x) => x}
       onInputChange={
         (e,inputValue) => {
-          const phoneNumbers: string[] = [ '123456789', '987654321' ]
-          const scipers: string[] = ['316898', '123456']
-          const fullNames: string[] = ["Toto Le Poto", "Tutu La Tortue", "Paul Le Poulpe", "Gigi La Girafe"]
-          const gaspar: string[] = ['lepoto', 'latortue', 'lepoulpe', 'lagirafe']
-          const mailAdresses: string[] = ['toto.lepoto@example.com', 'tutu.latortue@example.ch']
-          const phoneSciper: string[] = Array.prototype.concat(phoneNumbers, scipers)
-          const gasparMailFullNames: string[] = Array.prototype.concat(gaspar, mailAdresses, fullNames)
-          const isOnlyDigits = new RegExp(/^\d+$/).test(inputValue);
-          const isMailAdress = new RegExp(/[.|@]/).test(inputValue);
-          const containsOnlyLetters = new RegExp(/^[a-zA-Z]+$/).test(inputValue);
-          if (isOnlyDigits) {
-            // Is a number or a sciper
-            setValue(phoneSciper)
-          } else if (isMailAdress) {
-            // Is a mail address
-            console.log(isMailAdress)
-            setValue(mailAdresses)
-          } else if (containsOnlyLetters) {
-            // Contains only letters
-            setValue(gasparMailFullNames)
-          } else {
-            // Not valid or empty string
-            setValue([])
-          }
+          console.log(value)
         }
       }
+      // inputValue={}
+      onChange={(e, value)=> setValue(value as DigestUser)}
+      onSelect={(val) => console.log("selected", value)}
       // TODO: Post React 18 update - validate this conversion, look like a hidden bug
       renderGroup={(params) => params as unknown as React.ReactNode}
     />
