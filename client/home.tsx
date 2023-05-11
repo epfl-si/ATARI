@@ -21,15 +21,9 @@ export default function Home() {
   
     return (
     <BrowserRouter>
-      <Base useReactLinks asideMenuItems={[{
-      "heading": "IDP-EXOP",
-      "menus": [
-        {
-          "anchor": "Search",
-          "link": "/search"
-        },
-      ]
-    }]}>
+      <Base useReactLinks
+      useLightFooter={true}
+      >
 
         
         <LoginButton inProgressLabel={ <>⏳</> }/>
