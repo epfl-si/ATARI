@@ -151,16 +151,13 @@ const ListboxComponent = React.forwardRef<
       }
       filterOptions = {filterOptions}
       getOptionLabel={x => x === '' ? '' : (x.first_name + " " + x.last_name)}
-      // filterOptions={(x) => x}
-      onInputChange={
-        (e,inputValue) => {
-          console.log(value)
+      onChange={(e, onChangeValue)=> {
+        if (onChangeValue !== null) {
+          setValue(onChangeValue as DigestUser)
+          stateProps.handleOneLastResult(onChangeValue as DigestUser)
         }
-      }
-      // inputValue={}
-      onChange={(e, value)=> setValue(value as DigestUser)}
+      }}
       onSelect={(val) => console.log("selected", value)}
-      // TODO: Post React 18 update - validate this conversion, look like a hidden bug
       renderGroup={(params) => params as unknown as React.ReactNode}
     />
   );
