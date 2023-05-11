@@ -139,7 +139,7 @@ const ListboxComponent = React.forwardRef<
       value={value === undefined ? '' : value}
       id="virtualize-demo"
       freeSolo
-      fullWidth
+      sx={{width:'60%', margin: 'auto', padding:'50px'}}
       // disableListWrap
       // PopperComponent={StyledPopper}
       ListboxComponent={ListboxComponent}
