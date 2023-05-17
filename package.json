@@ -12,7 +12,7 @@
     "@babel/runtime": "^7.21.0",
     "@emotion/react": "^11.10.8",
     "@emotion/styled": "^11.10.8",
-    "@epfl-si/react-appauth": "^0.8.2",
+    "@epfl-si/react-appauth": "^0.10.0",
     "@epfl/epfl-sti-react-library": "^5.0.2",
     "@mui/material": "^5.12.3",
     "@types/styled-components": "^5.1.26",
