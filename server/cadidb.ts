@@ -1,23 +1,31 @@
 import * as mysql from 'mysql';
-
+import { Meteor } from 'meteor/meteor';
 import * as settings from '../settings.json'
+import {publishUnderPolicy} from './main'
 
-var connection = mysql.createConnection({
-    host     : settings.HOST,
-    user     : settings.USER,
-    password : settings.PASSWORD,
-    database : settings.DATABASE,
-    port     : settings.PORT
-});
+publishUnderPolicy("userDetails", function (sciper : string) {
+  sciper = String(sciper);
+  sciper = (sciper.match(/^([A-Z]?\d+)$/) as any)[0];
 
-connection.connect();
+  // TODO: refactor the 3 lines above into main.ts and have them call
+  //       fetchUserDetailsSQL(this.added);
+  //       fetchUserDetailsLDAP(this.added);
 
-connection.query({
-    sql: 'SELECT * from Personnes where sciper LIKE ?;',
+   this.added("userDetails", sciper , { account: {status: "Compte désactivé"}});
+
+  let connection = mysql.createConnection(settings.mysql);
+  connection.query({
+    sql: 'SELECT * from Personnes where sciper = ?;',
     timeout: 5000,
-    values: ['%316897%']
-}, function (error, results, fields) {
-    console.log("Person:", results)
-});
-
-connection.end();
+    values: [sciper]
+  }, (error, results, fields) => {
+      console.log("Person:", results)
+      results.map((result) => {
+        console.log("added:", sciper, result);
+        this.added("userDetails", sciper , result);
+      })
+      this.ready()
+    })
+  }
+);
+  
