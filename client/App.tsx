@@ -5,8 +5,7 @@ import Home from './home';
 function App() {
   return (
     <OIDCContext authServerUrl = { 'http://localhost:8080/realms/react-starter-kit/' }
-                        client = { { clientId: "react-starter-kit",
-                                    redirectUri: "http://localhost:3000/" } }
+                        client = { { clientId: "react-starter-kit" } }
                                     onNewToken={ ( token ) => oidcLogin(token) }
                                     onLogout={ () => Accounts.logout() }>
       <Home/>
