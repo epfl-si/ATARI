@@ -53,10 +53,10 @@ Meteor.startup(async () => {
 });
 
 
-function publishUnderPolicy (name : string, publishFunc : Function) {
+export function publishUnderPolicy (name : string, publishFunc : Function) {
   Meteor.publish(name, function (...details) {
       if (! isAllowed(Meteor.user(), name, details)) return [];
-      return publishFunc(...details);
+      return publishFunc.apply(this, details);
   })
 }
 
