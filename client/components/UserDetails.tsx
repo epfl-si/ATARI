@@ -4,6 +4,8 @@ import styled from "styled-components"
 import CopyButton from './CopyButton'
 import Unit from './Unit'
 import { UnitInfos } from '../../imports/types/UnitInfos'
+import { useSubscribe, useFind } from 'meteor/react-meteor-data';
+import { UserDetails, userDetailsCollection } from '../../imports/api/UserDetails';
 
 <style>
     div {
@@ -18,7 +20,7 @@ const Container = styled.div`
     /* min-width: 10%; */
     width: 60%;
     /* height: 50vh; */
-    padding: 50px;
+    /* padding: 50px; */
     margin: auto;
     
 `
@@ -69,9 +71,14 @@ const Infos = styled.div`
     justify-content: flex-start;
     flex-wrap: wrap;
     gap: 1vh;
-`
+`;
 
 function UserDetails(props:{user:DigestUser}) {
+    
+    const isLoading = useSubscribe('userDetails', props.user.sciper);
+    const users = useFind(() => userDetailsCollection.find({sciper: String(props.user.sciper)}));
+    const user = (users[0] || {}) as UserDetails;
+    
     const [show, setShow] = React.useState(true)
     const infos = {
       function:"Full-Stack Developer", 
@@ -87,16 +94,20 @@ function UserDetails(props:{user:DigestUser}) {
       unit: "EPFL > VPO > VPO-SI > ISAS > ISAS-FSD",
     } as UnitInfos
   return (
-    <Container className='container-full'>
+    <Container>
       
-    <div className="card">
+    <div className="card" style={{minWidth: '300px', margin: 'auto'}}>
+      
+
+      
       <div className="card-body">
+      
       <div className="my-3 d-md-flex align-items-center">
         <img style={{maxHeight:'150px'}} className="img-fluid rounded-circle mr-4" src="https://this-person-does-not-exist.com/img/avatar-gen11bd0006e3bed909ee88e50fa6da87e0.jpg" alt="Shawna Reeves O'Neill Edwards"/>
         <div className="w-100 mt-2 mt-md-0">
-          <a className="btn btn-block btn-primary mb-2" href="mailto:heidy.traill@epfl.ch">shawna.reeves.oneill.edwards@epfl.ch</a>
+          <a className="btn btn-block btn-primary mb-2" href={props.user.email}>{props.user.email}</a>
           <div style={{display:'block'}}>
-              <a style={{width:'65%'}} className="btn btn-secondary" href="tel:+41791234567">+41 79 123 45 67</a>
+              <a style={{width:'65%'}} className="btn btn-secondary" href={props.user.phone_number}>{props.user.phone_number}</a>
               <div style={{width:'35%', display: 'inline'}}>
                   {/* <CopyButton user={props.user}/> */}
                   <a style={{width:'35%'}} className="btn btn-secondary" href="tel:+41791234567">Copy</a>
@@ -141,7 +152,7 @@ function UserDetails(props:{user:DigestUser}) {
         </dd>
         <dt>Genre</dt>
         <dd>
-          Féminin
+          {isLoading() ? <WaitForIt/> : user.sexe}
         </dd>
         <dt>Sciper géré par</dt>
           <dd>
@@ -165,7 +176,7 @@ function UserDetails(props:{user:DigestUser}) {
               </dd>
           <dt>Status du compte</dt>
               <dd>
-                  Compte désactivé
+                  {isLoading() ? <WaitForIt/> : user.account?.status}
               </dd>
 
           <dt>Expiration du compte</dt>
@@ -201,3 +212,7 @@ function UserDetails(props:{user:DigestUser}) {
 }
 
 export default UserDetails
+
+function WaitForIt() {
+  return <>⌛</>
+}
