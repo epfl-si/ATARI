@@ -27,7 +27,7 @@ export default [
             if (results[0]?.statut){
                 results[0].statut = statuts[results[0].statut - 1];
             }
-            added("userDetails", sciper , ...results);
+            added("userDetails", sciper , { units: [...results] });
         })
     }
 ]
