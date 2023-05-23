@@ -2,7 +2,7 @@ import * as settings from '../../settings.json'
 import * as mysql from 'mysql';
 
 
-export function cadiSqlQuery(queryParams: Function, callbackFnc: Function): void {
+export function cadiSqlQuery(queryParams: any, callbackFnc: Function): void {
     let connection = mysql.createConnection(settings.mysql);
-        connection.query(queryParams(), callbackFnc())
+        connection.query(queryParams, callbackFnc)
     }
