@@ -76,7 +76,7 @@ const Infos = styled.div`
 function UserDetails(props:{user:DigestUser}) {
     
     const isLoading = useSubscribe('userDetails', props.user.sciper);
-    const users = useFind(() => userDetailsCollection.find({sciper: String(props.user.sciper)}));
+    const users = useFind(() => userDetailsCollection.find());
     const user = (users[0] || {}) as UserDetails;
     
     const [show, setShow] = React.useState(true)
