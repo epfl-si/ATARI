@@ -10,4 +10,5 @@ export interface DigestUser {
   email: string;
 }
 
-export const DigestUsersCollection = new Mongo.Collection<DigestUser>('digestusers');
+export const DigestUsersCollection : Mongo.Collection<DigestUser> =
+    Meteor.isClient ? new Mongo.Collection('digestusers') : undefined as any;;

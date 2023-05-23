@@ -17,7 +17,7 @@ export default [
         cadiSqlQuery({
             sql:`
                 SELECT * from Accreds a
-                JOIN Unites u on a.unite  = u.id_unite
+                LEFT JOIN Unites u on a.unite  = u.id_unite
                 WHERE sciper = ?;
             `,
             timeout: 5000,
@@ -29,5 +29,5 @@ export default [
             }
             added("userDetails", sciper , { units: [...results] });
         })
-    }
+    },
 ]

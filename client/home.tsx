@@ -4,12 +4,15 @@ import { Base } from '@epfl/epfl-sti-react-library'
 import { StateEnum, LoginButton, IfOIDCState, useOpenIDConnectContext } from '@epfl-si/react-appauth'
 import Search from './components/Search'
 import { Accounts } from 'meteor/accounts-base'
-import { useTracker } from 'meteor/react-meteor-data'
+import { useTracker, useSubscribe } from 'meteor/react-meteor-data'
+import { DigestUser, DigestUsersCollection } from '../imports/api/DigestUser';
 import { Meteor } from 'meteor/meteor'
 import '../imports/types/UserInfo'
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 export default function Home() {
+    const isLoading = useSubscribe('digestusers');
+    let digestUsers = useTracker(() => DigestUsersCollection.find().fetch())
     const isLogged = useOpenIDConnectContext().state === StateEnum.LoggedIn
     if (!isLogged) {
       Meteor.logout()

@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import {publishUnderPolicy} from './main'
 import dataFetchers from './cadidb/userDetails'
+import { DigestUser, DigestUsersCollection } from '../imports/api/DigestUser';
+import { getDigestList } from './cadidb/digestUsersQueries'
 
 publishUnderPolicy("userDetails", function (sciper : string) {
   sciper = String(sciper);
@@ -9,3 +11,7 @@ publishUnderPolicy("userDetails", function (sciper : string) {
   this.ready()
 });
   
+publishUnderPolicy("digestusers", async function () {
+  getDigestList((...args) => this.added(...args))
+  this.ready()
+});
