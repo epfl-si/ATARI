@@ -129,7 +129,7 @@ function UserDetails(props:{user:DigestUser}) {
         <dt>Sciper</dt>
         {/* <dd>{props.user.sciper}<a style={{marginLeft:'20px', padding:'5px 20px 5px 20px', borderRadius:'5px'}} className="btn btn-secondary">📋</a></dd> */}
         <dd>
-          {props.user.email}
+          {props.user.sciper}
           <a href="#" style={{float:'right'}} className="tag tag-primary">📋</a>
         </dd>
         <dt>Téléphone</dt>
@@ -156,7 +156,7 @@ function UserDetails(props:{user:DigestUser}) {
         </dd>
         <dt>Sciper géré par</dt>
           <dd>
-              SAP
+              SAP (TODO)
           </dd>
       </dl>
       
