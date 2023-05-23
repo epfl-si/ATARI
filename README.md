@@ -1,4 +1,16 @@
-This is a [Meteor](https://meteor.com/) project bootstrapped made with [React](https://reactjs.org/) for the front-end.
+ATARI
+
+This application is designed to facilitate the search and retrieval of data on EPFL members. It provides a simple and efficient way to access relevant information about the members, such as their sciper number, gaspar username, units, etc.
+
+Technologies Used
+
+Front-end: The application is built using the Meteor framework and the React library as a foundation for a responsive and dynamic user interface. Reusable React components facilitate the development and maintenance of the interface, while Meteor simplifies accessing information from the backend for the frontend.
+
+Back-end: The application's back-end is developed using the Meteor framework.
+
+Data Sources: Information about the organization's members is retrieved from external databases, such as CADI_HELPDESK.
+
+Security: Measures have been implemented to protect the sensitive data of the organization's members. These measures include authentication with EPFL's authentication system, Tequila, role-based authorization, and a strict policy system.
 
 ## Getting Started
 
