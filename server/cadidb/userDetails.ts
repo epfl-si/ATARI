@@ -25,7 +25,7 @@ export default [
         }, (error, results, fields) => {
             const statuts = ['Personnel', 'Hôte', 'Hors EPFL', 'Inconnu', 'Etudiant', 'Alumni', 'Retraité']
             if (results[0]?.statut){
-                results[0].statut = statuts[results[0].statut - 1];
+                results.map((result) => result.statut = statuts[result.statut - 1])
             }
             added("userDetails", sciper , { units: [...results] });
         })
