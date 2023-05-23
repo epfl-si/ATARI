@@ -30,10 +30,7 @@ export default function Home() {
         <WelcomeUser/>
               <Routes>
                 <Route path="/" >
-                      <Route index element={<>Bonjour, veuillez cliquer sur le menu de gauche</>}/>
-                      <Route path="search">
-                        <Route index element={<Search/>} />
-                      </Route>
+                  {isLogged ? <Route index element={<Search/>}/> : ''}
                 </Route>
               </Routes>
       </Base>
