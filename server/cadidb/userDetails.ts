@@ -1,17 +1,15 @@
-import * as settings from '../../settings.json'
-import * as mysql from 'mysql';
+import { cadiSqlQuery } from '../databases/cadi_helpdesk';
 
 export default [
     function fetchMockAccountStatus(added, sciper){
         added("userDetails", sciper , { account: {status: "Compte désactivé"}});
     },
     function fetchPersonSql(added, sciper){
-        let connection = mysql.createConnection(settings.mysql);
-        connection.query(queryParams(sciper), wrapResultMap(added, sciper))
+        cadiSqlQuery(() => getPersonQueryParams(sciper), () => wrapResultMap(added, sciper))
     }
 ]
 
-const queryParams = (sciper) => {
+const getPersonQueryParams = (sciper) => {
     return {
         sql: 'SELECT * from Personnes where sciper = ?;',
         timeout: 5000,
