@@ -8,11 +8,6 @@ import { useSubscribe, useFind } from 'meteor/react-meteor-data';
 import { UserDetails, userDetailsCollection } from '../../imports/api/UserDetails';
 const {log} = console;
 
-<style>
-    div {
-    'font-size: large;'
-    }
-</style>
 const Container = styled.div`
     /* border-style: solid;
     border-color: black; */
@@ -23,7 +18,9 @@ const Container = styled.div`
     /* height: 50vh; */
     /* padding: 50px; */
     margin: auto;
-    
+    .definition-list-grid {
+      grid-template-columns: fit-content(100%) 1fr;
+    }
 `
 const Legend = styled.legend`
     text-align: center;
@@ -146,7 +143,7 @@ function UserDetails(props:{user:DigestUser}) {
         </dd>
 
 
-        <dt>Nom d'utilisateur</dt>
+        <dt>Nom d'utilisateur utilisateur</dt>
         <dd>
           {props.user.gaspar}
           <a href="#" style={{float:'right'}} className="tag tag-primary">📋</a>
@@ -157,7 +154,7 @@ function UserDetails(props:{user:DigestUser}) {
         </dd>
         <dt>Sciper géré par</dt>
           <dd>
-              SAP (TODO)
+              {user.type}
           </dd>
       </dl>
       
