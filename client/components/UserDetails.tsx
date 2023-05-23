@@ -6,6 +6,7 @@ import Unit from './Unit'
 import { UnitInfos } from '../../imports/types/UnitInfos'
 import { useSubscribe, useFind } from 'meteor/react-meteor-data';
 import { UserDetails, userDetailsCollection } from '../../imports/api/UserDetails';
+const {log} = console;
 
 <style>
     div {
@@ -81,24 +82,24 @@ function UserDetails(props:{user:DigestUser}) {
     
     const [show, setShow] = React.useState(true)
     const infos = {
-      function:"Full-Stack Developer", 
-      team:"Full-Stack Developement", 
-      address1: "EPFL SI ISAS-FSD",
-      address2: "INN 013 (Bâtiment INN",
-      address3: "Station 14",
-      address4: "CH-1015 Lausanne",
+      fonction:"Full-Stack Developer", 
+      libelle:"Full-Stack Developement", 
+      adresse_1: "EPFL SI ISAS-FSD",
+      adresse_2: "INN 013 (Bâtiment INN",
+      adresse_3: "Station 14",
+      adresse_4: "CH-1015 Lausanne",
       phone_numbers: ["+41 21 693 43 21", "+41 21 693 1234"],
       // office: "INN 013",
       // mainOffice: "INN 013",
       website: "example.com",
-      unit: "EPFL > VPO > VPO-SI > ISAS > ISAS-FSD",
+      unit: "EPFL VPO VPO-SI ISAS ISAS-FSD",
+      statut: "Personnel",
     } as UnitInfos
   return (
     <Container>
       
     <div className="card" style={{minWidth: '300px', margin: 'auto'}}>
       
-
       
       <div className="card-body">
       
@@ -160,9 +161,7 @@ function UserDetails(props:{user:DigestUser}) {
           </dd>
       </dl>
       
-      <Unit show={true} infos={infos}/>
-      <Unit infos={infos}/>
-      <Unit infos={infos}/>
+      {user.units ? user.units.map((x, i)=> <div key={i}>{<Unit infos={x}/>}</div>) : <></>}
       <br />  
 
       <button className="collapse-title collapse-title-desktop collapsed" type="button" data-toggle="collapse" data-target="#collapse-3" aria-expanded="false" aria-controls="collapse-3">

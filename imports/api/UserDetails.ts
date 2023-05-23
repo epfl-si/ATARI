@@ -6,7 +6,11 @@ export type UserDetails = {
   account: {
     status: string;
   }
+  statut: string
+  units: any[]
 }
+
+
 export const userDetailsCollection : Mongo.Collection<UserDetails> =
     Meteor.isClient ? new Mongo.Collection('userDetails') : undefined as any;
 
