@@ -83,7 +83,7 @@ const ListboxComponent = React.forwardRef<
         console.log("Il ne reste plus qu' un seul résultat, c'est le moment d'afficher la personne !")
         console.log(itemData[0][0].key.split(' ')[2])
         console.log(itemData[0][1] as DigestUser)
-        setValue(itemData[0][1] as DigestUser)
+        // setValue(itemData[0][1] as DigestUser)
         stateProps.handleOneLastResult(itemData[0][1] as DigestUser)
       }
     return itemData.map(getChildSize).reduce((a, b) => a + b, 0);
