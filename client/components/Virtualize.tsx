@@ -136,6 +136,7 @@ const ListboxComponent = React.forwardRef<
   
   return (
     <Autocomplete
+      autoHighlight={true}
       value={value === undefined ? '' : value}
       id="virtualize-demo"
       freeSolo
