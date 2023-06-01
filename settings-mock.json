@@ -1,0 +1,9 @@
+{
+    "mysql": {
+        "host"     : "localhost",
+        "user"     : "database_user",
+        "password" : "password",
+        "database" : "CADI_HELPDESK",
+        "port": 3307
+    }
+}
