@@ -14,6 +14,7 @@ export default function Home() {
     const isLoading = useSubscribe('digestusers');
     let digestUsers = useTracker(() => DigestUsersCollection.find().fetch())
     const isLogged = useOpenIDConnectContext().state === StateEnum.LoggedIn
+    const userInfos = useOpenIDConnectContext().idToken
     if (!isLogged) {
       Meteor.logout()
     }
@@ -26,6 +27,21 @@ export default function Home() {
     <BrowserRouter>
       <Base useReactLinks
       useLightFooter={true}
+      user={isLogged ? {
+        first_name: userInfos!.given_name,
+        last_name: userInfos!.family_name,
+        sciper: "00000",
+        photo_url: "https://this-person-does-not-exist.com/img/avatar-genb9134ae84d50cd59fe581519684d7be9.jpg",
+        // logoutUrl:"https://tequila.epfl.ch/logout"
+      } : {
+        first_name: "Juan",
+        last_name: "Convers",
+        sciper: "00000",
+        photo_url: "https://this-person-does-not-exist.com/img/avatar-genb9134ae84d50cd59fe581519684d7be9.jpg",
+        // logOutUrl:"https://tequila.epfl.ch/logout"
+      }}
+      avatarLogoAltText={""}
+      avatarLogoUrl={"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="}
       >
 
         
