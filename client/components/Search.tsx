@@ -3,6 +3,7 @@ import Virtualize from './Virtualize';
 import UserDetails from './UserDetails';
 import { DigestUser, DigestUsersCollection } from '../../imports/api/DigestUser';
 import { useSubscribe, useFind, useTracker } from 'meteor/react-meteor-data';
+import LoadingSpinner from './LoadingSpinner'
 
 function Search() {
   function consoleLog(user) {
@@ -18,12 +19,21 @@ function Search() {
   let realDigestUsersArray = digestUsersArray ? Object.values(digestUsersArray) : undefined
   return (
     <>
-    <div className='container-full' >
-        {digestUsers[0] !== undefined ? <Virtualize OPTIONS={digestUsersArray as DigestUser[]} handleOneLastResult={(e, user)=>consoleLog(e)}/> : ''}
+      <div className='container-full'>
+        <div 
+        style={{
+          width:'100%', 
+          marginTop:'80px',
+          marginBottom:'80px',
+          height:'56px',
+        }}>
+          {digestUsers[0] !== undefined ? <Virtualize OPTIONS={digestUsersArray as DigestUser[]} handleOneLastResult={(e, user)=>consoleLog(e)}/> : <LoadingSpinner/>}
+        </div>
         {searchUser === undefined ? <></> : <UserDetails user={searchUser}/>}
-    </div>
+      </div>
     </>
   )
 }
 
 export default Search
+
