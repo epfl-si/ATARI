@@ -21,12 +21,12 @@ function Search() {
     <>
       <div className='container-full'>
         <div 
-        style={{
-          width:'100%', 
-          marginTop:'80px',
-          marginBottom:'80px',
-          height:'56px',
-        }}>
+          style={{
+            width:'100%',
+            marginTop:'80px',
+            marginBottom:'80px',
+            height:'56px',
+          }}>
           {digestUsers[0] !== undefined ? <Virtualize OPTIONS={digestUsersArray as DigestUser[]} handleOneLastResult={(e, user)=>consoleLog(e)}/> : <LoadingSpinner/>}
         </div>
         {searchUser === undefined ? <></> : <UserDetails user={searchUser}/>}
