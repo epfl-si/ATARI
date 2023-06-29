@@ -1,10 +1,16 @@
 # This docker-compose.yml file is intended for development support. It
 # is *not* meant for production.
 
-version: '3'
-name: react_starter_kit
-
+version: '3.8'
 services:
+  meteor_app:
+    build:
+      context: .
+    ports:
+      - 3000:3000
+    # volumes:
+    #   - ./:/usr/src/app
+
   # Keycloak is an OpenID-Connect IdP (Identity Provider) that is easy
   # to set up. It mocks out that feature in the react-starter-kit application,
   # allowing testing with arbitrary users and groups. See further
