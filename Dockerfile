@@ -10,6 +10,7 @@ RUN sh meteor-install.sh
 COPY . /usr/src/app
 WORKDIR /usr/src/app
 
+RUN mkdir -p .meteor/local
 RUN chmod -R 700 .meteor/local
 RUN meteor npm install
 
