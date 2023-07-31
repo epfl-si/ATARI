@@ -17,12 +17,16 @@ const LISTBOX_PADDING = 8; // px
 function renderRow(props: ListChildComponentProps) {
   const { data, index, style } = props;
   const dataSet = data[index];
-  // console.log("dataSet");
-  // console.log(dataSet[1] as DigestUser);
-
 
   return (
     <Typography component="li" {...dataSet[0]} noWrap>
+      {`${dataSet[1].first_name ? dataSet[1].first_name : ""} ${
+        dataSet[1].last_name ? dataSet[1].last_name : ""
+      } ${dataSet[1].sciper ? dataSet[1].sciper : ""} ${
+        dataSet[1].email ? dataSet[1].email : ""
+      } ${dataSet[1].gaspar ? dataSet[1].gaspar : ""} ${
+        dataSet[1].phone_number ? dataSet[1].phone_number : ""
+      }`}
     </Typography>
   );
 }
@@ -56,7 +60,6 @@ const ListboxComponent = React.forwardRef<
       itemData.push(...(item.children || []));
     },
   );
-  // console.log("----------------------------");
   
   const theme = useTheme();
   const smUp = useMediaQuery(theme.breakpoints.up('sm'), {
@@ -77,12 +80,7 @@ const ListboxComponent = React.forwardRef<
     if (itemCount > 8) {
       return 8 * itemSize;
     }
-      console.log('La taille de la liste change')
       if(itemData.length === 1) {
-        console.log("Il ne reste plus qu' un seul résultat, c'est le moment d'afficher la personne !")
-        console.log(itemData[0][0].key.split(' ')[2])
-        console.log(itemData[0][1] as DigestUser)
-        // setValue(itemData[0][1] as DigestUser)
         stateProps.handleOneLastResult(itemData[0][1] as DigestUser)
       }
     return itemData.map(getChildSize).reduce((a, b) => a + b, 0);
@@ -111,23 +109,9 @@ const ListboxComponent = React.forwardRef<
   );
 });
 
-// const StyledPopper = styled(Popper)({
-//   [`& .${autocompleteClasses.listbox}`]: {
-//     boxSizing: 'border-box',
-//     '& ul': {
-//       padding: 0,
-//       margin: 0,
-//     },
-//   },
-// });
-
-  const emptyStringArray:string[] = []
-  const emptyDigestUserArray:DigestUser[] = []
-  const emptyDigestUser:DigestUser = {"_id":"10","first_name":"","last_name":"","email":"slammertz9@nsw.gov.au","sciper":"80236","phone_number":"6673984279","gaspar":"Lammertz"}
   const [value, setValue] = React.useState<DigestUser|undefined>(undefined)
   const [stateProps, setStateProps] = React.useState(props)
   const [OPTIONS, setOPTIONS] = React.useState(stateProps.OPTIONS)
-  const [digestUsers, setUserDigest] = React.useState(OPTIONS.map(x=>`${x.first_name} ${x.last_name} ${x.sciper} ${x.email} ${x.phone_number} ${x.gaspar}`))
   const filterOptions = (options, inputValue ) => {
     if (inputValue[inputValue.length - 1] === ' '){
       inputValue = inputValue.substring(0, inputValue.length - 1);
@@ -142,8 +126,6 @@ const ListboxComponent = React.forwardRef<
         return true;
       }
     });
-    console.log(options, inputValue);
-
     return result.slice(0, 5);
   };
   
@@ -175,7 +157,6 @@ const ListboxComponent = React.forwardRef<
           stateProps.handleOneLastResult(onChangeValue as DigestUser);
         }
       }}
-      onSelect={(val) => console.log("selected", value)}
       renderGroup={(params) => params as unknown as React.ReactNode}
     />
   );
