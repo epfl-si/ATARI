@@ -129,10 +129,22 @@ const ListboxComponent = React.forwardRef<
   const [stateProps, setStateProps] = React.useState(props)
   const [OPTIONS, setOPTIONS] = React.useState(stateProps.OPTIONS)
   const [digestUsers, setUserDigest] = React.useState(OPTIONS.map(x=>`${x.first_name} ${x.last_name} ${x.sciper} ${x.email} ${x.phone_number} ${x.gaspar}`))
-  const filterOptions = createFilterOptions({
-  // matchFrom: 'start',
-  stringify: (option: DigestUser) => option.first_name + option.last_name + option.sciper + option.email + option.gaspar + option.phone_number
-});
+  const filterOptions = (options, inputValue ) => {
+    const tmpOption = OPTIONS
+    const result = OPTIONS.filter((x, i) =>{
+        const containsValue = Array.prototype.filter.call(
+          Object.values(x),
+          (y) => String(y).includes(inputValue)
+        );
+        if(containsValue.length > 0) {
+          return true
+        }
+    }
+    );
+    console.log(options, inputValue);
+    
+    return result.slice(0, 5);
+  };
   
   return (
     <Autocomplete
@@ -150,9 +162,9 @@ const ListboxComponent = React.forwardRef<
       renderOption={(props, option, state) =>
         [props, option, state.index] as React.ReactNode
       }
-      filterOptions = {filterOptions}
-      getOptionLabel={x => x === '' ? '' : (x.first_name + " " + x.last_name)}
-      onChange={(e, onChangeValue)=> {
+      filterOptions={(options, { inputValue }) =>
+        filterOptions(options, inputValue)
+      }
         if (onChangeValue !== null) {
           setValue(onChangeValue as DigestUser)
           stateProps.handleOneLastResult(onChangeValue as DigestUser)
