@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { Base } from '@epfl/epfl-sti-react-library'
+import { Base, Header, FooterLight } from "@epfl/epfl-sti-react-library";
 import { StateEnum, LoginButton, IfOIDCState, useOpenIDConnectContext } from '@epfl-si/react-appauth'
 import Search from './components/Search'
 import { Accounts } from 'meteor/accounts-base'
@@ -9,11 +9,12 @@ import { DigestUser, DigestUsersCollection } from '../imports/api/DigestUser';
 import { Meteor } from 'meteor/meteor'
 import '../imports/types/UserInfo'
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import EPFLHeader from './components/EPFLHeader';
 
 export default function Home() {
+    const isLogged = useOpenIDConnectContext().state === StateEnum.LoggedIn;
     const isLoading = useSubscribe('digestusers');
     let digestUsers = useTracker(() => DigestUsersCollection.find().fetch())
-    const isLogged = useOpenIDConnectContext().state === StateEnum.LoggedIn
     const userInfos = useOpenIDConnectContext().idToken
     if (!isLogged) {
       Meteor.logout()
@@ -24,44 +25,35 @@ export default function Home() {
     window.onbeforeunload = (e)=>onReload(e, isLogged)
   
     return (
-    <BrowserRouter>
-      <Base useReactLinks
-      useLightFooter={true}
-      user={isLogged ? {
-        first_name: userInfos!.given_name,
-        last_name: userInfos!.family_name,
-        sciper: "00000",
-        photo_url: "https://this-person-does-not-exist.com/img/avatar-genb9134ae84d50cd59fe581519684d7be9.jpg",
-        // logoutUrl:"https://tequila.epfl.ch/logout"
-      } : {
-        first_name: "Juan",
-        last_name: "Convers",
-        sciper: "00000",
-        photo_url: "https://this-person-does-not-exist.com/img/avatar-genb9134ae84d50cd59fe581519684d7be9.jpg",
-        // logOutUrl:"https://tequila.epfl.ch/logout"
-      }}
-      avatarLogoAltText={""}
-      avatarLogoUrl={"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="}
-      >
-
-        
-        <LoginButton inProgressLabel={ <>⏳</> }/>
-        <WelcomeUser/>
-              <Routes>
-                <Route path="/" >
-                  {isLogged ? <Route index element={<Search/>}/> : ''}
-                </Route>
-              </Routes>
-      </Base>
-    </BrowserRouter>
-  )
+      <div style={{ position: "relative", minHeight: "100vh" }}>
+        <BrowserRouter>
+          <EPFLHeader />
+          <WelcomeUser />
+          <Routes>
+            <Route path="/">
+              {isLogged ? (
+                <Route index element={<Search />} />
+              ) : (
+                <Route
+                  index
+                  element={<LoginButton inProgressLabel={<>⏳</>} />}
+                />
+              )}
+            </Route>
+          </Routes>
+          <div style={{ position: "absolute", bottom: 0, width: "100%" }}>
+            <FooterLight />
+          </div>
+        </BrowserRouter>
+      </div>
+    );
 }
 
 const WelcomeUser: React.FC = () => {
   const user = useTracker(() => Meteor.user())
   
   return <IfOIDCState is={StateEnum.LoggedIn}>
-    {user ? `Hello, ${user.given_name} ${user.family_name}!` : `Hello! For some reason you are logged into OIDC, but not on Meteor.` }
+    {/* {user ? `Hello, ${user.given_name} ${user.family_name}!` : `Hello! For some reason you are logged into OIDC, but not on Meteor.` } */}
   </IfOIDCState>
 }
 
