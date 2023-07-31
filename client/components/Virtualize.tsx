@@ -113,6 +113,10 @@ const ListboxComponent = React.forwardRef<
   const [stateProps, setStateProps] = React.useState(props)
   const [OPTIONS, setOPTIONS] = React.useState(stateProps.OPTIONS)
   const filterOptions = (options, inputValue ) => {
+    inputValue = inputValue
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
     if (inputValue[inputValue.length - 1] === ' '){
       inputValue = inputValue.substring(0, inputValue.length - 1);
     }
@@ -140,7 +144,9 @@ const ListboxComponent = React.forwardRef<
       // PopperComponent={StyledPopper}
       ListboxComponent={ListboxComponent}
       options={OPTIONS}
-      groupBy={(option: DigestUser) => option.first_name[0].toUpperCase()}
+      groupBy={
+        ((option: DigestUser) => option.first_name[0].toLowerCase() + option.last_name[0].toLowerCase())
+      }
       renderInput={(params) => (
         <TextField {...params} label="Search for a person" />
       )}
