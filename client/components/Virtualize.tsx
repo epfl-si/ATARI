@@ -130,8 +130,10 @@ const ListboxComponent = React.forwardRef<
   const [OPTIONS, setOPTIONS] = React.useState(stateProps.OPTIONS)
   const [digestUsers, setUserDigest] = React.useState(OPTIONS.map(x=>`${x.first_name} ${x.last_name} ${x.sciper} ${x.email} ${x.phone_number} ${x.gaspar}`))
   const filterOptions = (options, inputValue ) => {
+    if (inputValue[inputValue.length - 1] === ' '){
+      inputValue = inputValue.substring(0, inputValue.length - 1);
+    }
     const inputArray = inputValue.split(" ");
-    console.log(inputArray.length);
     const tmpOption = OPTIONS;
     const result = OPTIONS.filter((x, i) => {
       const containsValue = Array.prototype.filter.call(Object.values(x), (y) =>
