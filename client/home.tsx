@@ -10,6 +10,7 @@ import { Meteor } from 'meteor/meteor'
 import '../imports/types/UserInfo'
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import EPFLHeader from './components/EPFLHeader';
+import PleaseLogin from './components/PleaseLogin';
 
 export default function Home() {
     const isLogged = useOpenIDConnectContext().state === StateEnum.LoggedIn;
@@ -34,10 +35,7 @@ export default function Home() {
               {isLogged ? (
                 <Route index element={<Search />} />
               ) : (
-                <Route
-                  index
-                  element={<LoginButton inProgressLabel={<>⏳</>} />}
-                />
+                <Route index element={<PleaseLogin />} />
               )}
             </Route>
           </Routes>

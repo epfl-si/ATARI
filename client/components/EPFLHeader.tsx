@@ -1,6 +1,12 @@
 import React from "react";
+import {
+  StateEnum,
+  useOpenIDConnectContext,
+} from "@epfl-si/react-appauth";
+
 
 function EPFLHeader() {
+  const isLogged = useOpenIDConnectContext().state === StateEnum.LoggedIn;
   return (
     <header
       role="banner"
@@ -107,7 +113,13 @@ function EPFLHeader() {
           <ul>
             <li className="nav-item">
               <span>
-                <a href="#" onClick={()=>console.log("clicked")}>Login</a>
+                {isLogged ? <a href="#" onClick={useOpenIDConnectContext().logout}>
+                    Logout
+                  </a> : 
+                  <a href="#" onClick={useOpenIDConnectContext().login}>
+                    Login
+                  </a>
+                  }
               </span>
             </li>
             <li>
