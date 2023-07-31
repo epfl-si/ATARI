@@ -3,14 +3,17 @@ import { OIDCContext, StateEnum, LoginButton, IfOIDCState, LoggedInUser, useOpen
 import Home from './home';
 
 function App() {
+  const loginUrl = "http://localhost:8080/realms/react-starter-kit/";
   return (
-    <OIDCContext authServerUrl = { 'http://localhost:8080/realms/react-starter-kit/' }
-                        client = { { clientId: "react-starter-kit" } }
-                                    onNewToken={ ( token ) => oidcLogin(token) }
-                                    onLogout={ () => Accounts.logout() }>
-      <Home/>
+    <OIDCContext
+      authServerUrl={loginUrl}
+      client={{ clientId: "react-starter-kit" }}
+      onNewToken={(token) => oidcLogin(token)}
+      onLogout={() => Accounts.logout()}
+    >
+      <Home />
     </OIDCContext>
-  )
+  );
 }
 
 const oidcLogin = (token: string) => {

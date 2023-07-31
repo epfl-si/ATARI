@@ -7,8 +7,6 @@ import LoadingSpinner from './LoadingSpinner'
 
 function Search() {
   function consoleLog(user) {
-    console.log("Only one person left in the list, let's load this person's infos")
-    console.log('User', user);
     setSearchUser(user as DigestUser)
   }
   const isLoading = useSubscribe('digestusers');
