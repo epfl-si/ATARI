@@ -152,64 +152,32 @@ function UserDetails(props:{user:DigestUser}) {
             <dt>Nom complet</dt>
             <dd>
               {`${props.user.first_name} ${props.user.last_name}`}
-              <button
-                onClick={() =>
-                  navigator.clipboard.writeText(
-                    `${props.user.first_name} ${props.user.last_name}`
-                  )
-                }
-                style={{ float: "right" }}
-                className="tag tag-primary"
-              >
-                📋
-              </button>
+              <CopyButton
+                text={`${props.user.first_name} ${props.user.last_name}`}
+              />
             </dd>
             <dt>Sciper</dt>
             {/* <dd>{props.user.sciper}<a style={{marginLeft:'20px', padding:'5px 20px 5px 20px', borderRadius:'5px'}} className="btn btn-secondary">📋</a></dd> */}
             <dd>
               {props.user.sciper}
-              <a
-                href="#"
-                style={{ float: "right" }}
-                className="tag tag-primary"
-              >
-                📋
-              </a>
+              <CopyButton text={props.user.sciper} />
             </dd>
             <dt>Téléphone</dt>
             <dd>
               {props.user.phone_number}
-              <a
-                href="#"
-                style={{ float: "right" }}
-                className="tag tag-primary"
-              >
-                📋
-              </a>
+              <CopyButton text={props.user.phone_number} />
             </dd>
 
             <dt>Email</dt>
             <dd>
               {props.user.email}
-              <a
-                href="#"
-                style={{ float: "right" }}
-                className="tag tag-primary"
-              >
-                📋
-              </a>
+              <CopyButton text={props.user.email} />
             </dd>
 
             <dt>Nom d'utilisateur utilisateur</dt>
             <dd>
               {props.user.gaspar}
-              <a
-                href="#"
-                style={{ float: "right" }}
-                className="tag tag-primary"
-              >
-                📋
-              </a>
+              <CopyButton text={props.user.gaspar} />
             </dd>
             <dt>Genre</dt>
             <dd>{isLoading() ? <WaitForIt /> : user.sexe}</dd>

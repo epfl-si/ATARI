@@ -1,20 +1,46 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-function CopyButton(props:{user}) {
-    const [isClicked, setIsClicked] = React.useState(false)
+
+function CopyButton(props:{text}) {
   return (
-    <a className="btn btn-secondary" 
+    <>
+        <a
+        style={{ float: "right" }}
+        className="btn btn-secondary tag tag-primary"
         onClick={async () => {
-            navigator.clipboard.writeText(props.user.phone_number)
-            if(await navigator.clipboard.readText() === props.user.phone_number.toString()) {
-                setIsClicked(true)
-                console.log("Successfully copied!")
-            }
+            console.log(await navigator.clipboard.writeText(props.text.toString()))
+            console.log("typof", typeof navigator.clipboard.readText);
+            navigator.clipboard.writeText(props.text.toString()).then(
+                () => {
+                    toast("🦄 Text copied!")
+                },
+                () => {
+                    toast("😢 An error occurred during the copy process", {
+                    autoClose: 5000,
+                    });
+                }
+            );
         }}
-    >
-        {isClicked ? 'Copied' : 'Copy'}
-    </a>
-  )
+        >
+        📋
+        </a>
+      <ToastContainer
+        position="top-right"
+        autoClose={200}
+        limit={1}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        />
+    </>
+  );
 }
 
 export default CopyButton
