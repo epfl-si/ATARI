@@ -3,13 +3,13 @@
 
 version: '3.8'
 services:
-  meteor_app:
-    build:
-      context: .
-    ports:
-      - 3000:3000
-    # volumes:
-    #   - ./:/usr/src/app
+  # meteor_app:
+  #   build:
+  #     context: .
+  #   ports:
+  #     - 3000:3000
+  #   volumes:
+  #     - ./:/usr/src/app
 
   # Keycloak is an OpenID-Connect IdP (Identity Provider) that is easy
   # to set up. It mocks out that feature in the react-starter-kit application,
