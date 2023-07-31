@@ -22,8 +22,7 @@ function renderRow(props: ListChildComponentProps) {
 
 
   return (
-    <Typography component="li" {...dataSet[0]} noWrap >
-      {`${dataSet[1].first_name} ${dataSet[1].last_name} ${dataSet[1].sciper} ${dataSet[1].email} ${dataSet[1].gaspar} ${dataSet[1].phone_number}`}
+    <Typography component="li" {...dataSet[0]} noWrap>
     </Typography>
   );
 }
