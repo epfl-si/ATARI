@@ -97,12 +97,15 @@ function UserDetails(props:{user:DigestUser}) {
       <div className="card" style={{ minWidth: "300px", margin: "auto" }}>
         <div className="card-body">
           <div className="my-3 d-md-flex align-items-center">
-            <img
-              style={{ maxHeight: "150px" }}
-              className="img-fluid rounded-circle mr-4"
-              src={`https://people.epfl.ch/private/common/photos/links/${props.user.sciper}.jpg`}
-              alt="Shawna Reeves O'Neill Edwards"
-            />
+            <div className='mr-3'>
+              <div style={{ width: "100px",  height: "100px", position: 'relative', overflow: 'hidden', borderRadius: '100%'}}>
+                <img
+                  className="img-fluid"
+                  src={`https://people.epfl.ch/private/common/photos/links/${props.user.sciper}.jpg`}
+                  alt="Shawna Reeves O'Neill Edwards"
+                />
+              </div>
+            </div>
             <div className="w-100 mt-2 mt-md-0">
               <a
                 className="btn btn-block btn-primary mb-2"
