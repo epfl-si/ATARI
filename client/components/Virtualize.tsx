@@ -149,25 +149,29 @@ const ListboxComponent = React.forwardRef<
   return (
     <Autocomplete
       autoHighlight={true}
-      value={value === undefined ? '' : value}
+      value={value === undefined ? "" : value}
       id="virtualize-demo"
       freeSolo
-      sx={{width:'60%', margin: 'auto'}}
+      sx={{ width: "60%", margin: "auto" }}
       // disableListWrap
       // PopperComponent={StyledPopper}
       ListboxComponent={ListboxComponent}
       options={OPTIONS}
-      groupBy={(option:DigestUser) => option.first_name[0].toUpperCase()}
-      renderInput={(params) => <TextField {...params} label="Search for a person" />}
+      groupBy={(option: DigestUser) => option.first_name[0].toUpperCase()}
+      renderInput={(params) => (
+        <TextField {...params} label="Search for a person" />
+      )}
       renderOption={(props, option, state) =>
         [props, option, state.index] as React.ReactNode
       }
       filterOptions={(options, { inputValue }) =>
         filterOptions(options, inputValue)
       }
+      getOptionLabel={(x) => (x === "" ? "" : x.first_name + " " + x.last_name)}
+      onChange={(e, onChangeValue) => {
         if (onChangeValue !== null) {
-          setValue(onChangeValue as DigestUser)
-          stateProps.handleOneLastResult(onChangeValue as DigestUser)
+          setValue(onChangeValue as DigestUser);
+          stateProps.handleOneLastResult(onChangeValue as DigestUser);
         }
       }}
       onSelect={(val) => console.log("selected", value)}
