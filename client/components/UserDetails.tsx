@@ -100,7 +100,7 @@ function UserDetails(props:{user:DigestUser}) {
             <img
               style={{ maxHeight: "150px" }}
               className="img-fluid rounded-circle mr-4"
-              src="https://this-person-does-not-exist.com/img/avatar-gen11bd0006e3bed909ee88e50fa6da87e0.jpg"
+              src={`https://people.epfl.ch/private/common/photos/links/${props.user.sciper}.jpg`}
               alt="Shawna Reeves O'Neill Edwards"
             />
             <div className="w-100 mt-2 mt-md-0">
