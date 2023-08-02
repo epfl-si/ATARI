@@ -24,3 +24,17 @@ meteor
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Message for people taking over the project
+
+This section is made for the peoples who are gonna take over the project.
+
+Frontend:
+The front-end needs to have real data into the Active Directory section.
+
+Backend:
+Before this project is production-ready, it needs to be properly connected to the tkgi-satosa cluster instead of keycloak for test and production environment.
+
+Part of the job has already been done here: https://github.com/epfl-si/atari.ops
+
+It also needs to have properly configured role based systeme in order to restrain access to authorized people only. The role gestion code boilerplate has already been made and is working. For more informations, please refer to this commit : https://github.com/epfl-si/ATARI/commit/880f58f5e202249be6b620e326ac100ddfd99f33
