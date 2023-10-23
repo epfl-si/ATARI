@@ -14,16 +14,27 @@ Security: Measures have been implemented to protect the sensitive data of the or
 
 ## Getting Started
 
-If not already done, [install the Meteor command-line tool](https://docs.meteor.com/install.html). (You will only need to do this once.)
+First of all, clone the repository on your own device.
 
-Then, run the development server:
+Then, rename the `settings-mock.json` file in `settings.json` and replace the data with your own data.
 
+If not already done, [install the Meteor command-line tool](https://docs.meteor.com/install.html) and [Docker](https://docker.com) (You will only need to do this once.)
+
+Install the necessary dependancies of this project using Meteor :
 ```bash
 meteor npm i
-meteor
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then, you can run the integrality of the project just by using one make command :
+
+```bash
+make all
+```
+*auto-refreshing the app when you save a file while coding, no need to restart the application.*
+
+To have a deeper understanding about how the project is started, you can have a look at the [Makefile](Makefile).
+
+Wait a bit and open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## Message for people taking over the project
 
