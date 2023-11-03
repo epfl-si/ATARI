@@ -3,11 +3,17 @@ import { OIDCContext, StateEnum, LoginButton, IfOIDCState, LoggedInUser, useOpen
 import Home from './home';
 
 function App() {
-  const loginUrl = "http://localhost:8080/realms/react-starter-kit/";
+  const loginUrl = "https://tkgi-satosa.epfl.ch";
+  // const loginUrl = "http://localhost:8080/realms/react-starter-kit/";
   return (
     <OIDCContext
       authServerUrl={loginUrl}
-      client={{ clientId: "react-starter-kit" }}
+      client={{ 
+        clientId: "ATARI",
+        scope: "openid profile tequila",
+        redirectUri: 'https://itsidevfsd0024.xaas.epfl.ch/'
+      }}
+      // client={{ clientId: "react-starter-kit" }}
       onNewToken={(token) => oidcLogin(token)}
       onLogout={() => Accounts.logout()}
     >
