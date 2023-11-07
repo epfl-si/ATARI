@@ -3,15 +3,19 @@ import { OIDCContext, StateEnum, LoginButton, IfOIDCState, LoggedInUser, useOpen
 import Home from './home';
 
 function App() {
-  const loginUrl = "https://tkgi-satosa.epfl.ch";
-  // const loginUrl = "http://localhost:8080/realms/react-starter-kit/";
+  let loginUrl;
+  if(process.env.ATARI_ENVIRONMENT) {
+    loginUrl = "http://localhost:8080/realms/react-starter-kit/";
+  } else {
+    loginUrl = "https://tkgi-satosa.epfl.ch";
+  }
   return (
     <OIDCContext
       authServerUrl={loginUrl}
       client={{ 
-        clientId: "ATARI",
-        scope: "openid profile tequila",
-        redirectUri: 'https://itsidevfsd0024.xaas.epfl.ch/'
+        clientId: process.env.ATARI_ENVIRONMENT ? "react-starter-kit" : "ATARI",
+        scope: process.env.ATARI_ENVIRONMENT ? "" : "openid profile tequila",
+        redirectUri: process.env.ATARI_ENVIRONMENT ? "" : 'https://itsidevfsd0024.xaas.epfl.ch/'
       }}
       // client={{ clientId: "react-starter-kit" }}
       onNewToken={(token) => oidcLogin(token)}
