@@ -177,7 +177,7 @@ function UserDetails(props:{user:DigestUser}) {
               <CopyButton text={props.user.email} />
             </dd>
 
-            <dt>Nom d'utilisateur utilisateur</dt>
+            <dt>Nom d'utilisateur</dt>
             <dd>
               {props.user.gaspar}
               <CopyButton text={props.user.gaspar} />
