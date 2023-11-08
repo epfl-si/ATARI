@@ -1,0 +1,18 @@
+# This docker-compose file is meant to be used on the test VM of ATARI.
+
+version: '3.8'
+services:
+  meteor:
+    container_name: atari-meteor
+    build:
+      context: .
+    ports:
+      - 3000:3000
+  traefik:
+    container_name: atari-traefik
+    image: traefik:v2.10
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /srv/traefik:/etc/traefik

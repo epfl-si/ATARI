@@ -39,7 +39,7 @@ export default function Home() {
               )}
             </Route>
           </Routes>
-          <div style={{ position: "absolute", bottom: 0, width: "100%" }}>
+          <div>
             <FooterLight />
           </div>
         </BrowserRouter>

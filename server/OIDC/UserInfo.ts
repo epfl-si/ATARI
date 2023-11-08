@@ -9,7 +9,7 @@ async function issuer() {
 	_issuer = await Issuer.discover(
     // TODO: this constant is also in the client; plus it is specific to the test platform.
     // We should 12-factor it (using Meteor.settings).
-		'http://localhost:8080/realms/react-starter-kit/'
+		process.env.ATARI_ENVIRONMENT ? 'http://localhost:8080/realms/react-starter-kit/' : 'https://tkgi-satosa.epfl.ch'
 	);
 
 	return _issuer;
@@ -17,7 +17,7 @@ async function issuer() {
 
 export async function getUserInfos(oidcToken: string) : Promise<UserInfo> {
   const issuer_ = await issuer();
-  const client = new issuer_.Client({ client_id: 'react-starter-kit' });
+  const client = new issuer_.Client({ client_id: process.env.ATARI_ENVIRONMENT ? 'react-starter-kit' : 'ATARI' });
 
     return await client.userinfo(oidcToken);
 }

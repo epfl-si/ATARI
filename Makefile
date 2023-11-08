@@ -8,7 +8,7 @@ all:
 
 # frontend
 meteor:
-	meteor
+	ATARI_ENVIRONMENT=local meteor
 
 # https://gitlab.epfl.ch/si-idevfsd/bastion
 tunnel:
