@@ -94,175 +94,128 @@ function UserDetails(props:{user:DigestUser}) {
     } as UnitInfos
   return (
     <Container>
-      <div className="card" style={{ minWidth: "300px", margin: "auto" }}>
-        <div className="card-body">
-          <div className="my-3 d-md-flex align-items-center">
-            <div className='mr-3'>
-              <div style={{ width: "100px",  height: "100px", position: 'relative', overflow: 'hidden', borderRadius: '100%'}}>
-                <img
-                  className="img-fluid"
-                  src={`https://people.epfl.ch/private/common/photos/links/${props.user.sciper}.jpg`}
-                  onError={({ currentTarget }) => {
-                    currentTarget.onerror = null;
-                    currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTYgMjU2Ij48cGF0aCBkPSJNMTAyLjQzIDEyNC41M1MxMDUuNSAxNTIgMTI4IDE1MnMyNS41Ny0yNy40NiAyNS41Ny0yNy40NiA0Ljg1IDEgNy4xOS05LjI4YzEuNS02LjctLjUtOC40OS0xLjc2LTguNDloLTEuMkMxNjMuNjggNzQuMjggMTQwIDY0IDEyOCA2NHMtMzUuNjggMTAuMjgtMjkuOCA0Mi43Nkg5N2MtMS4yNiAwLTMuMjYgMS43OS0xLjc2IDguNDkgMi4zNCAxMC4zMyA3LjE5IDkuMjggNy4xOSA5LjI4ek0xNzAuMzYgMTY0Yy0yMC4yNi0zLjg5LTI0LjM0LTgtMjUuMS0xMS42NGEyOS4xNSAyOS4xNSAwIDAgMS0zNC41MiAwYy0uNzQgMy42NC00Ljg0IDcuNzItMjUuMSAxMS42NC0yMC44NSA0LTIwLjU3IDIxLjE4LTIwLjU3IDI0aDEyNS44NmMwLTIuODUuMjgtMjAtMjAuNTctMjR6Ii8+PC9zdmc+Cg=='
-                  }}
-                  alt={`${props.user.first_name} ${props.user.last_name} profile picture`}
-                />
-              </div>
-            </div>
-            <div className="w-100 mt-2 mt-md-0">
-              <a
-                className="btn btn-block btn-primary mb-2"
-                href={props.user.email}
-              >
-                {props.user.email}
-              </a>
-              <div style={{ display: "block" }}>
-                <a
-                  style={{ width: "65%" }}
-                  className="btn btn-secondary"
-                  href={props.user.phone_number}
-                >
-                  {props.user.phone_number}
-                </a>
-                <div style={{ width: "35%", display: "inline" }}>
-                  <a
-                    style={{ width: "35%" }}
-                    className="btn btn-secondary"
-                    href="tel:+41791234567"
-                  >
-                    Copy
-                  </a>
-                </div>
-              </div>
-            </div>
+      <div className="d-lg-flex flex-row" style={{ borderRight: '4px solid red', borderTop: '4px solid red', marginBottom: '40px' }}>
+        <div className="card-body d-flex flex-column align-items-center" style={{ minWidth: '40%', borderBottom: '4px solid red', borderLeft: '4px solid red' }}>
+          <div style={{ width: "100px",  height: "100px", position: 'relative', overflow: 'hidden', borderRadius: '100%'}}>
+            <img
+              className="img-fluid"
+              src={`https://people.epfl.ch/private/common/photos/links/${props.user.sciper}.jpg`}
+              onError={({ currentTarget }) => {
+                currentTarget.onerror = null;
+                currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTYgMjU2Ij48cGF0aCBkPSJNMTAyLjQzIDEyNC41M1MxMDUuNSAxNTIgMTI4IDE1MnMyNS41Ny0yNy40NiAyNS41Ny0yNy40NiA0Ljg1IDEgNy4xOS05LjI4YzEuNS02LjctLjUtOC40OS0xLjc2LTguNDloLTEuMkMxNjMuNjggNzQuMjggMTQwIDY0IDEyOCA2NHMtMzUuNjggMTAuMjgtMjkuOCA0Mi43Nkg5N2MtMS4yNiAwLTMuMjYgMS43OS0xLjc2IDguNDkgMi4zNCAxMC4zMyA3LjE5IDkuMjggNy4xOSA5LjI4ek0xNzAuMzYgMTY0Yy0yMC4yNi0zLjg5LTI0LjM0LTgtMjUuMS0xMS42NGEyOS4xNSAyOS4xNSAwIDAgMS0zNC41MiAwYy0uNzQgMy42NC00Ljg0IDcuNzItMjUuMSAxMS42NC0yMC44NSA0LTIwLjU3IDIxLjE4LTIwLjU3IDI0aDEyNS44NmMwLTIuODUuMjgtMjAtMjAuNTctMjR6Ii8+PC9zdmc+Cg=='
+              }}
+              alt={`${props.user.first_name} ${props.user.last_name} profile picture`}
+            />
           </div>
-          <h3>
+          <h3 style={{ textAlign: 'center', marginTop: '15px' }}>
             <a
               className="link-pretty"
               href="#"
             >{`${props.user.first_name} ${props.user.last_name}`}</a>
           </h3>
-          <br />
-          <button
-            className={`collapse-title collapse-title-desktop ${
-              show ? "" : "collapsed"
-            }`}
-            type="button"
-            onClick={() => setShow(!show)}
-            aria-expanded="false"
-            aria-controls="collapse-1"
-          >
-            <h3>Général</h3>
-          </button>
-          <dl className="definition-list definition-list-grid">
-            <dt>Nom complet</dt>
-            <dd>
-              {`${props.user.first_name} ${props.user.last_name}`}
+          <div style={{ textAlign: 'start', display: 'grid' }}>
+            <div>
+              <strong>Sciper</strong> : {props.user.sciper} &nbsp;
               <CopyButton
-                text={`${props.user.first_name} ${props.user.last_name}`}
+                text={props.user.sciper}
               />
-            </dd>
-            <dt>Sciper</dt>
-            {/* <dd>{props.user.sciper}<a style={{marginLeft:'20px', padding:'5px 20px 5px 20px', borderRadius:'5px'}} className="btn btn-secondary">📋</a></dd> */}
-            <dd>
-              {props.user.sciper}
-              <CopyButton text={props.user.sciper} />
-            </dd>
-            <dt>Téléphone</dt>
-            <dd>
-              {props.user.phone_number}
-              <CopyButton text={props.user.phone_number} />
-            </dd>
-
-            <dt>Email</dt>
-            <dd>
-              {props.user.email}
-              <CopyButton text={props.user.email} />
-            </dd>
-
-            <dt>Nom d'utilisateur</dt>
-            <dd>
-              {props.user.gaspar}
-              <CopyButton text={props.user.gaspar} />
-            </dd>
-            <dt>Genre</dt>
-            <dd>{isLoading() ? <WaitForIt /> : user.sexe}</dd>
-            <dt>Sciper géré par</dt>
-            <dd>{user.type}</dd>
-          </dl>
-
-          {user.units ? (
-            user.units.map((x, i) => <div key={i}>{<Unit infos={x} />}</div>)
-          ) : (
-            <></>
-          )}
-          <br />
-
-          <button
-            className="collapse-title collapse-title-desktop collapsed"
-            type="button"
-            data-toggle="collapse"
-            data-target="#collapse-3"
-            aria-expanded="false"
-            aria-controls="collapse-3"
+            </div>
+            <div>
+              <strong>Email</strong> : {props.user.email} &nbsp;
+              <CopyButton
+                text={props.user.email}
+              />
+            </div>
+            <div>
+              <strong>Nom d'utilisateur</strong> : {props.user.gaspar} &nbsp;
+              <CopyButton
+                text={props.user.gaspar}
+              />
+            </div>
+          </div>
+        </div>
+        <div style={{
+          paddingTop: '20px',
+          paddingBottom: '20px',
+          paddingRight: '30px',
+          paddingLeft:'30px',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minWidth: '60%',
+          borderBottom: '4px solid red',
+          borderLeft: '4px solid red'
+        }}>
+          <div style={{ marginRight: '20px', display: 'flex', justifyContent: 'center', gap: '5px', borderRight: '2px solid red', }} className="list-group">
+            <a style={{ width: '100px' }} href="#general">Général</a>
+            <a style={{ width: '100px' }} href="#active-directory">AD</a>
+            <a style={{ width: '100px' }} href="#tools">Tools</a>
+          </div>
+          <div style={{
+            width: '100%',
+            display:'flex',
+            flexDirection: 'column',
+            alignItems:'start',
+            maxHeight: '300px',
+            height: '300px',
+            overflowY: 'scroll',
+            overflowX: 'hidden',
+            position: 'relative'
+            }}
           >
-            <h3>Active Directory</h3>
-          </button>
-
-          <dl className="definition-list definition-list-grid">
-            <dt>Domaine\login</dt>
-            <dd>EPFL\USER</dd>
-            <dt>Status du compte</dt>
-            <dd>{isLoading() ? <WaitForIt /> : user.account?.status}</dd>
-
-            <dt>Expiration du compte</dt>
-            <dd>Peut-être un jour</dd>
-            <dt>Dernière connexion</dt>
-            <dd>10 May 1890 12:55</dd>
-            <dt>Dernier mot de passe erroné</dt>
-            <dd>1 May 1850 13:45</dd>
-          </dl>
-
-          <button
-            className="collapse-title collapse-title-desktop collapsed"
-            type="button"
-            data-toggle="collapse"
-            data-target="#collapse-3"
-            aria-expanded="false"
-            aria-controls="collapse-3"
-          >
-            <h3>Tools</h3>
-          </button>
-
-          <Buttons>
-            <a href={`https://accred.epfl.ch/`}>
-              <Button className="btn btn-secondary">Accred</Button>
-            </a>
-            <a href={`https://windows.epfl.ch/checkad/default.aspx`}>
-              <Button className="btn btn-secondary">Check AD</Button>
-            </a>
-            <a
-              href={`https://idp-exop.epfl.ch/checkldap?username=${props.user.gaspar}&sciper=${props.user.sciper}`}
-            >
-              <Button className="btn btn-secondary">Check LDAP</Button>
-            </a>
-            <a
-              href={`https://it.epfl.ch/backoffice/sys_user.do?sysparm_query=user_name=${props.user.sciper}`}
-            >
-              <Button className="btn btn-secondary">ServiceNow</Button>
-            </a>
-            <a
-              href={`https://search.epfl.ch/?filter=people&q=${props.user.email}`}
-            >
-              <Button className="btn btn-secondary">People</Button>
-            </a>
-            <a
-              href={`https://mailwww.epfl.ch/emailStatus.cgi?query=${props.user.email}`}
-            >
-              <Button className="btn btn-secondary">Check Email</Button>
-            </a>
-          </Buttons>
+            <h3 id="general"><a href="#" className="link-pretty">Général</a></h3>
+            <p>
+              <ul>
+                <li><strong>Genre</strong> : {user.sexe}</li>
+                <li><strong>Sciper géré par</strong> : {user.type}</li>
+                {user.units ? (
+                  user.units.map((x, i) => <li><div key={i}>{<Unit infos={x} />}</div></li>)
+                ) : (
+                  <></>
+                )}
+              </ul>
+            </p>
+            <h3 id="active-directory"><a href="#" className="link-pretty">Active Directory</a></h3>
+            <p>
+              <ul>
+                <li><strong>Domaine\login</strong> : EPFL\user</li>
+                <li><strong>Status du compte</strong> : Compte désactivé</li>
+                <li><strong>Expiration du compte</strong> : Peut-être un jour</li>
+                <li><strong>Dernière connexion</strong> : 10 May 1980 12:55</li>
+                <li><strong>Dernier mot de passe erroné</strong> : 1 May 1850 13:45</li>
+              </ul>
+            </p>
+            <h3 id="tools"><a id="tools-a" href="#" className="link-pretty">Tools</a></h3>
+            <Buttons>
+              <a href={`https://accred.epfl.ch/`}>
+                <Button className="btn btn-secondary">Accred</Button>
+              </a>
+              <a href={`https://windows.epfl.ch/checkad/default.aspx`}>
+                <Button className="btn btn-secondary">Check AD</Button>
+              </a>
+              <a
+                href={`https://idp-exop.epfl.ch/checkldap?username=${props.user.gaspar}&sciper=${props.user.sciper}`}
+              >
+                <Button className="btn btn-secondary">Check LDAP</Button>
+              </a>
+              <a
+                href={`https://it.epfl.ch/backoffice/sys_user.do?sysparm_query=user_name=${props.user.sciper}`}
+              >
+                <Button className="btn btn-secondary">ServiceNow</Button>
+              </a>
+              <a
+                href={`https://search.epfl.ch/?filter=people&q=${props.user.email}`}
+              >
+                <Button className="btn btn-secondary">People</Button>
+              </a>
+              <a
+                href={`https://mailwww.epfl.ch/emailStatus.cgi?query=${props.user.email}`}
+              >
+                <Button className="btn btn-secondary">Check Email</Button>
+              </a>
+            </Buttons>
+          </div>
         </div>
       </div>
     </Container>
