@@ -1,64 +1,80 @@
-const ldap = require('ldapjs');
-const client = ldap.createClient({
-    url: 'ldap://ldap.epfl.ch'
-});
+const { Client } = require('ldapts');
 
-const opts = {
-    filter: `(&(objectclass=EPFLorganizationalPerson)(uniqueIdentifier=*))`,
-    scope: 'sub',
-    timeLimit: 60000
-};
+const url = 'ldap://ldap.epfl.ch';
+const searchDN = 'o=epfl,c=ch';
+
+const client = new Client({
+  url
+});
 
 let usernamesList = []
 let fullFirstNamesList = []
 let mailsList = []
 let fullLastNamesList = []
 let fullDisplayNamesList = []
-    
-client.search('o=epfl,c=ch', opts, (err, res) => {
-    res.on('searchEntry', async (entry) => {
+
+async function generateUsersList() {
+    const { searchEntries, searchReferences } = await client.search(searchDN, {
+        scope: 'sub',
+        filter: '(&(objectclass=EPFLorganizationalPerson)(uniqueIdentifier=*))',
+        timeLimit: 60000
+    });
+
+    searchEntries.map(user => {
         // Find all usernames
-        let username = entry.pojo.attributes.find(obj => obj.type == 'uid').values.filter((value) => !value.includes('@'))
-        if(username.length !== 0) {
-            usernamesList.push(username[0])
+        let username;
+        if(typeof(user['uid']) == 'object') {
+            username = user['uid'].filter((value) => !value.includes('@'))
+            if(username.length !== 0) {
+                usernamesList.push(username[0])
+            }
         }
 
         // Find all full first names (can have multiple first names)
-        let fullFirstName = entry.pojo.attributes.find(obj => obj.type == 'givenName').values[0]
+        let fullFirstName;
+        if(typeof(user['givenName']) == 'object') {
+            fullFirstName = user['givenName'][user['givenName'].length -1]
+        } else {
+            fullFirstName = user['givenName']
+        }
         fullFirstNamesList.push(fullFirstName)
 
         // Find all mails
-        if(entry.pojo.attributes.find(obj => obj.type == 'mail')) {
-            let mail = entry.pojo.attributes.find(obj => obj.type == 'mail').values[0]
+        if(user['mail']) {
+            let mail = user['mail']
             mailsList.push(mail)
         }
 
         // Find all last names (can have multiple last names)
-        let fullLastName = entry.pojo.attributes.find(obj => obj.type == 'sn').values[0]
+        let fullLastName;
+        if(typeof(user['sn']) == 'object') {
+            fullLastName = user['sn'][user['sn'].length -1]
+        } else {
+            fullLastName = user['sn']
+        }
         fullLastNamesList.push(fullLastName)
 
         // Find all full names (full first name + full last name)
-        let fullDisplayName = entry.pojo.attributes.find(obj => obj.type == 'displayName').values[0]
+        let fullDisplayName = user['displayName']
         fullDisplayNamesList.push(fullDisplayName)
     })
 
-    res.on('end', async() => {
-        const longestUsername = usernamesList.reduce(function(a, b) { return a.length > b.length ? a : b })
-        const shortestUsername = usernamesList.reduce(function(a, b) { return a.length <= b.length ? a : b })
+    const longestUsername = usernamesList.reduce(function(a, b) { return a.length > b.length ? a : b })
+    const shortestUsername = usernamesList.reduce(function(a, b) { return a.length <= b.length ? a : b })
 
-        const longestFullFirstName = fullFirstNamesList.reduce(function(a, b) { return a.length > b.length ? a : b })
-        const shortestFullFirstName = fullFirstNamesList.reduce(function(a, b) { return a.length <= b.length ? a : b })
+    const longestFullFirstName = fullFirstNamesList.reduce(function(a, b) { return a.length > b.length ? a : b })
+    const shortestFullFirstName = fullFirstNamesList.reduce(function(a, b) { return a.length <= b.length ? a : b })
 
-        const longestMail = mailsList.reduce(function(a, b) { return a.length > b.length ? a : b })
-        const shortestMail = mailsList.reduce(function(a, b) { return a.length <= b.length ? a : b })
+    const longestMail = mailsList.reduce(function(a, b) { return a.length > b.length ? a : b })
+    const shortestMail = mailsList.reduce(function(a, b) { return a.length <= b.length ? a : b })
 
-        const longestFullLastName = fullLastNamesList.reduce(function(a, b) { return a.length > b.length ? a : b })
-        const shortestFullLastName = fullLastNamesList.reduce(function(a, b) { return a.length <= b.length ? a : b })
+    const longestFullLastName = fullLastNamesList.reduce(function(a, b) { return a.length > b.length ? a : b })
+    const shortestFullLastName = fullLastNamesList.reduce(function(a, b) { return a.length <= b.length ? a : b })
 
-        const longestFullDisplayName = fullDisplayNamesList.reduce(function(a, b) { return a.length > b.length ? a : b })
-        const shortestFullDisplayName = fullDisplayNamesList.reduce(function(a, b) { return a.length <= b.length ? a : b })
+    const longestFullDisplayName = fullDisplayNamesList.reduce(function(a, b) { return a.length > b.length ? a : b })
+    const shortestFullDisplayName = fullDisplayNamesList.reduce(function(a, b) { return a.length <= b.length ? a : b })
 
-        console.log
+    console.log
 (`
 1) Prénom complet le plus long : ${longestFullFirstName}
 2) Prénom complet le plus court : ${shortestFullFirstName}
@@ -72,5 +88,6 @@ client.search('o=epfl,c=ch', opts, (err, res) => {
 9) Username le plus court : ${shortestUsername}
 `)
 
-    })
-});
+}
+
+generateUsersList()
