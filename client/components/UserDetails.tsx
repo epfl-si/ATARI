@@ -195,7 +195,7 @@ function UserDetails(props:{user:DigestUser}) {
                 <Button className="btn btn-secondary">Check AD</Button>
               </a>
               <a
-                href={`https://idp-exop.epfl.ch/checkldap?username=${props.user.gaspar}&sciper=${props.user.sciper}`}
+                href={`/checkLDAP/${props.user.sciper}`}
               >
                 <Button className="btn btn-secondary">Check LDAP</Button>
               </a>
