@@ -11,6 +11,7 @@ import '../imports/types/UserInfo'
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import EPFLHeader from './components/EPFLHeader';
 import PleaseLogin from './components/PleaseLogin';
+import CheckLDAP from './components/CheckLDAP';
 
 export default function Home() {
     const isLogged = useOpenIDConnectContext().state === StateEnum.LoggedIn;
@@ -35,6 +36,13 @@ export default function Home() {
               {isLogged ? (
                 <Route index element={<Search />} />
               ) : (
+                <Route index element={<PleaseLogin />} />
+              )}
+            </Route>
+            <Route path="/checkLDAP/:sciper">
+              {isLogged ? (
+                <Route index element={<CheckLDAP />} />
+                ) : (
                 <Route index element={<PleaseLogin />} />
               )}
             </Route>

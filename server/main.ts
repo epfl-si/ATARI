@@ -3,6 +3,7 @@ import { DigestUser, DigestUsersCollection } from '../imports/api/DigestUser';
 async function insertDigestUser({ first_name, last_name, phone_number, sciper, gaspar, email }: Pick<DigestUser, 'first_name' | 'last_name' | 'phone_number' | 'sciper' | 'gaspar' | 'email'>) {
   await DigestUsersCollection.insertAsync({ first_name, last_name, phone_number, sciper, gaspar, email });
 }
+import '../imports/api/checkLDAPMethod';
 
 Meteor.startup(async () => {
   // if (await DigestUsersCollection.find().countAsync() !== 0) {
