@@ -6,7 +6,7 @@ import {
 
 
 function EPFLHeader() {
-  const isLogged = useOpenIDConnectContext().state === StateEnum.LoggedIn;
+  const isLogged = useOpenIDConnectContext().state === StateEnum.LoggedIn || Meteor.user() !== null
   return (
     <header
       role="banner"

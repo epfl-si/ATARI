@@ -14,7 +14,7 @@ import PleaseLogin from './components/PleaseLogin';
 import CheckLDAP from './components/CheckLDAP';
 
 export default function Home() {
-    const isLogged = useOpenIDConnectContext().state === StateEnum.LoggedIn;
+    const isLogged = useOpenIDConnectContext().state === StateEnum.LoggedIn || Meteor.user() !== null
     const isLoading = useSubscribe('digestusers');
     let digestUsers = useTracker(() => DigestUsersCollection.find().fetch())
     const userInfos = useOpenIDConnectContext().idToken
