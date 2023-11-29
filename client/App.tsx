@@ -12,6 +12,7 @@ function App() {
   return (
     <OIDCContext
       authServerUrl={loginUrl}
+      debug={!!process.env.ATARI_ENVIRONMENT}
       client={{ 
         clientId: process.env.ATARI_ENVIRONMENT ? "react-starter-kit" : "ATARI",
         scope: process.env.ATARI_ENVIRONMENT ? "" : "openid profile tequila",
