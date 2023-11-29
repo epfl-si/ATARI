@@ -6,6 +6,7 @@ import Unit from './Unit'
 import { UnitInfos } from '../../imports/types/UnitInfos'
 import { useSubscribe, useFind } from 'meteor/react-meteor-data';
 import { UserDetails, userDetailsCollection } from '../../imports/api/UserDetails';
+import { Link } from 'react-router-dom'
 const {log} = console;
 
 const Container = styled.div`
@@ -188,32 +189,24 @@ function UserDetails(props:{user:DigestUser}) {
             </p>
             <h3 id="tools"><a id="tools-a" href="#" className="link-pretty">Tools</a></h3>
             <Buttons>
-              <a href={`https://accred.epfl.ch/`}>
+              <Link to={`https://accred.epfl.ch/`}>
                 <Button className="btn btn-secondary">Accred</Button>
-              </a>
-              <a href={`https://windows.epfl.ch/checkad/default.aspx`}>
+              </Link>
+              <Link to={`https://windows.epfl.ch/checkad/default.aspx`}>
                 <Button className="btn btn-secondary">Check AD</Button>
-              </a>
-              <a
-                href={`/checkLDAP/${props.user.sciper}`}
-              >
+              </Link>
+              <Link to={`/checkLDAP/${props.user.sciper}`}>
                 <Button className="btn btn-secondary">Check LDAP</Button>
-              </a>
-              <a
-                href={`https://it.epfl.ch/backoffice/sys_user.do?sysparm_query=user_name=${props.user.sciper}`}
-              >
+              </Link>
+              <Link to={`https://it.epfl.ch/backoffice/sys_user.do?sysparm_query=user_name=${props.user.sciper}`}>
                 <Button className="btn btn-secondary">ServiceNow</Button>
-              </a>
-              <a
-                href={`https://search.epfl.ch/?filter=people&q=${props.user.email}`}
-              >
+              </Link>
+              <Link to={`https://search.epfl.ch/?filter=people&q=${props.user.email}`}>
                 <Button className="btn btn-secondary">People</Button>
-              </a>
-              <a
-                href={`https://mailwww.epfl.ch/emailStatus.cgi?query=${props.user.email}`}
-              >
+              </Link>
+              <Link to={`https://mailwww.epfl.ch/emailStatus.cgi?query=${props.user.email}`}>
                 <Button className="btn btn-secondary">Check Email</Button>
-              </a>
+              </Link>
             </Buttons>
           </div>
         </div>
