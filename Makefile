@@ -12,7 +12,7 @@ meteor:
 
 # https://gitlab.epfl.ch/si-idevfsd/bastion
 tunnel:
-	ssh -N -L3307:test-cadidb.epfl.ch:3306 bastion-test
+	ssh -N -L3307:db-cadi-staging.epfl.ch:3306 bastion-test
 
 users:
 	node special_users.js

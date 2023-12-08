@@ -210,7 +210,7 @@ function UserDetails(props:{user:DigestUser}) {
                   )
                 }
                 {
-                  adData.badPasswordTime && (
+                  !!adData.badPasswordTime && (
                     <li><strong>Dernier mot de passe erroné</strong> : {new Date(((adData.badPasswordTime / 10000000) - 11644473600) * 1000).toLocaleDateString('fr-FR',
                     { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</li>
                   )
