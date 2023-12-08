@@ -79,6 +79,17 @@ function UserDetails(props:{user:DigestUser}) {
     const user = (users[0] || {}) as UserDetails;
     
     const [show, setShow] = React.useState(true)
+    const [adData, setAdData] = React.useState({})
+
+    React.useEffect(() => {
+      Meteor.call('AD.user', props.user.sciper, function(err, res) {
+        if(err) {
+          console.log(err)
+        } else {
+          setAdData(res[0]);
+        }
+      })
+    }, [props.user.sciper])
     const infos = {
       fonction:"Full-Stack Developer", 
       libelle:"Full-Stack Developement", 
@@ -121,12 +132,16 @@ function UserDetails(props:{user:DigestUser}) {
                 text={props.user.sciper}
               />
             </div>
-            <div>
-              <strong>Email</strong> : {props.user.email} &nbsp;
-              <CopyButton
-                text={props.user.email}
-              />
-            </div>
+            {
+              props.user.email && (
+              <div>
+                <strong>Email</strong> : {props.user.email} &nbsp;
+                <CopyButton
+                  text={props.user.email}
+                />
+              </div>
+              )
+            }
             <div>
               <strong>Nom d'utilisateur</strong> : {props.user.gaspar} &nbsp;
               <CopyButton
@@ -180,11 +195,31 @@ function UserDetails(props:{user:DigestUser}) {
             <h3 id="active-directory"><a href="#" className="link-pretty">Active Directory</a></h3>
             <p>
               <ul>
-                <li><strong>Domaine\login</strong> : EPFL\user</li>
-                <li><strong>Status du compte</strong> : Compte désactivé</li>
-                <li><strong>Expiration du compte</strong> : Peut-être un jour</li>
-                <li><strong>Dernière connexion</strong> : 10 May 1980 12:55</li>
-                <li><strong>Dernier mot de passe erroné</strong> : 1 May 1850 13:45</li>
+                <li><strong>Domaine\login</strong> : {`${adData.userPrincipalName?.split('@')[1].split('.')[0].toUpperCase()}\\${adData.sAMAccountName}`}</li>
+                <li><strong>Status du compte</strong> : {
+                  adData.userAccountControl
+                }</li>
+                <li><strong>Expiration du compte</strong> : {
+                  adData.accountExpires == 9223372036854775807 ? 'Jamais' : new Date(((adData.accountExpires / 10000000) - 11644473600) * 1000).toLocaleDateString('en-US')
+                }
+                </li>
+                {
+                  adData.lastLogon && (
+                    <li><strong>Dernière connexion</strong> : {new Date(((adData.lastLogon / 10000000) - 11644473600) * 1000).toLocaleDateString('fr-FR', 
+                    { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</li>
+                  )
+                }
+                {
+                  adData.badPasswordTime && (
+                    <li><strong>Dernier mot de passe erroné</strong> : {new Date(((adData.badPasswordTime / 10000000) - 11644473600) * 1000).toLocaleDateString('fr-FR',
+                    { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</li>
+                  )
+                }
+                {
+                  adData.badPwdCount !== undefined && adData.badPwdCount !== 0 && (
+                    <li><strong>Nombre d'essais de mot de passe erronnés</strong> : {adData.badPwdCount}</li>
+                  )
+                }
               </ul>
             </p>
             <h3 id="tools"><a id="tools-a" href="#" className="link-pretty">Tools</a></h3>
