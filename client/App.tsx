@@ -16,7 +16,7 @@ function App() {
       client={{ 
         clientId: process.env.ATARI_ENVIRONMENT ? "react-starter-kit" : "ATARI",
         scope: process.env.ATARI_ENVIRONMENT ? "" : "openid profile tequila",
-        redirectUri: process.env.ATARI_ENVIRONMENT ? "" : 'https://itsidevfsd0024.xaas.epfl.ch/'
+        redirectUri: process.env.ATARI_ENVIRONMENT ? "" : 'https://atari-test.epfl.ch/'
       }}
       // client={{ clientId: "react-starter-kit" }}
       onNewToken={(token) => oidcLogin(token)}
