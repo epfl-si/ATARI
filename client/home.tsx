@@ -39,6 +39,13 @@ export default function Home() {
                 <Route index element={<PleaseLogin />} />
               )}
             </Route>
+            <Route path="/:sciper">
+              {isLogged ? (
+                <Route index element={<Search />} />
+              ) : (
+                <Route index element={<PleaseLogin />} />
+              )}
+            </Route>
             <Route path="/checkLDAP/:sciper">
               {isLogged ? (
                 <Route index element={<CheckLDAP />} />

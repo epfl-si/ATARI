@@ -4,12 +4,14 @@ import UserDetails from './UserDetails';
 import { DigestUser, DigestUsersCollection } from '../../imports/api/DigestUser';
 import { useSubscribe, useFind, useTracker } from 'meteor/react-meteor-data';
 import LoadingSpinner from './LoadingSpinner'
+import { useParams } from 'react-router-dom';
 
 function Search() {
   function consoleLog(user) {
     setSearchUser(user as DigestUser)
   }
   const isLoading = useSubscribe('digestusers');
+  const { sciper } = useParams();
   const [searchUser, setSearchUser] = React.useState<DigestUser | undefined>(undefined)
   let digestUsers = useTracker(() => DigestUsersCollection.find().fetch())
   if (digestUsers[0]) delete digestUsers[0]._id
@@ -25,9 +27,9 @@ function Search() {
             marginBottom:'80px',
             height:'56px',
           }}>
-          {digestUsers[0] !== undefined ? <Virtualize OPTIONS={digestUsersArray as DigestUser[]} handleOneLastResult={(e, user)=>consoleLog(e)}/> : <LoadingSpinner/>}
+          {digestUsers[0] !== undefined ? <Virtualize OPTIONS={digestUsersArray as DigestUser[]} handleOneLastResult={(e, user)=>consoleLog(e)} searchData={searchUser || digestUsersArray?.filter(obj => Object.values(obj).indexOf(sciper) > -1 )[0]}/> : <LoadingSpinner/>}
         </div>
-        {searchUser === undefined ? <></> : <UserDetails user={searchUser}/>}
+        {searchUser === undefined && digestUsersArray?.filter(obj => Object.values(obj).indexOf(sciper) > -1 )[0] == undefined ? <></> : <UserDetails user={searchUser || digestUsersArray?.filter(obj => Object.values(obj).indexOf(sciper) > -1 )[0]}/>}
       </div>
     </>
   )
