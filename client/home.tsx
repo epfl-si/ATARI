@@ -27,7 +27,7 @@ export default function Home() {
     window.onbeforeunload = (e)=>onReload(e, isLogged)
   
     return (
-      <div style={{ position: "relative", minHeight: "100vh" }}>
+      <div className="d-flex flex-column min-vh-100">
         <BrowserRouter>
           <EPFLHeader />
           <WelcomeUser />
@@ -54,7 +54,7 @@ export default function Home() {
               )}
             </Route>
           </Routes>
-          <div>
+          <div className="pt-5 mt-auto">
             <FooterLight />
           </div>
         </BrowserRouter>
