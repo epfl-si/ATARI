@@ -9,7 +9,7 @@ import { VariableSizeList, ListChildComponentProps } from 'react-window';
 import Typography from '@mui/material/Typography';
 import { DigestUser } from '../../imports/api/DigestUser';
 
-export default function Virtualize(props:{OPTIONS: DigestUser[], handleOneLastResult: Function}) {
+export default function Virtualize(props:{OPTIONS: DigestUser[], handleOneLastResult: Function, searchData: DigestUser}) {
 
 
 const LISTBOX_PADDING = 8; // px
@@ -81,6 +81,7 @@ const ListboxComponent = React.forwardRef<
       return 8 * itemSize;
     }
       if(itemData.length === 1) {
+        window.history.pushState({ id:"100" }, "Page", `/${itemData[0][1].sciper}`)
         stateProps.handleOneLastResult(itemData[0][1] as DigestUser)
       }
     return itemData.map(getChildSize).reduce((a, b) => a + b, 0);
@@ -108,8 +109,7 @@ const ListboxComponent = React.forwardRef<
     </div>
   );
 });
-
-  const [value, setValue] = React.useState<DigestUser|undefined>(undefined)
+  const [value, setValue] = React.useState<DigestUser|undefined>(props.searchData)
   const [stateProps, setStateProps] = React.useState(props)
   const [OPTIONS, setOPTIONS] = React.useState(stateProps.OPTIONS)
   const filterOptions = (options, inputValue ) => {
