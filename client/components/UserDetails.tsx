@@ -106,8 +106,8 @@ function UserDetails(props:{user:DigestUser}) {
     } as UnitInfos
   return (
     <Container>
-      <div className="d-lg-flex flex-row" style={{ borderRight: '4px solid red', borderTop: '4px solid red', marginBottom: '40px' }}>
-        <div className="card-body d-flex flex-column align-items-center" style={{ minWidth: '40%', borderBottom: '4px solid red', borderLeft: '4px solid red' }}>
+      <div className="d-lg-flex flex-row" style={{ marginBottom: '40px' }}>
+        <div className="card-body d-flex flex-column align-items-center" style={{ minWidth: '40%', }}>
           <div style={{ width: "100px",  height: "100px", position: 'relative', overflow: 'hidden', borderRadius: '100%'}}>
             <img
               className="img-fluid"
@@ -160,21 +160,15 @@ function UserDetails(props:{user:DigestUser}) {
           justifyContent: 'center',
           alignItems: 'center',
           minWidth: '60%',
-          borderBottom: '4px solid red',
-          borderLeft: '4px solid red'
+          border: '2px solid red',
         }}>
-          <div style={{ marginRight: '20px', display: 'flex', justifyContent: 'center', gap: '5px', borderRight: '2px solid red', }} className="list-group">
-            <a style={{ width: '100px' }} href="#general">Général</a>
-            <a style={{ width: '100px' }} href="#active-directory">AD</a>
-            <a style={{ width: '100px' }} href="#tools">Tools</a>
-          </div>
           <div style={{
             width: '100%',
             display:'flex',
             flexDirection: 'column',
             alignItems:'start',
-            maxHeight: '300px',
-            height: '300px',
+            maxHeight: '600px',
+            height: '600px',
             overflowY: 'scroll',
             overflowX: 'hidden',
             position: 'relative'
