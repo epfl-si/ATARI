@@ -218,22 +218,22 @@ function UserDetails(props:{user:DigestUser}) {
             </p>
             <h3 id="tools"><a id="tools-a" href="#" className="link-pretty">Tools</a></h3>
             <Buttons>
-              <Link to={`https://accred.epfl.ch/`}>
+              <Link to={`https://accred.epfl.ch/`} target='_blank'>
                 <Button className="btn btn-secondary">Accred</Button>
               </Link>
-              <Link to={`https://windows.epfl.ch/checkad/default.aspx`}>
+              <Link to={`https://windows.epfl.ch/checkad/default.aspx`} target='_blank'>
                 <Button className="btn btn-secondary">Check AD</Button>
               </Link>
-              <Link to={`/checkLDAP/${props.user.sciper}`}>
+              <Link to={`/checkLDAP/${props.user.sciper}`} target='_blank'>
                 <Button className="btn btn-secondary">Check LDAP</Button>
               </Link>
-              <Link to={`https://it.epfl.ch/backoffice/sys_user.do?sysparm_query=user_name=${props.user.sciper}`}>
+              <Link to={`https://it.epfl.ch/backoffice/sys_user.do?sysparm_query=user_name=${props.user.sciper}`} target='_blank'>
                 <Button className="btn btn-secondary">ServiceNow</Button>
               </Link>
-              <Link to={`https://search.epfl.ch/?filter=people&q=${props.user.email}`}>
+              <Link to={`https://search.epfl.ch/?filter=people&q=${props.user.email}`} target='_blank'>
                 <Button className="btn btn-secondary">People</Button>
               </Link>
-              <Link to={`https://mailwww.epfl.ch/emailStatus.cgi?query=${props.user.email}`}>
+              <Link to={`https://mailwww.epfl.ch/emailStatus.cgi?query=${props.user.email}`} target='_blank'>
                 <Button className="btn btn-secondary">Check Email</Button>
               </Link>
             </Buttons>
