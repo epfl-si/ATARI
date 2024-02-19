@@ -8,10 +8,10 @@ async function insertDigestUser({ first_name, last_name, phone_number, sciper, g
 // Todo: cache these informations in order to not surcharge the db
 export async function getDigestList(added){
     return await cadiSqlQuery({
-        sql: `SELECT DISTINCT p.nom as last_name, p.prenom as first_name, p.sciper, p.email, p.username as gaspar, b.telephone1 as phone_number 
-                FROM Personnes p
-                LEFT JOIN Bottin b ON p.sciper = b.sciper
-                WHERE p.username IS NOT NULL`,
+        sql: `SELECT DISTINCT p.nom as last_name, p.prenom as first_name, p.sciper, p.email, p.username as gaspar,
+                (SELECT GROUP_CONCAT(b.telephone1 SEPARATOR ', ') FROM Bottin b WHERE p.sciper = b.sciper) AS phone_number
+            FROM Personnes p
+            WHERE p.username IS NOT NULL;`,
         timeout: 50000,
     }, (error, results, fields) => { 
         if(results[0]){
