@@ -4,6 +4,7 @@ async function insertDigestUser({ first_name, last_name, phone_number, sciper, g
   await DigestUsersCollection.insertAsync({ first_name, last_name, phone_number, sciper, gaspar, email });
 }
 import '../imports/api/checkLDAPMethod';
+import '../imports/api/inventoryMethod';
 import '../imports/api/ADMethod';
 
 Meteor.startup(async () => {

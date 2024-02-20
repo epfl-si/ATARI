@@ -12,6 +12,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import EPFLHeader from './components/EPFLHeader';
 import PleaseLogin from './components/PleaseLogin';
 import CheckLDAP from './components/CheckLDAP';
+import CheckInv from './components/CheckInv';
 
 export default function Home() {
     const isLogged = useOpenIDConnectContext().state === StateEnum.LoggedIn || Meteor.user() !== null
@@ -49,6 +50,13 @@ export default function Home() {
             <Route path="/checkLDAP/:sciper">
               {isLogged ? (
                 <Route index element={<CheckLDAP />} />
+                ) : (
+                <Route index element={<PleaseLogin />} />
+              )}
+            </Route>
+            <Route path="/inv">
+              {isLogged ? (
+                <Route index element={<CheckInv />} />
                 ) : (
                 <Route index element={<PleaseLogin />} />
               )}
