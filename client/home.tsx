@@ -26,48 +26,66 @@ export default function Home() {
           if(isLogged) return e.preventDefault("");
     }
     window.onbeforeunload = (e)=>onReload(e, isLogged)
-  
-    return (
-      <div className="d-flex flex-column min-vh-100">
-        <BrowserRouter>
+
+    const urlParams = new URLSearchParams(window.location.search);
+    if(!isLogged && urlParams.get('error_description')) {
+      return (
+        <div className="d-flex flex-column min-vh-100">
           <EPFLHeader />
-          <WelcomeUser />
-          <Routes>
-            <Route path="/">
-              {isLogged ? (
-                <Route index element={<Search />} />
-              ) : (
-                <Route index element={<PleaseLogin />} />
-              )}
-            </Route>
-            <Route path="/:sciper">
-              {isLogged ? (
-                <Route index element={<Search />} />
-              ) : (
-                <Route index element={<PleaseLogin />} />
-              )}
-            </Route>
-            <Route path="/checkLDAP/:sciper">
-              {isLogged ? (
-                <Route index element={<CheckLDAP />} />
-                ) : (
-                <Route index element={<PleaseLogin />} />
-              )}
-            </Route>
-            <Route path="/inv">
-              {isLogged ? (
-                <Route index element={<CheckInv />} />
-                ) : (
-                <Route index element={<PleaseLogin />} />
-              )}
-            </Route>
-          </Routes>
+          <div>
+            You do not have access to this web application.
+            If you think that this is a mistake and that you should have access to it,
+            please write to <a style={{ display: 'inline-block' }} href="mailto:1234@epfl.ch">1234@epfl.ch</a>
+          </div>
           <div className="pt-5 mt-auto">
             <FooterLight />
           </div>
-        </BrowserRouter>
-      </div>
-    );
+        </div>
+      )
+    } else {
+      return (
+        <div className="d-flex flex-column min-vh-100">
+          <BrowserRouter>
+            <EPFLHeader />
+            <WelcomeUser />
+            <Routes>
+              <Route path="/">
+                {isLogged ? (
+                  <Route index element={<Search />} />
+                ) : (
+                  <Route index element={<PleaseLogin />} />
+                )}
+              </Route>
+              <Route path="/:sciper">
+                {isLogged ? (
+                  <Route index element={<Search />} />
+                ) : (
+                  <Route index element={<PleaseLogin />} />
+                )}
+              </Route>
+              <Route path="/checkLDAP/:sciper">
+                {isLogged ? (
+                  <Route index element={<CheckLDAP />} />
+                  ) : (
+                  <Route index element={<PleaseLogin />} />
+                )}
+              </Route>
+              <Route path="/inv">
+                {isLogged ? (
+                  <Route index element={<CheckInv />} />
+                  ) : (
+                  <Route index element={<PleaseLogin />} />
+                )}
+              </Route>
+            </Routes>
+            <div className="pt-5 mt-auto">
+              <FooterLight />
+            </div>
+          </BrowserRouter>
+        </div>
+      );
+    }
+  
 }
 
 const WelcomeUser: React.FC = () => {
