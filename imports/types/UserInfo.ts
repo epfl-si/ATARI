@@ -19,7 +19,7 @@ declare module "meteor/meteor" {
 			given_name: String
 			family_name : String
                   groups: String[]   // Server only
-                  has_read_role: boolean  // Client only
+                  has_access_right: boolean  // Client only
 		}
 	}
 }
