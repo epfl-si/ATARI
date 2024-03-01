@@ -17,9 +17,9 @@ declare module "meteor/meteor" {
 	module Meteor {
 		interface User {
 			given_name: String
-			family_name : String
-                  groups: String[]   // Server only
-                  has_read_role: boolean  // Client only
+			family_name: String
+            groups: String[]   // Server only
+            has_access_right: boolean  // Client only
 		}
 	}
 }

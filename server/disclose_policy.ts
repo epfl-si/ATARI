@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor'
-import { hasReadRole } from '../imports/api/policy'
+import { canAccessApp } from '../imports/api/policy'
 import '../imports/types/UserInfo'
 
 // Publish the new fields that `checkTokenAndUpsertUser` added to the database.
@@ -9,6 +9,6 @@ Meteor.publish(null, function () {
     if (! this.userId) return
   const [me] = Meteor.users.find({_id: this.userId}).fetch()
   this.added('users', me._id, {given_name: me.given_name, family_name: me.family_name,
-                               has_read_role: hasReadRole(me)
+                               has_access_right: canAccessApp(me)
                               });
   })

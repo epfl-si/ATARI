@@ -1,11 +1,11 @@
 import { Meteor } from 'meteor/meteor'
-import { readOnlyGroup } from '../12factor'
+import { canAccessGroup } from '../12factor'
 
-export function hasReadRole(user : Meteor.User) {
+export function canAccessApp(user : Meteor.User) {
   if (Meteor.isServer) {
-    return user.groups.some((g) => g === readOnlyGroup())
+    return user.groups.some((g) => g === canAccessGroup())
   } else { // On the client
     // Published by ../server/policy.ts
-    return user.has_read_role
+    return user.has_access_right
   }
 }
