@@ -9,5 +9,9 @@
     "ad": {
         "username": "active_directory_username",
         "password": "active_directory_password"
+    },
+    "client": {
+        "clientId": "your_client_id",
+        "redirectUri": "https://your_redirect_uri.com"
     }
 }

@@ -1,6 +1,7 @@
 import React from 'react'
 import { OIDCContext, StateEnum, LoginButton, IfOIDCState, LoggedInUser, useOpenIDConnectContext } from '@epfl-si/react-appauth'
 import Home from './home';
+import * as settings from '../settings.json';
 
 function App() {
   let loginUrl;
@@ -14,9 +15,9 @@ function App() {
       authServerUrl={loginUrl}
       debug={!!process.env.ATARI_ENVIRONMENT}
       client={{ 
-        clientId: process.env.ATARI_ENVIRONMENT ? "react-starter-kit" : "ATARI",
+        clientId: process.env.ATARI_ENVIRONMENT ? "react-starter-kit" : settings.client.clientId,
         scope: process.env.ATARI_ENVIRONMENT ? "" : "openid profile tequila",
-        redirectUri: process.env.ATARI_ENVIRONMENT ? "" : 'https://atari-test.epfl.ch/'
+        redirectUri: process.env.ATARI_ENVIRONMENT ? "" : settings.client.redirectUri
       }}
       // client={{ clientId: "react-starter-kit" }}
       onNewToken={(token) => oidcLogin(token)}
