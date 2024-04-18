@@ -1,6 +1,6 @@
-# This docker-compose file is meant to be used on the test VM of ATARI.
+# This docker-compose file is meant to be used on atari.epfl.ch (prod)
+# or on atari-test.epfl.ch (staging)
 
-version: '3.8'
 services:
   meteor:
     container_name: atari-meteor
@@ -8,6 +8,10 @@ services:
       context: .
     ports:
       - 3000:3000
+    environment:
+      - ATARI_ENVIRONMENT=${ATARI_ENVIRONMENT:-prod}
+      - ATARI_DEBUG=${ATARI_DEBUG:-0}
+      - ATARI_LOGIN_URL=${ATARI_LOGIN_URL:-https://satosaaas.epfl.ch}
   traefik:
     container_name: atari-traefik
     image: traefik:v2.10
