@@ -14,11 +14,14 @@ export async function getDigestList(added){
             WHERE p.username IS NOT NULL;`,
         timeout: 50000,
     }, (error, results, fields) => { 
-        if(results[0]){
-            let start = Date.now();
-            added("digestusers", "usersKey", results)
-            let timeTaken = Date.now() - start;
+        if (results) {
+            if (results[0]){
+                let start = Date.now();
+                added("digestusers", "usersKey", results)
+                let timeTaken = Date.now() - start;
+            }
+        } else {
+            console.error("No results in digestusers")
         }
-        
     })
 }

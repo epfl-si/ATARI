@@ -23,11 +23,20 @@ export default [
             timeout: 5000,
             values: [sciper]
         }, (error, results, fields) => {
-            const statuts = ['Personnel', 'Hôte', 'Hors EPFL', 'Inconnu', 'Etudiant', 'Alumni', 'Retraité']
-            if (results[0]?.statut){
-                results.map((result) => result.statut = statuts[result.statut - 1])
+            if (results) {
+                if (results[0]) {
+                    const statuts = ['Personnel', 'Hôte', 'Hors EPFL', 'Inconnu', 'Etudiant', 'Alumni', 'Retraité']
+                    // TypeError: Cannot read property '0' of undefined
+                    if (results[0]?.statut){
+                        results.map((result) => result.statut = statuts[result.statut - 1])
+                    }
+                    added("userDetails", sciper , { units: [...results] });
+                } else {
+                    console.error("No results[0] found...")
+                }
+            } else {
+                console.error("No results found...")
             }
-            added("userDetails", sciper , { units: [...results] });
         })
     },
 ]
