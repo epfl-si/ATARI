@@ -6,6 +6,8 @@ import * as settings from '../settings.json';
 function App() {
   let loginUrl;
   loginUrl = process.env.ATARI_LOGIN_URL ? process.env.ATARI_LOGIN_URL : 'https://satosaaas.epfl.ch'
+  console.log("Env", process.env.ATARI_ENVIRONMENT)
+  console.log("Auth", loginUrl)
 
   return (
     <OIDCContext
