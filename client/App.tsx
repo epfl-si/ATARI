@@ -4,21 +4,15 @@ import Home from './home';
 import * as settings from '../settings.json';
 
 function App() {
-  let loginUrl;
-  loginUrl = process.env.ATARI_LOGIN_URL ? process.env.ATARI_LOGIN_URL : 'https://satosaaas.epfl.ch'
-  console.log("Env", process.env.ATARI_ENVIRONMENT)
-  console.log("Auth", loginUrl)
-
   return (
     <OIDCContext
-      authServerUrl={loginUrl}
+      authServerUrl={settings.client.loginUri ? settings.client.loginUri : 'https://satosaaas.epfl.ch'}
       debug={!!process.env.ATARI_DEBUG}
       client={{ 
-        clientId: process.env.ATARI_ENVIRONMENT == 'local' ? "react-starter-kit" : settings.client.clientId,
+        clientId: settings.client.clientId ? settings.client.clientId : 'ATARI', // use "react-starter-kit" for local development with keycloak
         scope: "openid profile tequila",
-        redirectUri: process.env.ATARI_ENVIRONMENT == 'local' ? "" : settings.client.redirectUri
+        redirectUri: settings.client.redirectUri ? settings.client.redirectUri : 'https://atari.epfl.ch'
       }}
-      // client={{ clientId: "react-starter-kit" }}
       onNewToken={(token) => oidcLogin(token)}
       onLogout={() => Accounts.logout()}
     >

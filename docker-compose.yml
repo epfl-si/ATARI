@@ -11,7 +11,6 @@ services:
     environment:
       - ATARI_ENVIRONMENT=${ATARI_ENVIRONMENT:-prod}
       - ATARI_DEBUG=${ATARI_DEBUG:-0}
-      - ATARI_LOGIN_URL=${ATARI_LOGIN_URL:-https://satosaaas.epfl.ch}
   traefik:
     container_name: atari-traefik
     image: traefik:v2.10
