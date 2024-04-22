@@ -26,6 +26,16 @@ function EPFLHeader() {
           <a href="/">ATARI</a>
         </p>
 
+        <nav className="nav-lang-short">
+          <ul>
+            <li>
+              <a href="/inv" target="_blank">
+                Inventaire
+              </a>
+            </li>
+          </ul>
+        </nav>
+
         <form action="#" className="d-xl-none">
           <a
             id="search-mobile-toggle"
