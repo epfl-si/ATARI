@@ -148,6 +148,17 @@ function UserDetails(props:{user:DigestUser}) {
                 text={props.user.gaspar}
               />
             </div>
+            <div style={{ paddingTop: '15px' }}>
+              <a href={`https://epfl.service-now.com/incident.do?sys_id=-1&sysparm_stack=incident_list.do&sysparm_query=short_description=Ticket pour ${props.user.first_name} ${props.user.last_name}^
+                      caller_id=javascript:var userRecord = new GlideRecord('sys_user'); userRecord.addQuery('user_name', '${props.user.sciper}'); userRecord.query(); if(userRecord.next()) { userRecord.sys_id }^
+                      category=incident^assigned_to=javascript:gs.getUserID()^
+                      assignment_group=javascript:var assignmentGroup = new GlideRecord('sys_user_group'); assignmentGroup.addQuery('name', 'SI_SERVICEDESK'); assignmentGroup.query(); if(assignmentGroup.next()) { assignmentGroup.sys_id }^
+                      business_service=javascript:var businessService = new GlideRecord('cmdb_ci_service'); businessService.addQuery('name', 'Service Desk'); businessService.query(); if(businessService.next()) { businessService.getValue('sys_id') }^
+                      description=%0A%0ATicket ouvert pour ${props.user.first_name} ${props.user.last_name} le ${new Date().toLocaleString('en-GB')} via ATARI`}
+                  target="_blank">
+                        <Button className="btn btn-primary">Créer un ticket pour cet utilisateur</Button>
+              </a>
+            </div>
           </div>
         </div>
         <div style={{
