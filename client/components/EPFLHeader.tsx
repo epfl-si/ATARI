@@ -23,7 +23,7 @@ function EPFLHeader() {
         </a>
 
         <p className="site-title">
-          <a href="#">ATARI</a>
+          <a href="/">ATARI</a>
         </p>
 
         <form action="#" className="d-xl-none">
