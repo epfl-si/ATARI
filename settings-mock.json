@@ -13,6 +13,7 @@
     "client": {
         "clientId": "your_client_id",
         "redirectUri": "https://your_redirect_uri.com",
-        "loginUri": "https://your_satosa_or_keycloak_uri.com"
+        "loginUri": "https://your_satosa_or_keycloak_uri.com",
+        "scope": "your_scope"
     }
 }

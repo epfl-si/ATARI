@@ -10,7 +10,7 @@ function App() {
       debug={!!process.env.ATARI_DEBUG}
       client={{ 
         clientId: settings.client.clientId ? settings.client.clientId : 'ATARI', // use "react-starter-kit" for local development with keycloak
-        scope: "openid profile tequila",
+        scope: settings.client.scope !== undefined ? settings.client.scope : 'openid profile tequila', // use an empty string in settings.json for local development with keycloak
         redirectUri: settings.client.redirectUri ? settings.client.redirectUri : 'https://atari.epfl.ch'
       }}
       onNewToken={(token) => oidcLogin(token)}
