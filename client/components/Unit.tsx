@@ -8,7 +8,7 @@ function Unit(props:{show?: boolean, infos: UnitInfos}) {
             <br/></>
   })
   let hierarchy:string[] = props.infos?.hierarchie ? props.infos?.hierarchie?.split(' ') : [''];
-  const hierarchySchema = hierarchy.map((x,i,arr)=> <> <a href="#">{x}</a>{i !== arr.length-1 ? <> &rsaquo; </> : ''}</>)
+  const hierarchySchema = hierarchy.map((x,i,arr)=> <> <a href={`http://search.epfl.ch/ubrowse.action?acro=${x}`} target='_blank'>{x}</a>{i !== arr.length-1 ? <> &rsaquo; </> : ''}</>)
   
   return (
     <>
