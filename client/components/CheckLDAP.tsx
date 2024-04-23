@@ -30,7 +30,7 @@ function CheckLDAP() {
 
   useEffect(() => {
     if(user.uid !== undefined) {
-      Meteor.call('homedir.user', user.uid[0], function(err, res) {
+      Meteor.call('homedir.user', user.homeDirectory.split('/')[2], function(err, res) {
         if(err) {
           console.log(err)
         } else {
