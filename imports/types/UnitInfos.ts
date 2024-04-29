@@ -12,4 +12,5 @@ export interface UnitInfos {
   unit: string,
   statut: string,
   hierarchie: string,
+  adminsIT: Array<any>,
 }

@@ -2,7 +2,8 @@ import React from 'react'
 import { UnitInfos } from '../../imports/types/UnitInfos'
 
 function Unit(props:{show?: boolean, infos: UnitInfos}) {
-  const [show, setShow] = React.useState(!!props.show)
+  const [show, setShow] = React.useState(false)
+  const [showAdminsIT, setShowAdminsIT] = React.useState(props.infos.adminsIT.length > 10 ? false : true)
   var phone_numbers = props.infos.phone_numbers?.map(x=> {
     return <><a href={"999"} className="btn btn-sm btn-secondary mb-2 align-baseline">{"999"}</a>
             <br/></>
@@ -19,7 +20,7 @@ function Unit(props:{show?: boolean, infos: UnitInfos}) {
       <div>
           <div className={`collapse ${show ? 'show' : ''} collapse-item collapse-item-desktop`} id="collapse-1">
             <div className="row pt-2 pb-2">
-              <div className="col-md-5">
+              <div className="col-md-4">
                 <p itemProp="location" itemScope itemType="http://schema.org/Place">
                   <strong itemProp="name">{props.infos.adresse_1}</strong><br />
                   <span itemProp="address">
@@ -29,7 +30,7 @@ function Unit(props:{show?: boolean, infos: UnitInfos}) {
                   </span>
                 </p>
               </div>
-              <div className="col-md-7">
+              <div className="col-md-8">
                 <p>
                   {phone_numbers}
                   {props.infos.office !== undefined ? <small>Bureau: <a href="#">INN 018</a><br/></small> : ''}
@@ -40,6 +41,20 @@ function Unit(props:{show?: boolean, infos: UnitInfos}) {
                   <small>Statut: <span>{props.infos.statut}</span></small>
                   <br/>
                 </p>
+                <button style={{ paddingTop: 0, paddingBottom: 0, border: 0 }}className={`collapse-title collapse-title-desktop ${showAdminsIT ? '' : 'collapsed'}`}
+                  type="button"
+                  onClick={()=> setShowAdminsIT(!showAdminsIT)}
+                  aria-expanded="false"
+                  aria-controls="collapse-adminsIT">
+                  <strong>Admins IT</strong>
+                </button>
+                <div className={`collapse ${showAdminsIT ? 'show' : ''} collapse-item collapse-item-desktop`} id="collapse-adminsIT">
+                  <ol>
+                    {
+                      props.infos.adminsIT.map(admin => <li><a href={`mailto:${admin.email}`}>{admin.email}</a> ({admin.sigle})</li>)
+                    }
+                  </ol>
+                </div>
               </div>
             </div>
           </div>
