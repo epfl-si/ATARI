@@ -160,6 +160,7 @@ const ListboxComponent = React.forwardRef<
       onChange={(e, onChangeValue) => {
         if (onChangeValue !== null) {
           setValue(onChangeValue as DigestUser);
+          window.history.pushState({ id:"100" }, "Page", `/${onChangeValue.sciper}`)
           stateProps.handleOneLastResult(onChangeValue as DigestUser);
         }
       }}
