@@ -19,6 +19,8 @@ export default function Home() {
     const isLoading = useSubscribe('digestusers');
     let digestUsers = useTracker(() => DigestUsersCollection.find().fetch())
     const userInfos = useOpenIDConnectContext().idToken
+    const [alert, setAlert] = React.useState(false)
+    const [alertInfos, setAlertInfos] = React.useState({reason: '', from: '', to: ''})
     if (!isLogged) {
       Meteor.logout()
     }
@@ -26,6 +28,18 @@ export default function Home() {
           if(isLogged) return e.preventDefault("");
     }
     window.onbeforeunload = (e)=>onReload(e, isLogged)
+
+    React.useEffect(() => {
+      setInterval(() => {
+        const maintenance = require('../maintenance.json')
+        if(!maintenance || !maintenance.reason) {
+          setAlert(false)
+        } else {
+          setAlert(true)
+          setAlertInfos({reason: maintenance.reason || '', from: maintenance.from || '', to: maintenance.to || ''})
+        }
+      }, 5000)
+    }, [])
 
     const urlParams = new URLSearchParams(window.location.search);
     if(!isLogged && urlParams.get('error_description')) {
@@ -47,6 +61,9 @@ export default function Home() {
         <div className="d-flex flex-column min-vh-100">
           <BrowserRouter>
             <EPFLHeader />
+            <div style={{ width: '50%', margin: 'auto', marginTop: '50px', display: alert ? '' : 'none', marginBottom: '1px' }} className="alert alert-info alert-dismissible fade show" role="alert">
+              <strong>Annonce :</strong> Une maintenance est prévue de {alertInfos.from} à {alertInfos.to}. <strong>Raison :</strong> {alertInfos.reason}
+            </div>
             <WelcomeUser />
             <Routes>
               <Route path="/">
