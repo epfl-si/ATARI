@@ -30,15 +30,13 @@ export default function Home() {
     window.onbeforeunload = (e)=>onReload(e, isLogged)
 
     React.useEffect(() => {
-      setInterval(() => {
-        const maintenance = require('../maintenance.json')
-        if(!maintenance || !maintenance.reason) {
-          setAlert(false)
-        } else {
-          setAlert(true)
-          setAlertInfos({reason: maintenance.reason || '', from: maintenance.from || '', to: maintenance.to || ''})
-        }
-      }, 5000)
+      const maintenance = require('../maintenance.json')
+      if(!maintenance || !maintenance.reason) {
+        setAlert(false)
+      } else {
+        setAlert(true)
+        setAlertInfos({reason: maintenance.reason || '', from: maintenance.from || '', to: maintenance.to || ''})
+      }
     }, [])
 
     const urlParams = new URLSearchParams(window.location.search);
