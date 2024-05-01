@@ -229,7 +229,7 @@ function UserDetails(props:{user:DigestUser}) {
             </p>
             <h3 id="tools"><a id="tools-a" href="#" className="link-pretty">Tools</a></h3>
             <Buttons>
-              <Link to={`https://accred.epfl.ch/`} target='_blank'>
+              <Link to={`https://accred.epfl.ch/#/catalog/persons/${props.user.sciper}`} target='_blank'>
                 <Button className="btn btn-secondary">Accred</Button>
               </Link>
               <Link to={`https://windows.epfl.ch/checkad/default.aspx`} target='_blank'>
