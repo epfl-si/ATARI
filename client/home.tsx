@@ -61,6 +61,9 @@ export default function Home() {
             <EPFLHeader />
             <div style={{ width: '50%', margin: 'auto', marginTop: '50px', display: alert ? '' : 'none', marginBottom: '1px' }} className="alert alert-info alert-dismissible fade show" role="alert">
               <strong>Annonce :</strong> Une maintenance est prévue de {alertInfos.from} à {alertInfos.to}. <strong>Raison :</strong> {alertInfos.reason}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
             <WelcomeUser />
             <Routes>
