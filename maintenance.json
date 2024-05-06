@@ -1,1 +1,6 @@
-{}
+{
+    "maintenance": false,
+    "reason": "Mise en production",
+    "for": "16h00",
+    "to": "16h30"
+}
