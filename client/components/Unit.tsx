@@ -14,7 +14,7 @@ function Unit(props:{show?: boolean, infos: UnitInfos}) {
   return (
     <>
       <button style={{ paddingTop: 0, paddingBottom: 0, border: 0 }}className={`collapse-title collapse-title-desktop ${show ? '' : 'collapsed'}`} type="button" onClick={()=> setShow(!show)} aria-expanded="false" aria-controls="collapse-1">
-        <strong>{props.infos.fonction}</strong>, <span className="font-weight-normal">{props.infos.libelle}</span>
+        <span style={{ display: props.infos.fonction ? '' : 'none' }}><strong>{props.infos.fonction}</strong>,</span> <span className="font-weight-normal">{props.infos.libelle}</span>
       </button>
 
       <div>
