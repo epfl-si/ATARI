@@ -31,7 +31,7 @@ export default function Home() {
 
     React.useEffect(() => {
       const maintenance = require('../maintenance.json')
-      if(!maintenance || !maintenance.reason) {
+      if(!maintenance.maintenance) {
         setAlert(false)
       } else {
         setAlert(true)
