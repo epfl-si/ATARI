@@ -59,24 +59,28 @@ function Unit(props:{show?: boolean, infos: UnitInfos}) {
                   <small>Statut: <span>{props.infos.statut}</span></small>
                   <br/>
                 </p>
-                <button style={{ paddingTop: 0, paddingBottom: 0, border: 0, color: hoverAdminsIT ? 'red' : '', transition: "all 0.1s linear" }}
-                  className={`collapse-title ${showAdminsIT ? '' : 'collapsed'}`}
-                  type="button"
-                  onClick={()=> { setShowAdminsIT(!showAdminsIT); handleRotateAdminsIT() }}
-                  aria-expanded="false"
-                  aria-controls="collapse-adminsIT"
-                  onMouseEnter={() => setHoverAdminsIT(true)}
-                  onMouseLeave={() => setHoverAdminsIT(false)}>
-                  <strong>Admins IT</strong>&nbsp;
-                  <Chevron handleRotate={handleRotateAdminsIT} rotateChevron={rotateChevronAdminsIT} setRotateChevron={setRotateChevronAdminsIT} />
-                </button>
-                <div className={`collapse ${showAdminsIT ? 'show' : ''} collapse-item collapse-item-desktop`} id="collapse-adminsIT">
-                  <ol>
-                    {
-                      props.infos.adminsIT.map(admin => <li><a href={`mailto:${admin.email}`}>{admin.email}</a> ({admin.sigle})</li>)
-                    }
-                  </ol>
-                </div>
+                {props.infos.adminsIT.length >= 1 && (
+                  <>                  
+                    <button style={{ paddingTop: 0, paddingBottom: 0, border: 0, color: hoverAdminsIT ? 'red' : '', transition: "all 0.1s linear" }}
+                      className={`collapse-title ${showAdminsIT ? '' : 'collapsed'}`}
+                      type="button"
+                      onClick={()=> { setShowAdminsIT(!showAdminsIT); handleRotateAdminsIT() }}
+                      aria-expanded="false"
+                      aria-controls="collapse-adminsIT"
+                      onMouseEnter={() => setHoverAdminsIT(true)}
+                      onMouseLeave={() => setHoverAdminsIT(false)}>
+                      <strong>Admins IT</strong>&nbsp;
+                      <Chevron handleRotate={handleRotateAdminsIT} rotateChevron={rotateChevronAdminsIT} setRotateChevron={setRotateChevronAdminsIT} />
+                    </button>
+                    <div className={`collapse ${showAdminsIT ? 'show' : ''} collapse-item collapse-item-desktop`} id="collapse-adminsIT">
+                      <ol>
+                        {
+                          props.infos.adminsIT.map(admin => <li><a href={`mailto:${admin.email}`}>{admin.email}</a> ({admin.sigle})</li>)
+                        }
+                      </ol>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>
