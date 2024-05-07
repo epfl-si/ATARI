@@ -13,6 +13,7 @@ import EPFLHeader from './components/EPFLHeader';
 import PleaseLogin from './components/PleaseLogin';
 import CheckLDAP from './components/CheckLDAP';
 import CheckInv from './components/CheckInv';
+import Footer from './components/Footer';
 
 export default function Home() {
     const isLogged = useOpenIDConnectContext().state === StateEnum.LoggedIn || Meteor.user() !== null
@@ -50,7 +51,7 @@ export default function Home() {
             please write to <a style={{ display: 'inline-block' }} href="mailto:1234@epfl.ch">1234@epfl.ch</a>
           </div>
           <div className="pt-5 mt-auto">
-            <FooterLight />
+            <Footer />
           </div>
         </div>
       )
@@ -97,7 +98,7 @@ export default function Home() {
               </Route>
             </Routes>
             <div className="pt-5 mt-auto">
-              <FooterLight />
+              <Footer />
             </div>
           </BrowserRouter>
         </div>
