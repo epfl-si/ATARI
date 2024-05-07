@@ -156,9 +156,9 @@ const ListboxComponent = React.forwardRef<
       filterOptions={(options, { inputValue }) =>
         filterOptions(options, inputValue)
       }
-      getOptionLabel={(x) => (x === "" ? "" : x.first_name + " " + x.last_name)}
+      getOptionLabel={(x) => (x.first_name == undefined ? x : x.first_name + " " + x.last_name)}
       onChange={(e, onChangeValue) => {
-        if (onChangeValue !== null) {
+        if (onChangeValue !== null && onChangeValue.sciper) {
           setValue(onChangeValue as DigestUser);
           window.history.pushState({ id:"100" }, "Page", `/${onChangeValue.sciper}`)
           stateProps.handleOneLastResult(onChangeValue as DigestUser);
