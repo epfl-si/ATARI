@@ -23,6 +23,8 @@ function Footer() {
                   <li className="list-inline-item">Contact</li>
                   <li className="list-inline-item text-muted pl-3"><small>EPFL CH-1015 Lausanne</small></li>
                   <li className="list-inline-item text-muted pl-3"><small>+41 21 693 11 11</small></li>
+                  <li className="list-inline-item text-muted pl-3"><small><a target="_blank" href="https://github.com/epfl-si/ATARI">GitHub repository</a></small></li>
+                  <li className="list-inline-item text-muted pl-3"><small><a target="_blank" href="https://github.com/epfl-si/ATARI/issues/new">Report an issue / Feature request</a></small></li>
                 </ul>
                 <div className="footer-light-socials">
                   <p className="footer-title footer-title-no-underline">Follow EPFL on social media</p>
