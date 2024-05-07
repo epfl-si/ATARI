@@ -1,4 +1,5 @@
 import React from "react";
+import packageJson from '../../package.json'
 
 function Footer() {
 
@@ -80,7 +81,7 @@ function Footer() {
                     <a href="https://go.epfl.ch/privacy-policy/">Privacy policy</a>
                   </div>
                   <div>
-                    <p>&copy; 2024 EPFL, all rights reserved</p>
+                    <p>ATARI v{packageJson.version} | &copy; 2024 EPFL, all rights reserved</p>
                   </div>
                 </div>
               </div>
