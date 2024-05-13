@@ -1,6 +1,16 @@
 # keycloak & mariaDB
-dev:
-	docker compose -f docker-compose-dev.yml up
+
+dev: up logs
+
+up:
+	docker compose -f docker-compose-dev.yml up -d
+
+logs:
+	docker compose -f docker-compose-dev.yml logs atari-meteor
+
+npm:
+	npm i
+	meteor npm i
 
 # run everything
 all:
