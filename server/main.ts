@@ -6,6 +6,7 @@ async function insertDigestUser({ first_name, last_name, phone_number, sciper, g
 import '../imports/api/checkLDAPMethod';
 import '../imports/api/inventoryMethod';
 import '../imports/api/ADMethod';
+import '../imports/api/apiMethod';
 
 Meteor.startup(async () => {
   // if (await DigestUsersCollection.find().countAsync() !== 0) {

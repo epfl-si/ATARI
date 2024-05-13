@@ -74,7 +74,7 @@ const Infos = styled.div`
 
 function UserDetails(props:{user:DigestUser}) {
     
-    const isLoading = useSubscribe('userDetails', props.user.sciper);
+    const isLoading = useSubscribe('userDetails', props.user.id);
     const users = useFind(() => userDetailsCollection.find());
     const user = (users[0] || {}) as UserDetails;
     
@@ -82,14 +82,14 @@ function UserDetails(props:{user:DigestUser}) {
     const [adData, setAdData] = React.useState({})
 
     React.useEffect(() => {
-      Meteor.call('AD.user', props.user.sciper, function(err, res) {
+      Meteor.call('AD.user', props.user.id, function(err, res) {
         if(err) {
           console.log(err)
         } else {
           setAdData(res[0]);
         }
       })
-    }, [props.user.sciper])
+    }, [props.user.id])
     const infos = {
       fonction:"Full-Stack Developer", 
       libelle:"Full-Stack Developement", 
@@ -111,25 +111,25 @@ function UserDetails(props:{user:DigestUser}) {
           <div style={{ width: "100px",  height: "100px", position: 'relative', overflow: 'hidden', borderRadius: '100%'}}>
             <img
               className="img-fluid"
-              src={`https://people.epfl.ch/private/common/photos/links/${props.user.sciper}.jpg`}
+              src={`https://people.epfl.ch/private/common/photos/links/${props.user.id}.jpg`}
               onError={({ currentTarget }) => {
                 currentTarget.onerror = null;
                 currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTYgMjU2Ij48cGF0aCBkPSJNMTAyLjQzIDEyNC41M1MxMDUuNSAxNTIgMTI4IDE1MnMyNS41Ny0yNy40NiAyNS41Ny0yNy40NiA0Ljg1IDEgNy4xOS05LjI4YzEuNS02LjctLjUtOC40OS0xLjc2LTguNDloLTEuMkMxNjMuNjggNzQuMjggMTQwIDY0IDEyOCA2NHMtMzUuNjggMTAuMjgtMjkuOCA0Mi43Nkg5N2MtMS4yNiAwLTMuMjYgMS43OS0xLjc2IDguNDkgMi4zNCAxMC4zMyA3LjE5IDkuMjggNy4xOSA5LjI4ek0xNzAuMzYgMTY0Yy0yMC4yNi0zLjg5LTI0LjM0LTgtMjUuMS0xMS42NGEyOS4xNSAyOS4xNSAwIDAgMS0zNC41MiAwYy0uNzQgMy42NC00Ljg0IDcuNzItMjUuMSAxMS42NC0yMC44NSA0LTIwLjU3IDIxLjE4LTIwLjU3IDI0aDEyNS44NmMwLTIuODUuMjgtMjAtMjAuNTctMjR6Ii8+PC9zdmc+Cg=='
               }}
-              alt={`${props.user.first_name} ${props.user.last_name} profile picture`}
+              alt={`${props.user.firstname} ${props.user.lastname} profile picture`}
             />
           </div>
           <h3 style={{ textAlign: 'center', marginTop: '15px' }}>
             <a
               className="link-pretty"
               href="#"
-            >{`${props.user.first_name} ${props.user.last_name}`}</a>
+            >{`${props.user.firstname} ${props.user.lastname}`}</a>
           </h3>
           <div style={{ textAlign: 'start', display: 'grid' }}>
             <div>
-              <strong>Sciper</strong> : {props.user.sciper} &nbsp;
+              <strong>Sciper</strong> : {props.user.id} &nbsp;
               <CopyButton
-                text={props.user.sciper}
+                text={props.user.id}
               />
             </div>
             {
@@ -143,18 +143,18 @@ function UserDetails(props:{user:DigestUser}) {
               )
             }
             <div>
-              <strong>Nom d'utilisateur</strong> : {props.user.gaspar} &nbsp;
+              <strong>Nom d'utilisateur</strong> : {props.user.account.username} &nbsp;
               <CopyButton
-                text={props.user.gaspar}
+                text={props.user.account.username}
               />
             </div>
             <div style={{ paddingTop: '15px' }}>
-              <a href={`https://epfl.service-now.com/incident.do?sys_id=-1&sysparm_stack=incident_list.do&sysparm_query=short_description=Ticket pour ${props.user.first_name} ${props.user.last_name}^
-                      caller_id=javascript:var userRecord = new GlideRecord('sys_user'); userRecord.addQuery('user_name', '${props.user.sciper}'); userRecord.query(); if(userRecord.next()) { userRecord.sys_id }^
+              <a href={`https://epfl.service-now.com/incident.do?sys_id=-1&sysparm_stack=incident_list.do&sysparm_query=short_description=Ticket pour ${props.user.firstname} ${props.user.lastname}^
+                      caller_id=javascript:var userRecord = new GlideRecord('sys_user'); userRecord.addQuery('user_name', '${props.user.id}'); userRecord.query(); if(userRecord.next()) { userRecord.sys_id }^
                       category=incident^assigned_to=javascript:gs.getUserID()^
                       assignment_group=javascript:var assignmentGroup = new GlideRecord('sys_user_group'); assignmentGroup.addQuery('name', 'SI_SERVICEDESK'); assignmentGroup.query(); if(assignmentGroup.next()) { assignmentGroup.sys_id }^
                       business_service=javascript:var businessService = new GlideRecord('cmdb_ci_service'); businessService.addQuery('name', 'Service Desk'); businessService.query(); if(businessService.next()) { businessService.getValue('sys_id') }^
-                      description=%0A%0ATicket ouvert pour ${props.user.first_name} ${props.user.last_name} le ${new Date().toLocaleString('en-GB')} via ATARI`}
+                      description=%0A%0ATicket ouvert pour ${props.user.firstname} ${props.user.lastname} le ${new Date().toLocaleString('en-GB')} via ATARI`}
                   target="_blank">
                         <Button className="btn btn-primary">Créer un ticket pour cet utilisateur</Button>
               </a>
@@ -229,16 +229,16 @@ function UserDetails(props:{user:DigestUser}) {
             </p>
             <h3 id="tools"><a id="tools-a" href="#" className="link-pretty">Tools</a></h3>
             <Buttons>
-              <Link to={`https://accred.epfl.ch/#/catalog/persons/${props.user.sciper}`} target='_blank'>
+              <Link to={`https://accred.epfl.ch/#/catalog/persons/${props.user.id}`} target='_blank'>
                 <Button className="btn btn-secondary">Accred</Button>
               </Link>
               <Link to={`https://windows.epfl.ch/checkad/default.aspx`} target='_blank'>
                 <Button className="btn btn-secondary">Check AD</Button>
               </Link>
-              <Link to={`/checkLDAP/${props.user.sciper}`} target='_blank'>
+              <Link to={`/checkLDAP/${props.user.id}`} target='_blank'>
                 <Button className="btn btn-secondary">Check LDAP</Button>
               </Link>
-              <Link to={`https://it.epfl.ch/backoffice/sys_user.do?sysparm_query=user_name=${props.user.sciper}`} target='_blank'>
+              <Link to={`https://it.epfl.ch/backoffice/sys_user.do?sysparm_query=user_name=${props.user.id}`} target='_blank'>
                 <Button className="btn btn-secondary">ServiceNow</Button>
               </Link>
               <Link to={`https://search.epfl.ch/?filter=people&q=${props.user.email}`} target='_blank'>
