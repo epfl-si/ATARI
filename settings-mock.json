@@ -15,5 +15,9 @@
         "redirectUri": "https://your_redirect_uri.com",
         "loginUri": "https://your_satosa_or_keycloak_uri.com",
         "scope": "your_scope"
+    },
+    "api": {
+        "username": "api_username",
+        "password": "api_password"
     }
 }

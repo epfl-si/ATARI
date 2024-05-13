@@ -2,11 +2,11 @@ import { Mongo } from 'meteor/mongo';
 
 export interface DigestUser {
   _id?: string;
-  first_name: string;
-  last_name: string;
+  firstname: string;
+  lastname: string;
   phone_number: string;
-  sciper: string;
-  gaspar: string;
+  id: string;
+  account: {username: string};
   email: string;
 }
 
