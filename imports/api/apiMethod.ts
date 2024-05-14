@@ -31,6 +31,6 @@ Meteor.methods({
       .then((response) => {
           return response;
       });
-      
-  }
+    
+    }
 })
