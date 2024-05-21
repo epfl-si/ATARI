@@ -145,7 +145,7 @@ function UserDetails(props:{user:DigestUser}) {
               <ul>
                 <li><strong>Genre</strong> : {props.user.gender}</li>
                 {accreds ? (
-                  accreds.map((x, i) => <li><div key={i}>{<Unit infos={x} user={props.user} />}</div></li>)
+                  accreds.sort((a,b) => a.order - b.order).map((x, i) => <li><div key={i}>{<Unit infos={x} user={props.user} />}</div></li>)
                 ) : (
                   <></>
                 )}
