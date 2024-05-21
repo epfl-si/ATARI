@@ -3,11 +3,8 @@ import { DigestUser } from '../../imports/api/DigestUser'
 import styled from "styled-components"
 import CopyButton from './CopyButton'
 import Unit from './Unit'
-import { UnitInfos } from '../../imports/types/UnitInfos'
-import { useSubscribe, useFind } from 'meteor/react-meteor-data';
-import { UserDetails, userDetailsCollection } from '../../imports/api/UserDetails';
+import { UserDetails } from '../../imports/api/UserDetails';
 import { Link } from 'react-router-dom'
-const {log} = console;
 
 const Container = styled.div`
     /* border-style: solid;
@@ -22,23 +19,6 @@ const Container = styled.div`
     .definition-list-grid {
       grid-template-columns: fit-content(100%) 1fr;
     }
-`
-const Legend = styled.legend`
-    text-align: center;
-`
-const Table = styled.table`
-    width: 100%;
-`
-const Buttonold = styled.button`
-    background-color: red;
-    border:none;
-    padding: 10px;
-    padding-left: 20px;
-    padding-right: 20px;
-    /* margin: 10px; */
-    color: white;
-    border-radius: 5px;
-    
 `
 const Button = styled.button`
     padding: 10px;
@@ -55,30 +35,19 @@ const Buttons = styled.div`
     flex-wrap: wrap;
     gap: 1vh;
 `
-const Img = styled.div`
-    /* width: 100%; */
-    height: 100%;
-`
-const Div = styled.div`
-    border-style: solid;
-    border-width: 1px;
-    border-color: grey;
-`
-const Infos = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    gap: 1vh;
-`;
 
 function UserDetails(props:{user:DigestUser}) {
-    
-    const isLoading = useSubscribe('userDetails', props.user.id);
-    const users = useFind(() => userDetailsCollection.find());
-    const user = (users[0] || {}) as UserDetails;
-    
-    const [show, setShow] = React.useState(true)
+    const [accreds, setAccreds] = React.useState([]);
+
+    React.useEffect(() => {
+      Meteor.call('getAccreds.sciper', props.user.id, function(err, res) {
+        if(err) {
+          console.log(err)
+        } else {
+          res.accreds ? setAccreds(res.accreds) : setAccreds([]);
+        }
+      })
+    }, [props.user.id])
     const [adData, setAdData] = React.useState({})
 
     React.useEffect(() => {
@@ -90,20 +59,6 @@ function UserDetails(props:{user:DigestUser}) {
         }
       })
     }, [props.user.id])
-    const infos = {
-      fonction:"Full-Stack Developer", 
-      libelle:"Full-Stack Developement", 
-      adresse_1: "EPFL SI ISAS-FSD",
-      adresse_2: "INN 013 (Bâtiment INN",
-      adresse_3: "Station 14",
-      adresse_4: "CH-1015 Lausanne",
-      phone_numbers: ["+41 21 693 43 21", "+41 21 693 1234"],
-      // office: "INN 013",
-      // mainOffice: "INN 013",
-      website: "example.com",
-      unit: "EPFL VPO VPO-SI ISAS ISAS-FSD",
-      statut: "Personnel",
-    } as UnitInfos
   return (
     <Container>
       <div className="d-lg-flex flex-row" style={{ marginBottom: '40px' }}>
@@ -188,10 +143,9 @@ function UserDetails(props:{user:DigestUser}) {
             <h3 id="general"><a href="#" className="link-pretty">Général</a></h3>
             <p>
               <ul>
-                <li><strong>Genre</strong> : {user.sexe}</li>
-                <li><strong>Sciper géré par</strong> : {user.type}</li>
-                {user.units ? (
-                  user.units.map((x, i) => <li><div key={i}>{<Unit infos={x} />}</div></li>)
+                <li><strong>Genre</strong> : {props.user.gender}</li>
+                {accreds ? (
+                  accreds.map((x, i) => <li><div key={i}>{<Unit infos={x} user={props.user} />}</div></li>)
                 ) : (
                   <></>
                 )}
