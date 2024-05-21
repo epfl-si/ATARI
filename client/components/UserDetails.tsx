@@ -186,7 +186,7 @@ function UserDetails(props:{user:DigestUser}) {
               <Link to={`https://accred.epfl.ch/#/catalog/persons/${props.user.id}`} target='_blank'>
                 <Button className="btn btn-secondary">Accred</Button>
               </Link>
-              <Link to={`https://windows.epfl.ch/checkad/default.aspx`} target='_blank'>
+              <Link to={`/checkAD/${props.user.id}`} target='_blank'>
                 <Button className="btn btn-secondary">Check AD</Button>
               </Link>
               <Link to={`/checkLDAP/${props.user.id}`} target='_blank'>

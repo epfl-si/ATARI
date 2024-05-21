@@ -14,6 +14,7 @@ import PleaseLogin from './components/PleaseLogin';
 import CheckLDAP from './components/CheckLDAP';
 import CheckInv from './components/CheckInv';
 import Footer from './components/Footer';
+import CheckAD from './components/CheckAD';
 
 export default function Home() {
     const isLogged = useOpenIDConnectContext().state === StateEnum.LoggedIn || Meteor.user() !== null
@@ -79,6 +80,13 @@ export default function Home() {
                 {isLogged ? (
                   <Route index element={<Search />} />
                 ) : (
+                  <Route index element={<PleaseLogin />} />
+                )}
+              </Route>
+              <Route path="/checkAD/:sciper">
+                {isLogged ? (
+                  <Route index element={<CheckAD />} />
+                  ) : (
                   <Route index element={<PleaseLogin />} />
                 )}
               </Route>
