@@ -164,13 +164,13 @@ function UserDetails(props:{user:DigestUser}) {
                 </li>
                 {
                   adData.lastLogon && (
-                    <li><strong>Dernière connexion</strong> : {new Date(((adData.lastLogon / 10000000) - 11644473600) * 1000).toLocaleDateString('fr-FR', 
+                    <li><strong>Dernière connexion</strong> : {adData.lastLogon == 0 ? 'Jamais' : new Date(((adData.lastLogon / 10000000) - 11644473600) * 1000).toLocaleDateString('fr-FR', 
                     { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</li>
                   )
                 }
                 {
                   !!adData.badPasswordTime && (
-                    <li><strong>Dernier mot de passe erroné</strong> : {new Date(((adData.badPasswordTime / 10000000) - 11644473600) * 1000).toLocaleDateString('fr-FR',
+                    <li><strong>Dernier mot de passe erroné</strong> : {adData.badPasswordTime == 0 ? 'Jamais' : new Date(((adData.badPasswordTime / 10000000) - 11644473600) * 1000).toLocaleDateString('fr-FR',
                     { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</li>
                   )
                 }
