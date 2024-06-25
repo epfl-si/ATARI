@@ -9,7 +9,7 @@ function SearchBar(props:{handleOneLastResult: Function, sciper: string | undefi
     const [stateProps, setStateProps] = React.useState(props)
 
     React.useEffect(() => {
-        getUsers(stateProps.sciper)
+        stateProps.sciper && getUsers(stateProps.sciper)
     }, [])
 
     function getUsers(inputValue) {
