@@ -82,7 +82,7 @@ function UserDetails(props:{user:DigestUser}) {
           </h3>
           <div style={{ textAlign: 'start', display: 'grid' }}>
             <div>
-              <strong>Sciper</strong> : {props.user.id} &nbsp;
+              <strong>Sciper</strong> : {props.user.id}
               <CopyButton
                 text={props.user.id}
               />
@@ -90,7 +90,7 @@ function UserDetails(props:{user:DigestUser}) {
             {
               props.user.email && (
               <div>
-                <strong>Email</strong> : {props.user.email} &nbsp;
+                <strong>Email</strong> : {props.user.email}
                 <CopyButton
                   text={props.user.email}
                 />
@@ -100,7 +100,7 @@ function UserDetails(props:{user:DigestUser}) {
             {
               props.user.account && (
                 <div>
-                  <strong>Nom d'utilisateur</strong> : {props.user.account.username} &nbsp;
+                  <strong>Nom d'utilisateur</strong> : {props.user.account.username}
                   <CopyButton
                     text={props.user.account.username}
                   />
