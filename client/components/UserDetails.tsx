@@ -134,7 +134,7 @@ function UserDetails(props:{user:DigestUser}) {
             flexDirection: 'column',
             alignItems:'start',
             maxHeight: '600px',
-            height: '600px',
+            height: '100%',
             overflowY: 'scroll',
             overflowX: 'hidden',
             position: 'relative'
