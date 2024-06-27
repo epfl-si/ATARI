@@ -74,11 +74,8 @@ function UserDetails(props:{user:DigestUser}) {
               alt={`${props.user.firstname} ${props.user.lastname} profile picture`}
             />
           </div>
-          <h3 style={{ textAlign: 'center', marginTop: '15px' }}>
-            <a
-              className="link-pretty"
-              href="#"
-            >{`${props.user.firstname} ${props.user.lastname}`}</a>
+          <h3 style={{ textAlign: 'center', marginTop: '15px', textDecoration: 'underline', textDecorationColor: 'red', textUnderlineOffset: '6px'}}>
+            {`${props.user.firstname} ${props.user.lastname}`}
           </h3>
           <div style={{ textAlign: 'start', display: 'grid' }}>
             <div>
