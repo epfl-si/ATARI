@@ -21,7 +21,7 @@ function SearchBar(props:{handleOneLastResult: Function, sciper: string | undefi
                     let newPersons = res.persons.map(person => {
                         return {
                             ...person,
-                            label: `${person.display} ${person.id} ${person.email}`,
+                            label: `${person.display} ${person.id} ${person.email ? person.email : ''}`,
                         }
                     })
                     if(res.count == 1) {
@@ -52,6 +52,21 @@ function SearchBar(props:{handleOneLastResult: Function, sciper: string | undefi
             disablePortal
             disableClearable
             options={users}
+            renderOption={(props, option) => {
+                if(!option.email) {
+                    return (
+                        <li {...props}>
+                            <span style={{ color: 'grey' }}>{option.display} {option.id}</span>
+                        </li>
+                    )
+                } else {
+                    return (
+                        <li {...props}>
+                            <span>{option.display} {option.id} {option.email}</span>
+                        </li>
+                    )
+                }
+            }}
             onInput={(e) => e.target.value.length >= 3 ? getUsers(e.target.value) : setUsers([])}
             renderInput={(params) => <TextField {...params} label="Search for a person" />}
         />
