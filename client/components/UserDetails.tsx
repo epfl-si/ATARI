@@ -97,23 +97,31 @@ function UserDetails(props:{user:DigestUser}) {
               </div>
               )
             }
-            <div>
-              <strong>Nom d'utilisateur</strong> : {props.user.account.username} &nbsp;
-              <CopyButton
-                text={props.user.account.username}
-              />
-            </div>
-            <div style={{ paddingTop: '15px' }}>
-              <a href={`https://epfl.service-now.com/incident.do?sys_id=-1&sysparm_stack=incident_list.do&sysparm_query=short_description=Ticket pour ${props.user.firstname} ${props.user.lastname}^
-                      caller_id=javascript:var userRecord = new GlideRecord('sys_user'); userRecord.addQuery('user_name', '${props.user.id}'); userRecord.query(); if(userRecord.next()) { userRecord.sys_id }^
-                      category=incident^assigned_to=javascript:gs.getUserID()^
-                      assignment_group=javascript:var assignmentGroup = new GlideRecord('sys_user_group'); assignmentGroup.addQuery('name', 'SI_SERVICEDESK'); assignmentGroup.query(); if(assignmentGroup.next()) { assignmentGroup.sys_id }^
-                      business_service=javascript:var businessService = new GlideRecord('cmdb_ci_service'); businessService.addQuery('name', 'Service Desk'); businessService.query(); if(businessService.next()) { businessService.getValue('sys_id') }^
-                      description=%0A%0ATicket ouvert pour ${props.user.firstname} ${props.user.lastname} le ${new Date().toLocaleString('en-GB')} via ATARI`}
-                  target="_blank">
-                        <Button className="btn btn-primary">Créer un ticket pour cet utilisateur</Button>
-              </a>
-            </div>
+            {
+              props.user.account && (
+                <div>
+                  <strong>Nom d'utilisateur</strong> : {props.user.account.username} &nbsp;
+                  <CopyButton
+                    text={props.user.account.username}
+                  />
+                </div>
+              )
+            }
+            {
+              props.user.account && (
+                <div style={{ paddingTop: '15px' }}>
+                  <a href={`https://epfl.service-now.com/incident.do?sys_id=-1&sysparm_stack=incident_list.do&sysparm_query=short_description=Ticket pour ${props.user.firstname} ${props.user.lastname}^
+                          caller_id=javascript:var userRecord = new GlideRecord('sys_user'); userRecord.addQuery('user_name', '${props.user.id}'); userRecord.query(); if(userRecord.next()) { userRecord.sys_id }^
+                          category=incident^assigned_to=javascript:gs.getUserID()^
+                          assignment_group=javascript:var assignmentGroup = new GlideRecord('sys_user_group'); assignmentGroup.addQuery('name', 'SI_SERVICEDESK'); assignmentGroup.query(); if(assignmentGroup.next()) { assignmentGroup.sys_id }^
+                          business_service=javascript:var businessService = new GlideRecord('cmdb_ci_service'); businessService.addQuery('name', 'Service Desk'); businessService.query(); if(businessService.next()) { businessService.getValue('sys_id') }^
+                          description=%0A%0ATicket ouvert pour ${props.user.firstname} ${props.user.lastname} le ${new Date().toLocaleString('en-GB')} via ATARI`}
+                      target="_blank">
+                            <Button className="btn btn-primary">Créer un ticket pour cet utilisateur</Button>
+                  </a>
+                </div>
+              )
+            }
           </div>
         </div>
         <div style={{
@@ -151,56 +159,68 @@ function UserDetails(props:{user:DigestUser}) {
                 )}
               </ul>
             </p>
-            <h3 id="active-directory"><a href="#" className="link-pretty">Active Directory</a></h3>
-            <p>
-              <ul>
-                <li><strong>Domaine\login</strong> : {`${adData.userPrincipalName?.split('@')[1].split('.')[0].toUpperCase()}\\${adData.sAMAccountName}`}</li>
-                <li><strong>Status du compte</strong> : {
-                  adData.userAccountControl
-                }</li>
-                <li><strong>Expiration du compte</strong> : {
-                  adData.accountExpires == 9223372036854775807 ? 'Jamais' : new Date(((adData.accountExpires / 10000000) - 11644473600) * 1000).toLocaleDateString('en-US')
-                }
-                </li>
-                {
-                  adData.lastLogon && (
-                    <li><strong>Dernière connexion</strong> : {adData.lastLogon == 0 ? 'Jamais' : new Date(((adData.lastLogon / 10000000) - 11644473600) * 1000).toLocaleDateString('fr-FR', 
-                    { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</li>
-                  )
-                }
-                {
-                  !!adData.badPasswordTime && (
-                    <li><strong>Dernier mot de passe erroné</strong> : {adData.badPasswordTime == 0 ? 'Jamais' : new Date(((adData.badPasswordTime / 10000000) - 11644473600) * 1000).toLocaleDateString('fr-FR',
-                    { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</li>
-                  )
-                }
-                {
-                  adData.badPwdCount !== undefined && adData.badPwdCount !== 0 && (
-                    <li><strong>Nombre d'essais de mot de passe erronnés</strong> : {adData.badPwdCount}</li>
-                  )
-                }
-              </ul>
-            </p>
+            {adData && (
+              <div>
+                <h3 id="active-directory"><a href="#" className="link-pretty">Active Directory</a></h3>
+                <p>
+                  <ul>
+                    {adData.userPrincipalName && (
+                      <li><strong>Domaine\login</strong> : {`${adData.userPrincipalName?.split('@')[1].split('.')[0].toUpperCase()}\\${adData.sAMAccountName}`}</li>
+                    )}
+                    <li><strong>Status du compte</strong> : {
+                      adData.userAccountControl
+                    }</li>
+                    <li><strong>Expiration du compte</strong> : {
+                      adData.accountExpires == 9223372036854775807 ? 'Jamais' : new Date(((adData.accountExpires / 10000000) - 11644473600) * 1000).toLocaleDateString('en-US')
+                    }
+                    </li>
+                    {
+                      adData.lastLogon && (
+                        <li><strong>Dernière connexion</strong> : {adData.lastLogon == 0 ? 'Jamais' : new Date(((adData.lastLogon / 10000000) - 11644473600) * 1000).toLocaleDateString('fr-FR', 
+                        { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</li>
+                      )
+                    }
+                    {
+                      !!adData.badPasswordTime && (
+                        <li><strong>Dernier mot de passe erroné</strong> : {adData.badPasswordTime == 0 ? 'Jamais' : new Date(((adData.badPasswordTime / 10000000) - 11644473600) * 1000).toLocaleDateString('fr-FR',
+                        { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</li>
+                      )
+                    }
+                    {
+                      adData.badPwdCount !== undefined && adData.badPwdCount !== 0 && (
+                        <li><strong>Nombre d'essais de mot de passe erronnés</strong> : {adData.badPwdCount}</li>
+                      )
+                    }
+                  </ul>
+                </p>
+              </div>
+            )}
             <h3 id="tools"><a id="tools-a" href="#" className="link-pretty">Tools</a></h3>
             <Buttons>
               <Link to={`https://accred.epfl.ch/#/catalog/persons/${props.user.id}`} target='_blank'>
                 <Button className="btn btn-secondary">Accred</Button>
               </Link>
-              <Link to={`/checkAD/${props.user.id}`} target='_blank'>
-                <Button className="btn btn-secondary">Check AD</Button>
-              </Link>
-              <Link to={`/checkLDAP/${props.user.id}`} target='_blank'>
-                <Button className="btn btn-secondary">Check LDAP</Button>
-              </Link>
-              <Link to={`https://it.epfl.ch/backoffice/sys_user.do?sysparm_query=user_name=${props.user.id}`} target='_blank'>
-                <Button className="btn btn-secondary">ServiceNow</Button>
-              </Link>
-              <Link to={`https://search.epfl.ch/?filter=people&q=${props.user.email}`} target='_blank'>
-                <Button className="btn btn-secondary">People</Button>
-              </Link>
-              <Link to={`https://mailwww.epfl.ch/emailStatus.cgi?query=${props.user.email}`} target='_blank'>
-                <Button className="btn btn-secondary">Check Email</Button>
-              </Link>
+              {
+                props.user.account && (
+                  <>
+                    <Link to={`/checkAD/${props.user.id}`} target='_blank'>
+                      <Button className="btn btn-secondary">Check AD</Button>
+                    </Link>
+                    <Link to={`/checkLDAP/${props.user.id}`} target='_blank'>
+                      <Button className="btn btn-secondary">Check LDAP</Button>
+                    </Link>
+                    <Link to={`https://it.epfl.ch/backoffice/sys_user.do?sysparm_query=user_name=${props.user.id}`} target='_blank'>
+                      <Button className="btn btn-secondary">ServiceNow</Button>
+                    </Link>
+                    <Link to={`https://search.epfl.ch/?filter=people&q=${props.user.email}`} target='_blank'>
+                      <Button className="btn btn-secondary">People</Button>
+                    </Link>
+                    <Link to={`https://mailwww.epfl.ch/emailStatus.cgi?query=${props.user.email}`} target='_blank'>
+                      <Button className="btn btn-secondary">Check Email</Button>
+                    </Link>
+                  </>
+                )
+              }
             </Buttons>
           </div>
         </div>
