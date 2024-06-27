@@ -14,7 +14,7 @@ function EPFLHeader() {
       style={{ borderColor: "black", borderWidth: "1px", borderStyle: "solid" }}
     >
       <div className="header-light-content">
-        <a className="logo" href="https://www.epfl.ch">
+        <a className="logo" href="/">
           <img
             src="https://www.epfl.ch/about/overview/wp-content/uploads/2020/07/logo-epfl-1024x576.png"
             alt="Logo EPFL, École polytechnique fédérale de Lausanne"
