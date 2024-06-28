@@ -1,12 +1,14 @@
 import { Autocomplete, TextField } from '@mui/material'
 import React from 'react'
 import { DigestUser } from '../../imports/api/DigestUser';
+import CircularProgress from '@mui/material/CircularProgress';
 
 function SearchBar(props:{handleOneLastResult: Function, sciper: string | undefined}) {
 
     const [users, setUsers] = React.useState([]);
     const [value, setValue] = React.useState('');
     const [stateProps, setStateProps] = React.useState(props)
+    const [loading, setLoading] = React.useState(false);
 
     React.useEffect(() => {
         stateProps.sciper && getUsers(stateProps.sciper)
@@ -30,6 +32,7 @@ function SearchBar(props:{handleOneLastResult: Function, sciper: string | undefi
                         stateProps.handleOneLastResult(newPersons[0] as DigestUser);
                     }
                     setUsers(newPersons)
+                    setLoading(false)
                 }
             }
         })
@@ -67,8 +70,21 @@ function SearchBar(props:{handleOneLastResult: Function, sciper: string | undefi
                     )
                 }
             }}
-            onInput={(e) => e.target.value.length >= 3 ? getUsers(e.target.value) : setUsers([])}
-            renderInput={(params) => <TextField {...params} label="Search for a person" />}
+            onInput={(e) => e.target.value.length >= 3 ? (setLoading(true), getUsers(e.target.value)) : (setLoading(false), setUsers([]))}
+            renderInput={(params) => (
+                <TextField {...params}
+                    label="Search for a person"
+                    InputProps={{
+                        ...params.InputProps,
+                        endAdornment: (
+                            <>
+                                {loading ? <CircularProgress color="inherit" size={20}/> : null}
+                                {params.InputProps.endAdornment}
+                            </>
+                        )
+                    }}
+                />
+            )}
         />
     )
 }
