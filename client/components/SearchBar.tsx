@@ -14,6 +14,9 @@ function SearchBar(props:{handleOneLastResult: Function, sciper: string | undefi
         stateProps.sciper && getUsers(stateProps.sciper)
     }, [])
 
+    var typingTimer;
+    var doneTypingInterval = 1000;
+
     function getUsers(inputValue) {
         Meteor.call('getUser.query', inputValue, function(err, res) {
             if(err) {
@@ -55,6 +58,7 @@ function SearchBar(props:{handleOneLastResult: Function, sciper: string | undefi
             disablePortal
             disableClearable
             options={users}
+            filterOptions={(options) => options}
             renderOption={(props, option) => {
                 if(!option.email) {
                     return (
@@ -70,7 +74,7 @@ function SearchBar(props:{handleOneLastResult: Function, sciper: string | undefi
                     )
                 }
             }}
-            onInput={(e) => e.target.value.length >= 3 ? (setLoading(true), getUsers(e.target.value)) : (setLoading(false), setUsers([]))}
+            onInput={(e) => e.target.value.length >= 3 ? (clearTimeout(typingTimer), setLoading(true), typingTimer = setTimeout(() => getUsers(e.target.value), doneTypingInterval)) : (clearTimeout(typingTimer), setLoading(false), setUsers([]))}
             renderInput={(params) => (
                 <TextField {...params}
                     label="Search for a person"
