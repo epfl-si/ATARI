@@ -55,6 +55,7 @@ function SearchBar(props:{handleOneLastResult: Function, sciper: string | undefi
             disablePortal
             disableClearable
             options={users}
+            filterOptions={(options) => options}
             renderOption={(props, option) => {
                 if(!option.email) {
                     return (
