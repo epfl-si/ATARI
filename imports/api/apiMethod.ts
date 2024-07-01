@@ -5,7 +5,7 @@ import settings from '../../settings.json';
 Meteor.methods({
     'getUser.sciper': async function(sciper) {
         const auth = Buffer.from(`${settings.api.username}:${settings.api.password}`).toString("base64");
-        return fetch(`https://api.epfl.ch/v1/persons/${sciper}`, {
+        return fetch(encodeURI(`https://api.epfl.ch/v1/persons/${sciper}`), {
           method: "GET",
           headers: {
             "Content-type": "application/json",
@@ -20,7 +20,7 @@ Meteor.methods({
     },
     'getUser.query': async function(query) {
       const auth = Buffer.from(`${settings.api.username}:${settings.api.password}`).toString("base64");
-      return fetch(`https://api.epfl.ch/v1/persons?query=${query}`, {
+      return fetch(encodeURI(`https://api.epfl.ch/v1/persons?query=${query}`), {
         method: "GET",
         headers: {
           "Content-type": "application/json",
@@ -35,7 +35,7 @@ Meteor.methods({
     },
     'getAccreds.sciper': async function(sciper) {
       const auth = Buffer.from(`${settings.api.username}:${settings.api.password}`).toString("base64");
-      return fetch(`https://api.epfl.ch/v1/accreds?persid=${sciper}`, {
+      return fetch(encodeURI(`https://api.epfl.ch/v1/accreds?persid=${sciper}`), {
         method: "GET",
         headers: {
           "Content-type": "application/json",
@@ -50,7 +50,7 @@ Meteor.methods({
     },
     'getAdminsIT.unit': async function(unitid) {
       const auth = Buffer.from(`${settings.api.username}:${settings.api.password}`).toString("base64");
-      return fetch(`https://api.epfl.ch/v1/authorizations?resid=${unitid}&authid=adminit&type=role`, {
+      return fetch(encodeURI(`https://api.epfl.ch/v1/authorizations?resid=${unitid}&authid=adminit&type=role`), {
         method: "GET",
         headers: {
           "Content-type": "application/json",
