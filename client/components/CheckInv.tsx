@@ -5,11 +5,19 @@ import { useState } from "react";
 import { parse } from 'node-html-parser';
 import { differenceInDays, intervalToDuration } from "date-fns";
 import styled from "styled-components"
+import { useParams } from "react-router-dom";
 
 
 function CheckInv() {
 
+  const { inventoryParam } = useParams();
   const [inventoryItem, setInventoryItem] = useState(<></>);
+
+  React.useEffect(() => {
+    if(inventoryParam) {
+      checkInventoryNumber(inventoryParam)
+    }
+  }, [])
 
   const Button = styled.button`
     padding: 10px;
@@ -27,9 +35,7 @@ function CheckInv() {
         parsedHtml.querySelector('#ctl00_ContentPlaceHolder1_Label1')?.childNodes[0].rawText.includes('Oups')
   }
 
-  function checkInventoryNumber(event) {
-    event.preventDefault()
-    const inventoryNumber = event.target['invNumberInput'].value
+  function checkInventoryNumber(inventoryNumber) {
 
     if(!inventoryNumber) {
       alert(`Merci d'entrer un numéro d'inventaire.`)
@@ -41,6 +47,7 @@ function CheckInv() {
       } else {
         const parsedHtml = parse(res)
 
+        window.history.pushState({ id:"100" }, "Page", `/inv/${inventoryNumber}`);
         if(checkValidInvNumber(parsedHtml)) {
           setInventoryItem(<></>)
           return alert(`Ce numéro d'inventaire est invalide !`)
@@ -166,8 +173,12 @@ function CheckInv() {
   return (
     <Container>
       <h1>Check Inventory</h1>
-      <form onSubmit={checkInventoryNumber} style={{ display: 'flex', gap: '10px' }}>
-        <input id="invNumberInput" placeholder="A123456789..." />
+      <form onSubmit={e => {
+          e.preventDefault();
+          checkInventoryNumber(e.target['invNumberInput'].value)
+        }}
+        style={{ display: 'flex', gap: '10px' }}>
+        <input defaultValue={inventoryParam} id="invNumberInput" placeholder="A123456789..." />
         <Button className="btn btn-secondary" type="submit">Check</Button>
       </form>
       {inventoryItem}
