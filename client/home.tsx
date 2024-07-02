@@ -100,6 +100,13 @@ export default function Home() {
                   <Route index element={<PleaseLogin />} />
                 )}
               </Route>
+              <Route path="/inv/:inventoryParam">
+                {isLogged ? (
+                  <Route index element={<CheckInv />} />
+                  ) : (
+                  <Route index element={<PleaseLogin />} />
+                )}
+              </Route>
             </Routes>
             <div className="pt-5 mt-auto">
               <Footer />
