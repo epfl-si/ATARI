@@ -10,8 +10,6 @@ function CopyButton(props:{text}) {
         style={{ float: "right", cursor: "copy" }}
         className="btn btn-secondary tag tag-primary"
         onClick={async () => {
-            console.log(await navigator.clipboard.writeText(props.text.toString()))
-            console.log("typof", typeof navigator.clipboard.readText);
             navigator.clipboard.writeText(props.text.toString()).then(
                 () => {
                     toast("🦄 Text copied!")
