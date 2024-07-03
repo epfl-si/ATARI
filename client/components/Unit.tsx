@@ -57,7 +57,7 @@ function Unit(props:{show?: boolean, infos: UnitInfos, user: DigestUser}) {
       className={`collapse-title ${show ? '' : 'collapsed'}`}
       type="button" onClick={()=> { setShow(!show); handleRotate() }}
       aria-expanded="false"
-      aria-controls="collapse-1"
+      aria-controls={`collapse-${props.infos.unitid}`}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}>
         {props.infos.position && <span style={{ display: props.infos.position.labelfr ? '' : 'none' }}><strong>{props.infos.position.labelfr}</strong>,</span>} <span className="font-weight-normal">{props.infos.unit.labelfr}</span>&nbsp;
@@ -65,7 +65,7 @@ function Unit(props:{show?: boolean, infos: UnitInfos, user: DigestUser}) {
       </button>
 
       <div>
-          <div className={`collapse ${show ? 'show' : ''} collapse-item collapse-item-desktop`} id="collapse-1">
+          <div className={`collapse ${show ? 'show' : ''} collapse-item collapse-item-desktop`} id={`collapse-${props.infos.unitid}`}>
             <div className="row pt-2 pb-2">
                 {
                   addressForUnit[0] && (
@@ -99,13 +99,13 @@ function Unit(props:{show?: boolean, infos: UnitInfos, user: DigestUser}) {
                       type="button"
                       onClick={()=> { setShowAdminsIT(!showAdminsIT); handleRotateAdminsIT() }}
                       aria-expanded="false"
-                      aria-controls="collapse-adminsIT"
+                      aria-controls={`collapse-adminsIT-${props.infos.unitid}`}
                       onMouseEnter={() => setHoverAdminsIT(true)}
                       onMouseLeave={() => setHoverAdminsIT(false)}>
                       <strong>Admins IT</strong>&nbsp;
                       <Chevron handleRotate={handleRotateAdminsIT} rotateChevron={rotateChevronAdminsIT} setRotateChevron={setRotateChevronAdminsIT} />
                     </button>
-                    <div className={`collapse ${showAdminsIT ? 'show' : ''} collapse-item collapse-item-desktop`} id="collapse-adminsIT">
+                    <div className={`collapse ${showAdminsIT ? 'show' : ''} collapse-item collapse-item-desktop`} id={`collapse-adminsIT-${props.infos.unitid}`}>
                       <ol>
                         {
                           adminsIT.map(admin => <li><a href={`mailto:${admin.email}`}>{admin.email}</a></li>)
