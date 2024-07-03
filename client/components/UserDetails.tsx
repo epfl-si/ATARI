@@ -5,6 +5,7 @@ import CopyButton from './CopyButton'
 import Unit from './Unit'
 import { UserDetails } from '../../imports/api/UserDetails';
 import { Link } from 'react-router-dom'
+import '../css/UserDetails.css'
 
 const Container = styled.div`
     /* border-style: solid;
@@ -59,11 +60,28 @@ function UserDetails(props:{user:DigestUser}) {
         }
       })
     }, [props.user.id])
+
+    const easterStyle = () => {
+      if (props.user.id == 169419) return 'hover-rotate nbo-special';
+      if (props.user.id == 348084) return 'hover-rotate sami-special';
+      if (props.user.id == 316897) return 'hover-rotate jerome-special';
+
+      accreds.map(unit => {
+        // FIXME: this is not called at the right time
+        // console.log(unit.unitid)
+        if (unit.unitid == 13030) return 'hover-rotate fsd-special';
+        if (unit.unitid == 13034) return 'hover-rotate sdesk-special';
+      });
+
+      // return the default "small tilting"
+      return "hover-rotate";
+    };
+
   return (
     <Container>
       <div className="d-lg-flex flex-row" style={{ marginBottom: '40px' }}>
         <div className="card-body d-flex flex-column align-items-center" style={{ minWidth: '40%', }}>
-          <div style={{ width: "100px",  height: "100px", position: 'relative', overflow: 'hidden', borderRadius: '100%'}}>
+          <figure className={easterStyle()}>
             <img
               className="img-fluid"
               src={`https://people.epfl.ch/private/common/photos/links/${props.user.id}.jpg`}
@@ -73,7 +91,7 @@ function UserDetails(props:{user:DigestUser}) {
               }}
               alt={`${props.user.firstname} ${props.user.lastname} profile picture`}
             />
-          </div>
+          </figure>
           <h3 style={{ textAlign: 'center', marginTop: '15px', textDecoration: 'underline', textDecorationColor: 'red', textUnderlineOffset: '6px'}}>
             {`${props.user.firstname} ${props.user.lastname}`}
           </h3>
