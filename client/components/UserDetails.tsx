@@ -248,9 +248,9 @@ function UserDetails(props:{user:DigestUser}) {
             display:'flex',
             flexDirection: 'column',
             alignItems:'start',
-            maxHeight: '600px',
+            // maxHeight: '600px',
             height: '100%',
-            overflowY: 'scroll',
+            // overflowY: 'scroll',
             overflowX: 'hidden',
             position: 'relative'
             }}
