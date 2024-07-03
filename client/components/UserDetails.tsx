@@ -43,19 +43,20 @@ const Container = styled.div`
   }
 `
 const Button = styled.button`
-    padding: 10px;
-    padding-left: 20px;
-    padding-right: 20px;
-    /* margin: 10px; */
-    border-radius: 5px;
-    /* width: 50vw; */
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  /* margin: 10px; */
+  border-radius: 5px;
+  /* width: 50vw; */
 `
 const Buttons = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    gap: 1vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 1vh;
+`
 `
 
 function UserDetails(props:{user:DigestUser}) {
