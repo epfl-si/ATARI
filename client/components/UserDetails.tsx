@@ -177,6 +177,13 @@ function UserDetails(props:{user:DigestUser}) {
       return url.replace(/  +/g, '');
     };
 
+    const copyContentToClipboard = async (text) => {
+      navigator.clipboard.writeText(text).then(
+        () => {/*ok*/},
+        () => { console.error("😢 An error occurred during the copy process");}
+      );
+    };
+
   return (
     <Container>
       <div className="d-lg-flex flex-row" style={{ marginBottom: '40px' }}>
@@ -192,12 +199,14 @@ function UserDetails(props:{user:DigestUser}) {
               alt={`${props.user.firstname} ${props.user.lastname} profile picture`}
             />
           </figure>
-          <h3 style={{ textAlign: 'center', marginTop: '15px', textDecoration: 'underline', textDecorationColor: 'red', textUnderlineOffset: '6px'}}>
+          <h3 
+            onClick={async () => copyContentToClipboard(`${props.user.firstname} ${props.user.lastname}`)}
+            style={{ textAlign: 'center', marginTop: '15px', textDecoration: 'underline', textDecorationColor: 'red', textUnderlineOffset: '6px', cursor: 'copy'}}>
             {`${props.user.firstname} ${props.user.lastname}`}
           </h3>
           <div style={{ textAlign: 'start', display: 'grid' }}>
             <div>
-              <strong>Sciper</strong> : {props.user.id}
+              <strong>Sciper</strong> : <span onClick={async () => copyContentToClipboard(props.user.id)} style={{cursor: 'copy'}}>{props.user.id}</span>
               <CopyButton
                 text={props.user.id}
               />
@@ -205,7 +214,7 @@ function UserDetails(props:{user:DigestUser}) {
             {
               props.user.email && (
               <div>
-                <strong>Email</strong> : {props.user.email}
+                <strong>Email</strong> : <span onClick={async () => copyContentToClipboard(props.user.email)} style={{cursor: 'copy'}}>{props.user.email}</span>
                 <CopyButton
                   text={props.user.email}
                 />
@@ -215,7 +224,7 @@ function UserDetails(props:{user:DigestUser}) {
             {
               props.user.account && (
                 <div>
-                  <strong>Nom d'utilisateur</strong> : {props.user.account.username}
+                  <strong>Nom d'utilisateur</strong> : <span onClick={async () => copyContentToClipboard(props.user.account.username)} style={{cursor: 'copy'}}>{props.user.account.username}</span>
                   <CopyButton
                     text={props.user.account.username}
                   />
