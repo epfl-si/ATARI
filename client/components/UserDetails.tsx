@@ -256,7 +256,7 @@ function UserDetails(props:{user:DigestUser}) {
             }}
           >
             <h3 id="general"><a href="#" className="link-pretty">Général</a></h3>
-            <p>
+            <>
               <ul>
                 <li><strong>Genre</strong> : {props.user.gender}</li>
                 {accreds ? (
@@ -265,11 +265,11 @@ function UserDetails(props:{user:DigestUser}) {
                   <></>
                 )}
               </ul>
-            </p>
+            </>
             {adData && (
               <div>
                 <h3 id="active-directory"><a href="#" className="link-pretty">Active Directory</a></h3>
-                <p>
+                <>
                   <ul>
                     {adData.userPrincipalName && (
                       <li><strong>Domaine\login</strong> : {`${adData.userPrincipalName?.split('@')[1].split('.')[0].toUpperCase()}\\${adData.sAMAccountName}`}</li>
@@ -299,7 +299,7 @@ function UserDetails(props:{user:DigestUser}) {
                       )
                     }
                   </ul>
-                </p>
+                </>
               </div>
             )}
             <h3 id="tools"><a id="tools-a" href="#" className="link-pretty">Tools</a></h3>
