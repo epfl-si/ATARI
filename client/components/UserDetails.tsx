@@ -258,9 +258,9 @@ function UserDetails(props:{user:DigestUser}) {
             <h3 id="general"><a href="#" className="link-pretty">Général</a></h3>
             <>
               <ul>
-                <li><strong>Genre</strong> : {props.user.gender}</li>
+                <li key="gender"><strong>Genre</strong> : {props.user.gender}</li>
                 {accreds ? (
-                  accreds.sort((a,b) => a.order - b.order).map((x, i) => <li><div key={i}>{<Unit infos={x} user={props.user} />}</div></li>)
+                  accreds.sort((a,b) => a.order - b.order).map((x, i) => <li key={i}><div>{<Unit infos={x} user={props.user} />}</div></li>)
                 ) : (
                   <></>
                 )}
