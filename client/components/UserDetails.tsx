@@ -8,18 +8,39 @@ import { Link } from 'react-router-dom'
 import '../css/UserDetails.css'
 
 const Container = styled.div`
-    /* border-style: solid;
-    border-color: black; */
-    border-width: 1px;
-    /* background-color: red; */
-    /* min-width: 10%; */
-    width: 60%;
-    /* height: 50vh; */
-    /* padding: 50px; */
-    margin: auto;
-    .definition-list-grid {
-      grid-template-columns: fit-content(100%) 1fr;
-    }
+  // Very small devices (up to 576px)
+  @media only screen and (max-width: 576px) {
+    // background-color: yellow;
+    width: 100%;
+  }
+  // Small devices (landscape phones, 576px and up)
+  @media only screen and (min-width: 576px) {
+    // background-color: green;
+    width: 100%;
+  }
+
+  // Medium devices (tablets, 768px and up)
+  @media only screen and (min-width: 768px) {
+    // background-color: blue;
+    width: 95%;
+  }
+
+  // Large devices (desktops, 992px and up)
+  @media only screen and (min-width: 992px) {
+    // background-color: purple;
+    width: 90%;
+  }
+
+  // Extra large devices (large desktops, 1200px and up)
+  @media only screen and (min-width: 1200px) {
+    // background-color: red;
+    width: 80%;
+  }
+
+  margin: auto;
+  .definition-list-grid {
+    grid-template-columns: fit-content(100%) 1fr;
+  }
 `
 const Button = styled.button`
     padding: 10px;
