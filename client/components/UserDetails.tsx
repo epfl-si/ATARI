@@ -57,6 +57,57 @@ const Buttons = styled.div`
   flex-wrap: wrap;
   gap: 1vh;
 `
+const UserInfoContainer = styled.div`
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-right: 30px;
+  padding-left: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  min-width: 60%;
+
+  // Very small devices (up to 576px)
+  @media only screen and (max-width: 576px) {
+    // background-color: yellow;
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: rgba(255,0,0,0.6);
+  }
+
+  // Small devices (landscape phones, 576px and up)
+  @media only screen and (min-width: 576px) {
+    // background-color: green;
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: rgba(255,0,0,0.6);
+  }
+
+  // Medium devices (tablets, 768px and up)
+  @media only screen and (min-width: 768px) {
+    // background-color: blue;
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: rgba(255,0,0,0.6);
+  }
+
+  // Large devices (desktops, 992px and up)
+  @media only screen and (min-width: 992px) {
+    // background-color: purple;
+    border-top: none;
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: rgba(255,0,0,0.6);
+  }
+
+  // Extra large devices (large desktops, 1200px and up)
+  @media only screen and (min-width: 1200px) {
+    // background-color: red;
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: rgba(255,0,0,0.6);
+  }
 `
 
 function UserDetails(props:{user:DigestUser}) {
@@ -182,18 +233,7 @@ function UserDetails(props:{user:DigestUser}) {
             }
           </div>
         </div>
-        <div style={{
-          paddingTop: '20px',
-          paddingBottom: '20px',
-          paddingRight: '30px',
-          paddingLeft:'30px',
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          minWidth: '60%',
-          border: '2px solid red',
-        }}>
+        <UserInfoContainer>
           <div style={{
             width: '100%',
             display:'flex',
@@ -281,7 +321,7 @@ function UserDetails(props:{user:DigestUser}) {
               }
             </Buttons>
           </div>
-        </div>
+        </UserInfoContainer>
       </div>
     </Container>
   );
