@@ -43,6 +43,7 @@ function SearchBar(props:{handleOneLastResult: Function, sciper: string | undefi
 
     return (
         <Autocomplete
+            id="atariSearchBar"
             freeSolo
             ListboxProps={{ style: { maxHeight: 200, overflow: 'auto' } }}
             autoHighlight={true}

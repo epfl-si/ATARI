@@ -134,6 +134,17 @@ function UserDetails(props:{user:DigestUser}) {
       })
     }, [props.user.id])
 
+    React.useEffect(() => {
+      function handleKeyDown(e) {
+        // console.log(e.keyCode);
+        if (e.keyCode === 27) { // Escape
+          document.getElementById('atariSearchBar').value = '';
+          document.getElementById('atariSearchBar').focus();
+        }
+      }
+      document.addEventListener('keydown', handleKeyDown);
+    }, []);
+
     const easterStyle = () => {
       if (props.user.id == 169419) return 'hover-rotate nbo-special';
       if (props.user.id == 348084) return 'hover-rotate sami-special';
