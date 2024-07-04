@@ -112,6 +112,7 @@ const UserInfoContainer = styled.div`
 
 function UserDetails(props:{user:DigestUser}) {
     const [accreds, setAccreds] = React.useState([]);
+    const [easterStyle, setEasterStyle] = React.useState("");
 
     React.useEffect(() => {
       Meteor.call('getAccreds.sciper', props.user.id, function(err, res) {
@@ -122,6 +123,23 @@ function UserDetails(props:{user:DigestUser}) {
         }
       })
     }, [props.user.id])
+
+    React.useEffect(() => {
+      setEasterStyle("hover-rotate");
+
+      if (props.user.id == 169419) return setEasterStyle('hover-rotate nbo-special');
+      if (props.user.id == 348084) return setEasterStyle('hover-rotate sami-special');
+      if (props.user.id == 316897) return setEasterStyle('hover-rotate jerome-special');
+
+    }, [props.user.id])
+
+    React.useEffect(() => {
+      accreds.map(unit => {
+        if(props.user.id == 169419 || props.user.id == 348084 || props.user.id == 316897) return;
+        if (unit.unitid == 13030) return setEasterStyle('hover-rotate fsd-special');
+        if (unit.unitid == 13034) return setEasterStyle('hover-rotate sdesk-special');
+      });
+    })
     const [adData, setAdData] = React.useState({})
 
     React.useEffect(() => {
@@ -144,22 +162,6 @@ function UserDetails(props:{user:DigestUser}) {
       }
       document.addEventListener('keydown', handleKeyDown);
     }, []);
-
-    const easterStyle = () => {
-      if (props.user.id == 169419) return 'hover-rotate nbo-special';
-      if (props.user.id == 348084) return 'hover-rotate sami-special';
-      if (props.user.id == 316897) return 'hover-rotate jerome-special';
-
-      accreds.map(unit => {
-        // FIXME: this is not called at the right time
-        // console.log(unit.unitid)
-        if (unit.unitid == 13030) return 'hover-rotate fsd-special';
-        if (unit.unitid == 13034) return 'hover-rotate sdesk-special';
-      });
-
-      // return the default "small tilting"
-      return "hover-rotate";
-    };
 
     const serviceNowCreateTicketLinkGenerator = () => {
       const url = `https://epfl.service-now.com/incident.do?
@@ -199,7 +201,7 @@ function UserDetails(props:{user:DigestUser}) {
     <Container>
       <div className="d-lg-flex flex-row" style={{ marginBottom: '40px' }}>
         <div className="card-body d-flex flex-column align-items-center" style={{ minWidth: '40%', }}>
-          <figure className={easterStyle()}>
+          <figure className={easterStyle}>
             <img
               className="img-fluid"
               src={`https://people.epfl.ch/private/common/photos/links/${props.user.id}.jpg`}
