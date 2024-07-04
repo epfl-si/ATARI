@@ -1,0 +1,93 @@
+/**
+ * This CSS add some UX to the user details' page
+ *
+ * - Check this https://codepen.io/chriscoyier/pen/AmEYvZ if you need cursors
+ *
+ */
+ 
+.hover-rotate {
+  width: 100px;
+  height: 100px; /* Beware of photo in portrait (316897) */
+  min-width: 150px;
+  min-height: 150px;
+  text-align: center;
+  overflow: hidden;
+  border-radius: 100%;
+}
+.hover-rotate:hover img {
+  cursor: pointer;
+  transition: all 0.15s;
+  transform: rotate(7deg);
+} 
+/**
+ * Let call this a easter egg ^^'
+ */
+@keyframes skew-x-shakeng{
+  0% { transform: skewX(-15deg); }
+  5% { transform: skewX(15deg); }
+  10% { transform: skewX(-15deg); }
+  15% { transform: skewX(15deg); }
+  20% { transform: skewX(0deg); }
+  100% { transform: skewX(0deg); }
+}
+.nbo-special:hover img {
+  animation: skew-x-shakeng 0.25s infinite;
+  cursor:url('tumblr_luaznhDpRB1qmvaoo540.gif') 10 3, auto;
+}
+
+@keyframes jump-shaking {
+  0% { transform: translateX(0) }
+  25% { transform: translateY(-9px) }
+  35% { transform: translateY(-9px) rotate(17deg) }
+  55% { transform: translateY(-9px) rotate(-17deg) }
+  65% { transform: translateY(-9px) rotate(17deg) }
+  75% { transform: translateY(-9px) rotate(-17deg) }
+  100% { transform: translateY(0) rotate(0) }
+}
+.sami-special:hover img {
+  animation: jump-shaking 0.83s infinite;
+  cursor:url('/tumblr_luazhagziv1qmvaoo540.gif') 10 3, auto;
+}
+
+@keyframes wobble {
+  0%, 100% {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+  }
+  15% {
+    -webkit-transform: translateX(-32px) rotate(-10deg);
+    transform: translateX(-32px) rotate(-10deg);
+  }
+  30% {
+    -webkit-transform: translateX(calc(32px / 2)) rotate(10deg);
+    transform: translateX(calc(32px / 2)) rotate(10deg);
+  }
+  45% {
+    -webkit-transform: translateX(calc(-32px / 2)) rotate(calc(-10deg / 1.8));
+    transform: translateX(calc(-32px / 2)) rotate(calc(-10deg / 1.8));
+  }
+  60% {
+    -webkit-transform: translateX(calc(32px / 3.3)) rotate(calc(10deg / 3));
+    transform: translateX(calc(32px / 3.3)) rotate(calc(10deg / 3));
+  }
+  75% {
+    -webkit-transform: translateX(calc(-32px / 5.5)) rotate(calc(-10deg / 5));
+    transform: translateX(calc(-32px / 5.5)) rotate(calc(-10deg / 5));
+  }
+}
+.fsd-special:hover img {
+  animation: wobble 1s ease infinite;
+  cursor:url('/tumblr_luazheYNL11qmvaoo540.gif') 10 3, auto;
+}
+
+.jerome-special:hover img {
+  transform: rotate(-6deg);
+  cursor:url('/tumblr_luazndwt5j1qmvaoo540.gif') 10 3, auto;
+}
+.sdesk-special:hover img {
+  cursor:url('/tumblr_m2wiw8YuiF1qfamg6540.gif') 10 3, auto;
+  transform: rotate(-360deg);
+  transition: all 0.5s;
+}

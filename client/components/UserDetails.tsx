@@ -5,39 +5,114 @@ import CopyButton from './CopyButton'
 import Unit from './Unit'
 import { UserDetails } from '../../imports/api/UserDetails';
 import { Link } from 'react-router-dom'
+import '../css/UserDetails.css'
 
 const Container = styled.div`
-    /* border-style: solid;
-    border-color: black; */
-    border-width: 1px;
-    /* background-color: red; */
-    /* min-width: 10%; */
-    width: 60%;
-    /* height: 50vh; */
-    /* padding: 50px; */
-    margin: auto;
-    .definition-list-grid {
-      grid-template-columns: fit-content(100%) 1fr;
-    }
+  // Very small devices (up to 576px)
+  @media only screen and (max-width: 576px) {
+    // background-color: yellow;
+    width: 100%;
+  }
+  // Small devices (landscape phones, 576px and up)
+  @media only screen and (min-width: 576px) {
+    // background-color: green;
+    width: 100%;
+  }
+
+  // Medium devices (tablets, 768px and up)
+  @media only screen and (min-width: 768px) {
+    // background-color: blue;
+    width: 95%;
+  }
+
+  // Large devices (desktops, 992px and up)
+  @media only screen and (min-width: 992px) {
+    // background-color: purple;
+    width: 90%;
+  }
+
+  // Extra large devices (large desktops, 1200px and up)
+  @media only screen and (min-width: 1200px) {
+    // background-color: red;
+    width: 80%;
+  }
+
+  margin: auto;
+  .definition-list-grid {
+    grid-template-columns: fit-content(100%) 1fr;
+  }
 `
 const Button = styled.button`
-    padding: 10px;
-    padding-left: 20px;
-    padding-right: 20px;
-    /* margin: 10px; */
-    border-radius: 5px;
-    /* width: 50vw; */
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  /* margin: 10px; */
+  border-radius: 5px;
+  /* width: 50vw; */
 `
 const Buttons = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    gap: 1vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 1vh;
+`
+const UserInfoContainer = styled.div`
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-right: 30px;
+  padding-left: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  min-width: 60%;
+
+  // Very small devices (up to 576px)
+  @media only screen and (max-width: 576px) {
+    // background-color: yellow;
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: rgba(255,0,0,0.6);
+  }
+
+  // Small devices (landscape phones, 576px and up)
+  @media only screen and (min-width: 576px) {
+    // background-color: green;
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: rgba(255,0,0,0.6);
+  }
+
+  // Medium devices (tablets, 768px and up)
+  @media only screen and (min-width: 768px) {
+    // background-color: blue;
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: rgba(255,0,0,0.6);
+  }
+
+  // Large devices (desktops, 992px and up)
+  @media only screen and (min-width: 992px) {
+    // background-color: purple;
+    border-top: none;
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: rgba(255,0,0,0.6);
+  }
+
+  // Extra large devices (large desktops, 1200px and up)
+  @media only screen and (min-width: 1200px) {
+    // background-color: red;
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: rgba(255,0,0,0.6);
+  }
 `
 
 function UserDetails(props:{user:DigestUser}) {
     const [accreds, setAccreds] = React.useState([]);
+    const [easterStyle, setEasterStyle] = React.useState("");
 
     React.useEffect(() => {
       Meteor.call('getAccreds.sciper', props.user.id, function(err, res) {
@@ -48,6 +123,23 @@ function UserDetails(props:{user:DigestUser}) {
         }
       })
     }, [props.user.id])
+
+    React.useEffect(() => {
+      setEasterStyle("hover-rotate");
+
+      if (props.user.id == 169419) return setEasterStyle('hover-rotate nbo-special');
+      if (props.user.id == 348084) return setEasterStyle('hover-rotate sami-special');
+      if (props.user.id == 316897) return setEasterStyle('hover-rotate jerome-special');
+
+    }, [props.user.id])
+
+    React.useEffect(() => {
+      accreds.map(unit => {
+        if(props.user.id == 169419 || props.user.id == 348084 || props.user.id == 316897) return;
+        if (unit.unitid == 13030) return setEasterStyle('hover-rotate fsd-special');
+        if (unit.unitid == 13034) return setEasterStyle('hover-rotate sdesk-special');
+      });
+    })
     const [adData, setAdData] = React.useState({})
 
     React.useEffect(() => {
@@ -59,11 +151,57 @@ function UserDetails(props:{user:DigestUser}) {
         }
       })
     }, [props.user.id])
+
+    React.useEffect(() => {
+      function handleKeyDown(e) {
+        // console.log(e.keyCode);
+        if (e.keyCode === 27) { // Escape
+          document.getElementById('atariSearchBar').value = '';
+          document.getElementById('atariSearchBar').focus();
+        }
+      }
+      document.addEventListener('keydown', handleKeyDown);
+    }, []);
+
+    const serviceNowCreateTicketLinkGenerator = () => {
+      const url = `https://epfl.service-now.com/incident.do?
+                sys_id=-1
+                &sysparm_stack=incident_list.do
+                &sysparm_query=short_description=Ticket pour ${props.user.firstname} ${props.user.lastname}^
+                caller_id=javascript:
+                  var userRecord = new GlideRecord('sys_user'); 
+                  userRecord.addQuery('user_name', '${props.user.id}'); 
+                  userRecord.query(); 
+                  if(userRecord.next()) { userRecord.sys_id }^
+                category=incident^
+                assigned_to=javascript:
+                  gs.getUserID()^
+                assignment_group=javascript:
+                  var assignmentGroup = new GlideRecord('sys_user_group');
+                  assignmentGroup.addQuery('name', 'SI_SERVICEDESK');
+                  assignmentGroup.query();
+                  if(assignmentGroup.next()) { assignmentGroup.sys_id }^
+                business_service=javascript:
+                  var businessService = new GlideRecord('cmdb_ci_service');
+                  businessService.addQuery('name', 'Service Desk');
+                  businessService.query();
+                  if(businessService.next()) { businessService.getValue('sys_id') }^
+                description=%0ANote: Ticket ouvert pour ${props.user.firstname} ${props.user.lastname} le ${new Date().toLocaleString('en-GB')} via ATARI (<https://atari.epfl.ch>).`;
+      return url.replace(/  +/g, '');
+    };
+
+    const copyContentToClipboard = async (text) => {
+      navigator.clipboard.writeText(text).then(
+        () => {/*ok*/},
+        () => { console.error("😢 An error occurred during the copy process");}
+      );
+    };
+
   return (
     <Container>
       <div className="d-lg-flex flex-row" style={{ marginBottom: '40px' }}>
         <div className="card-body d-flex flex-column align-items-center" style={{ minWidth: '40%', }}>
-          <div style={{ width: "100px",  height: "100px", position: 'relative', overflow: 'hidden', borderRadius: '100%'}}>
+          <figure className={easterStyle}>
             <img
               className="img-fluid"
               src={`https://people.epfl.ch/private/common/photos/links/${props.user.id}.jpg`}
@@ -73,13 +211,15 @@ function UserDetails(props:{user:DigestUser}) {
               }}
               alt={`${props.user.firstname} ${props.user.lastname} profile picture`}
             />
-          </div>
-          <h3 style={{ textAlign: 'center', marginTop: '15px', textDecoration: 'underline', textDecorationColor: 'red', textUnderlineOffset: '6px'}}>
+          </figure>
+          <h3 
+            onClick={async () => copyContentToClipboard(`${props.user.firstname} ${props.user.lastname}`)}
+            style={{ textAlign: 'center', marginTop: '15px', textDecoration: 'underline', textDecorationColor: 'red', textUnderlineOffset: '6px', cursor: 'copy'}}>
             {`${props.user.firstname} ${props.user.lastname}`}
           </h3>
           <div style={{ textAlign: 'start', display: 'grid' }}>
             <div>
-              <strong>Sciper</strong> : {props.user.id}
+              <strong>Sciper</strong> : <span onClick={async () => copyContentToClipboard(props.user.id)} style={{cursor: 'copy'}}>{props.user.id}</span>
               <CopyButton
                 text={props.user.id}
               />
@@ -87,7 +227,7 @@ function UserDetails(props:{user:DigestUser}) {
             {
               props.user.email && (
               <div>
-                <strong>Email</strong> : {props.user.email}
+                <strong>Email</strong> : <span onClick={async () => copyContentToClipboard(props.user.email)} style={{cursor: 'copy'}}>{props.user.email}</span>
                 <CopyButton
                   text={props.user.email}
                 />
@@ -97,7 +237,7 @@ function UserDetails(props:{user:DigestUser}) {
             {
               props.user.account && (
                 <div>
-                  <strong>Nom d'utilisateur</strong> : {props.user.account.username}
+                  <strong>Nom d'utilisateur</strong> : <span onClick={async () => copyContentToClipboard(props.user.account.username)} style={{cursor: 'copy'}}>{props.user.account.username}</span>
                   <CopyButton
                     text={props.user.account.username}
                   />
@@ -107,59 +247,42 @@ function UserDetails(props:{user:DigestUser}) {
             {
               props.user.account && (
                 <div style={{ paddingTop: '15px' }}>
-                  <a href={`https://epfl.service-now.com/incident.do?sys_id=-1&sysparm_stack=incident_list.do&sysparm_query=short_description=Ticket pour ${props.user.firstname} ${props.user.lastname}^
-                          caller_id=javascript:var userRecord = new GlideRecord('sys_user'); userRecord.addQuery('user_name', '${props.user.id}'); userRecord.query(); if(userRecord.next()) { userRecord.sys_id }^
-                          category=incident^assigned_to=javascript:gs.getUserID()^
-                          assignment_group=javascript:var assignmentGroup = new GlideRecord('sys_user_group'); assignmentGroup.addQuery('name', 'SI_SERVICEDESK'); assignmentGroup.query(); if(assignmentGroup.next()) { assignmentGroup.sys_id }^
-                          business_service=javascript:var businessService = new GlideRecord('cmdb_ci_service'); businessService.addQuery('name', 'Service Desk'); businessService.query(); if(businessService.next()) { businessService.getValue('sys_id') }^
-                          description=%0A%0ATicket ouvert pour ${props.user.firstname} ${props.user.lastname} le ${new Date().toLocaleString('en-GB')} via ATARI`}
-                      target="_blank">
-                            <Button className="btn btn-primary">Créer un ticket pour cet utilisateur</Button>
+                  <a href={serviceNowCreateTicketLinkGenerator()} target="_blank">
+                    <Button className="btn btn-primary">Créer un ticket pour cet utilisateur</Button>
                   </a>
                 </div>
               )
             }
           </div>
         </div>
-        <div style={{
-          paddingTop: '20px',
-          paddingBottom: '20px',
-          paddingRight: '30px',
-          paddingLeft:'30px',
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          minWidth: '60%',
-          border: '2px solid red',
-        }}>
+        <UserInfoContainer>
           <div style={{
             width: '100%',
             display:'flex',
             flexDirection: 'column',
             alignItems:'start',
-            maxHeight: '600px',
+            // maxHeight: '600px',
             height: '100%',
-            overflowY: 'scroll',
+            // overflowY: 'scroll',
             overflowX: 'hidden',
             position: 'relative'
             }}
           >
             <h3 id="general"><a href="#" className="link-pretty">Général</a></h3>
-            <p>
+            <>
               <ul>
-                <li><strong>Genre</strong> : {props.user.gender}</li>
+                <li key="gender"><strong>Genre</strong> : {props.user.gender}</li>
                 {accreds ? (
-                  accreds.sort((a,b) => a.order - b.order).map((x, i) => <li><div key={i}>{<Unit infos={x} user={props.user} />}</div></li>)
+                  accreds.sort((a,b) => a.order - b.order).map((x, i) => <li key={i}><div>{<Unit infos={x} user={props.user} />}</div></li>)
                 ) : (
                   <></>
                 )}
               </ul>
-            </p>
+            </>
             {adData && (
               <div>
                 <h3 id="active-directory"><a href="#" className="link-pretty">Active Directory</a></h3>
-                <p>
+                <>
                   <ul>
                     {adData.userPrincipalName && (
                       <li><strong>Domaine\login</strong> : {`${adData.userPrincipalName?.split('@')[1].split('.')[0].toUpperCase()}\\${adData.sAMAccountName}`}</li>
@@ -189,7 +312,7 @@ function UserDetails(props:{user:DigestUser}) {
                       )
                     }
                   </ul>
-                </p>
+                </>
               </div>
             )}
             <h3 id="tools"><a id="tools-a" href="#" className="link-pretty">Tools</a></h3>
@@ -220,7 +343,7 @@ function UserDetails(props:{user:DigestUser}) {
               }
             </Buttons>
           </div>
-        </div>
+        </UserInfoContainer>
       </div>
     </Container>
   );
