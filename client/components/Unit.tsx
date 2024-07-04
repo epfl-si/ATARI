@@ -16,19 +16,11 @@ function Unit(props:{show?: boolean, infos: UnitInfos, user: DigestUser}) {
       } else {
         setAdminsIT([]);
         if(res.authorizations) {
-          const adminResArray = [];
-          res.authorizations.map(auth => {
-            Meteor.call('getUser.sciper', auth.persid, function(err, adminRes) {
-              if(err) {
-                console.log(err)
-              } else {
-                adminResArray.push(adminRes);
-                if (adminResArray.length === res.authorizations.length) {
-                  setAdminsIT(adminResArray);
-                }
-              }
-            })
+          let allAdminsIT = [];
+          res.authorizations.map(role => {
+            allAdminsIT.push(role.person);
           })
+          setAdminsIT(allAdminsIT)
         }
       }
     })
