@@ -1,0 +1,4 @@
+/* Remove bullets in autocomplete */
+.MuiAutocomplete-popper li::before {
+  visibility: hidden;
+}
