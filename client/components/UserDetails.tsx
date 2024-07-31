@@ -332,7 +332,7 @@ function UserDetails(props:{user:DigestUser}) {
                     <Link to={`https://it.epfl.ch/backoffice/sys_user.do?sysparm_query=user_name=${props.user.id}`} target='_blank'>
                       <Button className="btn btn-secondary">ServiceNow</Button>
                     </Link>
-                    <Link to={`https://search.epfl.ch/?filter=people&q=${props.user.email}`} target='_blank'>
+                    <Link to={'https://people.epfl.ch/' + (props.user.email ? props.user.email.replace('@epfl.ch', '') : props.user.id)} target='_blank'>
                       <Button className="btn btn-secondary">People</Button>
                     </Link>
                     <Link to={`https://mailwww.epfl.ch/emailStatus.cgi?query=${props.user.email}`} target='_blank'>
