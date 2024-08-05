@@ -245,6 +245,46 @@ function UserDetails(props:{user:DigestUser}) {
               )
             }
             {
+              adData && (
+                <div>
+                  <strong>GID</strong> : <span onClick={async () => copyContentToClipboard(adData.gidNumber)} style={{cursor: 'copy'}}>{adData.gidNumber}</span>
+                  <CopyButton
+                    text={adData.gidNumber}
+                  />
+                </div>
+              )
+            }
+            {
+              adData && (
+                <div>
+                  <strong>UID</strong> : <span onClick={async () => copyContentToClipboard(adData.uidNumber)} style={{cursor: 'copy'}}>{adData.uidNumber}</span>
+                  <CopyButton
+                    text={adData.uidNumber}
+                  />
+                </div>
+              )
+            }
+            {
+              adData && (
+                <div>
+                  <strong>Home</strong> : <span onClick={async () => copyContentToClipboard(adData.unixHomeDirectory)} style={{cursor: 'copy'}}>{adData.unixHomeDirectory}</span>
+                  <CopyButton
+                    text={adData.unixHomeDirectory}
+                  />
+                </div>
+              )
+            }
+            {
+              adData && (
+                <div>
+                  <strong>Shell</strong> : <span onClick={async () => copyContentToClipboard(adData.loginShell)} style={{cursor: 'copy'}}>{adData.loginShell}</span>
+                  <CopyButton
+                    text={adData.loginShell}
+                  />
+                </div>
+              )
+            }
+            {
               props.user.account && (
                 <div style={{ paddingTop: '15px' }}>
                   <a href={serviceNowCreateTicketLinkGenerator()} target="_blank">
