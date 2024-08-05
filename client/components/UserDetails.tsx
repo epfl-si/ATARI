@@ -245,6 +245,16 @@ function UserDetails(props:{user:DigestUser}) {
               )
             }
             {
+              adData && (
+                <div>
+                  <strong>GID</strong> : <span onClick={async () => copyContentToClipboard(adData.gidNumber)} style={{cursor: 'copy'}}>{adData.gidNumber}</span>
+                  <CopyButton
+                    text={adData.gidNumber}
+                  />
+                </div>
+              )
+            }
+            {
               props.user.account && (
                 <div style={{ paddingTop: '15px' }}>
                   <a href={serviceNowCreateTicketLinkGenerator()} target="_blank">
