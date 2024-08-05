@@ -62,5 +62,19 @@ Meteor.methods({
           return response;
       });
     
+    },
+    'getOwnEmailAddressProperty.user': async function(sciper) {
+      const auth = Buffer.from(`${settings.api.username}:${settings.api.password}`).toString("base64");
+      return fetch(encodeURI(`https://api.epfl.ch/v1/authorizations?persid=${sciper}&type=property&authid=11`), {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Basic ${auth}`,
+        },
+      })
+      .then((response) => response.json())
+      .then((response) => {
+          return response;
+      });
     }
 })
