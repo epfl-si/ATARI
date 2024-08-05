@@ -113,6 +113,7 @@ const UserInfoContainer = styled.div`
 function UserDetails(props:{user:DigestUser}) {
     const [accreds, setAccreds] = React.useState([]);
     const [easterStyle, setEasterStyle] = React.useState("");
+    const [ownEmailAddrAuth, setOwnEmailAddrAuth] = React.useState(false);
 
     React.useEffect(() => {
       Meteor.call('getAccreds.sciper', props.user.id, function(err, res) {
@@ -148,6 +149,16 @@ function UserDetails(props:{user:DigestUser}) {
           console.log(err)
         } else {
           setAdData(res[0]);
+        }
+      })
+    }, [props.user.id])
+
+    React.useEffect(() => {
+      Meteor.call('getOwnEmailAddressProperty.user', props.user.id, function(err, res) {
+        if(err) {
+          console.log(err)
+        } else {
+          setOwnEmailAddrAuth(res.authorizations.length > 0);
         }
       })
     }, [props.user.id])
@@ -317,6 +328,7 @@ function UserDetails(props:{user:DigestUser}) {
                 ) : (
                   <></>
                 )}
+                <li key="ownEmailAddrAuth"><strong>Avoir une adresse email</strong> : {ownEmailAddrAuth ? "Oui" : "Non"}</li>
               </ul>
             </>
             {adData && (
