@@ -2,6 +2,7 @@ import { Autocomplete, TextField } from '@mui/material'
 import React from 'react'
 import { DigestUser } from '../../imports/api/DigestUser';
 import CircularProgress from '@mui/material/CircularProgress';
+import '../css/SearchBar.css'
 
 function SearchBar(props:{handleOneLastResult: Function, sciper: string | undefined}) {
 
