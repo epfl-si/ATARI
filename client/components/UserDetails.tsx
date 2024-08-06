@@ -256,6 +256,16 @@ function UserDetails(props:{user:DigestUser}) {
               )
             }
             {
+              props.user.sapid && (
+                <div>
+                  <strong>Matricule SAP</strong> : <span onClick={async () => copyContentToClipboard(props.user.sapid)} style={{cursor: 'copy'}}>{props.user.sapid}</span>
+                  <CopyButton
+                    text={props.user.sapid}
+                  />
+                </div>
+              )
+            }
+            {
               adData && (
                 <div>
                   <strong>GID</strong> : <span onClick={async () => copyContentToClipboard(adData.gidNumber)} style={{cursor: 'copy'}}>{adData.gidNumber}</span>
