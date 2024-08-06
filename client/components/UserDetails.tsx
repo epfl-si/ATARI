@@ -390,6 +390,9 @@ function UserDetails(props:{user:DigestUser}) {
                     <Link to={`https://mailwww.epfl.ch/emailStatus.cgi?query=${props.user.email}`} target='_blank'>
                       <Button className="btn btn-secondary">Check Email</Button>
                     </Link>
+                    <Link to={`https://mycamipro.epfl.ch/admin/home.php?page=cmpcardmgt&sciper=${props.user.id}`} target='_blank'>
+                      <Button className="btn btn-secondary">Camipro admin</Button>
+                    </Link>
                   </>
                 )
               }
