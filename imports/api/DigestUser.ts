@@ -54,6 +54,7 @@ export interface DigestUser {
   org: string;
   status: string;
   type: string;
+  sapid: string;
 }
 
 export const DigestUsersCollection : Mongo.Collection<DigestUser> =
