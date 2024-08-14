@@ -158,7 +158,12 @@ function UserDetails(props:{user:DigestUser}) {
         if(err) {
           console.log(err)
         } else {
-          setOwnEmailAddrAuth(res.authorizations.length > 0);
+          if(res.authorizations.length > 0) {
+            const filteredResAuth = res.authorizations.filter((e) => e.status == 'active')
+            setOwnEmailAddrAuth(filteredResAuth.length > 0);
+          } else {
+            setOwnEmailAddrAuth(false);
+          }
         }
       })
     }, [props.user.id])
