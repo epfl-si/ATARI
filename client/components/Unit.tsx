@@ -7,26 +7,36 @@ function Unit(props:{show?: boolean, infos: UnitInfos, user: DigestUser}) {
   const [show, setShow] = React.useState(false)
 
   const addressForUnit = props.user.addresses ? props.user.addresses.filter(e => parseInt(e.unitid) == props.infos.unitid) : []
-  const [adminsIT, setAdminsIT] = React.useState([])
+  const [explicitsAdminsIT, setExplicitsAdminsIT] = React.useState([]);
+  const [inheritedsAdminsIT, setInheritedsAdminsIT] = React.useState({});
 
   React.useEffect(() => {
     Meteor.call('getAdminsIT.unit', props.infos.unitid, function(err, res) {
       if(err) {
         console.log(err)
       } else {
-        setAdminsIT([]);
+        setExplicitsAdminsIT([]);
+        setInheritedsAdminsIT([]);
         if(res.authorizations) {
-          let allAdminsIT = [];
+          let explicitAdminsIT = [];
+          let inheritedAdminsIT = [];
           res.authorizations.map(role => {
-            allAdminsIT.push(role.person);
+            if(role.attribution == 'explicit') {
+              explicitAdminsIT.push(role)
+            } else if(role.attribution == 'inherited') {
+              inheritedAdminsIT.push(role)
+            }
           })
-          setAdminsIT(allAdminsIT)
+          let groupedInheritedAdminsIT = Object.groupBy(inheritedAdminsIT, ({ reasonname }) => reasonname);
+
+          setExplicitsAdminsIT(explicitAdminsIT);
+          setInheritedsAdminsIT(groupedInheritedAdminsIT);
         }
       }
     })
   }, [props.user.id, props.infos.unitid])
 
-  const [showAdminsIT, setShowAdminsIT] = React.useState(adminsIT.length > 10 ? false : true)
+  const [showAdminsIT, setShowAdminsIT] = React.useState(explicitsAdminsIT.length + inheritedsAdminsIT.length > 10 ? false : true)
 
   const [hover, setHover] = React.useState(false);
   const [hoverAdminsIT, setHoverAdminsIT] = React.useState(false);
@@ -86,7 +96,7 @@ function Unit(props:{show?: boolean, infos: UnitInfos, user: DigestUser}) {
                 </p>
               </div>
             </div>
-            {adminsIT.length >= 1 && (
+            {explicitsAdminsIT.length > 0|| inheritedsAdminsIT.length > 0 ? (
               <div className="row">
                 <div className="col-md">
                   <button style={{ paddingTop: 0, paddingBottom: 0, border: 0, color: hoverAdminsIT ? 'red' : '', transition: "all 0.1s linear" }}
@@ -102,14 +112,42 @@ function Unit(props:{show?: boolean, infos: UnitInfos, user: DigestUser}) {
                   </button>
                   <div className={`collapse ${showAdminsIT ? 'show' : ''} collapse-item collapse-item-desktop`} id={`collapse-adminsIT-${props.infos.unitid}`}>
                     <ol>
-                      {
-                        adminsIT.map(admin => <li><a href={`mailto:${admin.email}`}>{admin.email}</a></li>)
-                      }
+                      {explicitsAdminsIT.length > 0 && (
+                        <>
+                          <strong className="pb-5">Admins IT de {explicitsAdminsIT[0].resource.name}</strong>
+                          {explicitsAdminsIT.map(admin => (
+                            <li>
+                              <a href={`mailto:${admin.person.email}`}>{admin.person.email}</a> →&nbsp;
+                              <a href={`https://search.epfl.ch/?filter=unit&q=${admin.resource.name}`}>{admin.resource.name}</a>
+                            </li>
+                          ))}
+                        </>
+                      )}
+                      {Object.keys(inheritedsAdminsIT).length > 0 && (
+                        <>
+                          {
+                            Object.keys(inheritedsAdminsIT).map(function(key) {
+                              return (
+                                <>
+                                  <strong>Admins IT hérités de {key}</strong>
+                                  {
+                                    inheritedsAdminsIT[key].map(admin => (
+                                      <li>
+                                        <a href={`mailto:${admin.person.email}`}>{admin.person.email}</a>
+                                      </li>
+                                    ))
+                                  }
+                                </>
+                              )
+                            })
+                          }                   
+                        </>
+                      )}
                     </ol>
                   </div>
                 </div>
               </div>
-            )}
+            ) : ''}
         </div>
       </div>
 
