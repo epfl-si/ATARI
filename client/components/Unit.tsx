@@ -117,8 +117,7 @@ function Unit(props:{show?: boolean, infos: UnitInfos, user: DigestUser}) {
                           <strong className="pb-5">Admins IT de {explicitsAdminsIT[0].resource.name}</strong>
                           {explicitsAdminsIT.map(admin => (
                             <li>
-                              <a href={`mailto:${admin.person.email}`}>{admin.person.email}</a> →&nbsp;
-                              <a href={`https://search.epfl.ch/?filter=unit&q=${admin.resource.name}`}>{admin.resource.name}</a>
+                              <a href={`mailto:${admin.person.email}`}>{admin.person.email}</a>
                             </li>
                           ))}
                         </>
