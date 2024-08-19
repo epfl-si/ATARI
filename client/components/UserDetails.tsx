@@ -271,7 +271,7 @@ function UserDetails(props:{user:DigestUser}) {
               )
             }
             {
-              adData && (
+              adData.gidNumber && (
                 <div>
                   <strong>GID</strong> : <span onClick={async () => copyContentToClipboard(adData.gidNumber)} style={{cursor: 'copy'}}>{adData.gidNumber}</span>
                   <CopyButton
@@ -281,7 +281,7 @@ function UserDetails(props:{user:DigestUser}) {
               )
             }
             {
-              adData && (
+              adData.uidNumber && (
                 <div>
                   <strong>UID</strong> : <span onClick={async () => copyContentToClipboard(adData.uidNumber)} style={{cursor: 'copy'}}>{adData.uidNumber}</span>
                   <CopyButton
@@ -291,7 +291,7 @@ function UserDetails(props:{user:DigestUser}) {
               )
             }
             {
-              adData && (
+              adData.unixHomeDirectory && (
                 <div>
                   <strong>Home</strong> : <span onClick={async () => copyContentToClipboard(adData.unixHomeDirectory)} style={{cursor: 'copy'}}>{adData.unixHomeDirectory}</span>
                   <CopyButton
@@ -301,7 +301,7 @@ function UserDetails(props:{user:DigestUser}) {
               )
             }
             {
-              adData && (
+              adData.loginShell && (
                 <div>
                   <strong>Shell</strong> : <span onClick={async () => copyContentToClipboard(adData.loginShell)} style={{cursor: 'copy'}}>{adData.loginShell}</span>
                   <CopyButton
