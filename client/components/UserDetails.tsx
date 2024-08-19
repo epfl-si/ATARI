@@ -235,7 +235,7 @@ function UserDetails(props:{user:DigestUser}) {
           </h3>
           <div style={{ textAlign: 'start', display: 'grid' }}>
             <div>
-              <strong>Sciper</strong> : <span onClick={async () => copyContentToClipboard(props.user.id)} style={{cursor: 'copy'}}>{props.user.id}</span>
+              <strong>Sciper</strong> : <span onClick={async () => copyContentToClipboard(props.user.id)} style={{cursor: 'copy', marginRight: '50px'}}>{props.user.id}</span>
               <CopyButton
                 text={props.user.id}
               />
@@ -243,7 +243,7 @@ function UserDetails(props:{user:DigestUser}) {
             {
               props.user.email && (
               <div>
-                <strong>Email</strong> : <span onClick={async () => copyContentToClipboard(props.user.email)} style={{cursor: 'copy'}}>{props.user.email}</span>
+                <strong>Email</strong> : <span onClick={async () => copyContentToClipboard(props.user.email)} style={{cursor: 'copy', marginRight: '50px'}}>{props.user.email}</span>
                 <CopyButton
                   text={props.user.email}
                 />
@@ -253,7 +253,7 @@ function UserDetails(props:{user:DigestUser}) {
             {
               props.user.account && (
                 <div>
-                  <strong>Nom d'utilisateur</strong> : <span onClick={async () => copyContentToClipboard(props.user.account.username)} style={{cursor: 'copy'}}>{props.user.account.username}</span>
+                  <strong>Nom d'utilisateur</strong> : <span onClick={async () => copyContentToClipboard(props.user.account.username)} style={{cursor: 'copy', marginRight: '50px'}}>{props.user.account.username}</span>
                   <CopyButton
                     text={props.user.account.username}
                   />
@@ -263,7 +263,7 @@ function UserDetails(props:{user:DigestUser}) {
             {
               props.user.sapid && (
                 <div>
-                  <strong>Matricule SAP</strong> : <span onClick={async () => copyContentToClipboard(props.user.sapid)} style={{cursor: 'copy'}}>{props.user.sapid}</span>
+                  <strong>Matricule SAP</strong> : <span onClick={async () => copyContentToClipboard(props.user.sapid)} style={{cursor: 'copy', marginRight: '50px'}}>{props.user.sapid}</span>
                   <CopyButton
                     text={props.user.sapid}
                   />
@@ -273,7 +273,7 @@ function UserDetails(props:{user:DigestUser}) {
             {
               adData.gidNumber && (
                 <div>
-                  <strong>GID</strong> : <span onClick={async () => copyContentToClipboard(adData.gidNumber)} style={{cursor: 'copy'}}>{adData.gidNumber}</span>
+                  <strong>GID</strong> : <span onClick={async () => copyContentToClipboard(adData.gidNumber)} style={{cursor: 'copy', marginRight: '50px'}}>{adData.gidNumber}</span>
                   <CopyButton
                     text={adData.gidNumber}
                   />
@@ -283,7 +283,7 @@ function UserDetails(props:{user:DigestUser}) {
             {
               adData.uidNumber && (
                 <div>
-                  <strong>UID</strong> : <span onClick={async () => copyContentToClipboard(adData.uidNumber)} style={{cursor: 'copy'}}>{adData.uidNumber}</span>
+                  <strong>UID</strong> : <span onClick={async () => copyContentToClipboard(adData.uidNumber)} style={{cursor: 'copy', marginRight: '50px'}}>{adData.uidNumber}</span>
                   <CopyButton
                     text={adData.uidNumber}
                   />
@@ -293,7 +293,7 @@ function UserDetails(props:{user:DigestUser}) {
             {
               adData.unixHomeDirectory && (
                 <div>
-                  <strong>Home</strong> : <span onClick={async () => copyContentToClipboard(adData.unixHomeDirectory)} style={{cursor: 'copy'}}>{adData.unixHomeDirectory}</span>
+                  <strong>Home</strong> : <span onClick={async () => copyContentToClipboard(adData.unixHomeDirectory)} style={{cursor: 'copy', marginRight: '50px'}}>{adData.unixHomeDirectory}</span>
                   <CopyButton
                     text={adData.unixHomeDirectory}
                   />
@@ -303,7 +303,7 @@ function UserDetails(props:{user:DigestUser}) {
             {
               adData.loginShell && (
                 <div>
-                  <strong>Shell</strong> : <span onClick={async () => copyContentToClipboard(adData.loginShell)} style={{cursor: 'copy'}}>{adData.loginShell}</span>
+                  <strong>Shell</strong> : <span onClick={async () => copyContentToClipboard(adData.loginShell)} style={{cursor: 'copy', marginRight: '50px'}}>{adData.loginShell}</span>
                   <CopyButton
                     text={adData.loginShell}
                   />
