@@ -70,7 +70,8 @@ function CheckAD() {
           </ul>
         </span>
         <span><strong>Expire</strong> : {user.accountExpires == 9223372036854775807 ? 'Jamais' : new Date(((user.accountExpires / 10000000) - 11644473600) * 1000).toLocaleDateString('en-US')}</span>
-        <span><strong>Exchange mailbox</strong> : {user.msExchHomeServerName ? "Oui" : "Non"}</span>
+        <span><strong>Exchange mailbox</strong> : {user.msExchMailboxGuid ? "Oui" : "Non"}</span>
+        <span><strong>Where is the mailbox ?</strong> : {user.msExchRecipientTypeDetails == "1" ? "Exchange OnPrem" : "Exchange Online"}</span>
         <span><strong>A le droit Distrilog</strong> : {distrilog.length ? 'Oui' : 'Non'}</span>
 
 
