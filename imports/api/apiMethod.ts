@@ -20,7 +20,7 @@ Meteor.methods({
     },
     'getUser.query': async function(query) {
       const auth = Buffer.from(`${settings.api.username}:${settings.api.password}`).toString("base64");
-      return fetch(encodeURI(`https://api-preprod.epfl.ch/v1/persons?query=${query}`), {
+      return fetch(encodeURI(`https://api.epfl.ch/v1/persons?query=${query}`), {
         method: "GET",
         headers: {
           "Content-type": "application/json",
@@ -50,7 +50,7 @@ Meteor.methods({
     },
     'getAdminsIT.unit': async function(unitid) {
       const auth = Buffer.from(`${settings.api.username}:${settings.api.password}`).toString("base64");
-      return fetch(encodeURI(`https://api-preprod.epfl.ch/v1/authorizations?resid=${unitid}&authid=adminit&type=role&alldata=1`), {
+      return fetch(encodeURI(`https://api.epfl.ch/v1/authorizations?resid=${unitid}&authid=adminit&type=role&alldata=1`), {
         method: "GET",
         headers: {
           "Content-type": "application/json",
