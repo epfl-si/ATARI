@@ -18,7 +18,6 @@ function CheckAD() {
         const hasDistrilog = res[0].memberOf.filter((e) => e.startsWith('CN=DroitAccred_Distrilog'))
         setDistrilog(hasDistrilog)
         setUser(res[0])
-        console.log(user)
       }
     })
   }, [])
