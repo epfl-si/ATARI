@@ -261,6 +261,18 @@ function UserDetails(props:{user:DigestUser}) {
               )
             }
             {
+              props.user.phones && props.user.phones.length > 0 && (
+                props.user.phones.slice(0, 2).map((phone, index) => 
+                  <div key={phone.id}>
+                    <strong>Téléphone</strong> : <span onClick={async () => copyContentToClipboard(phone.number)} style={{cursor: 'copy', marginRight: '50px'}}>{phone.number}</span>
+                    <CopyButton
+                      text={phone.number}
+                    />
+                  </div>
+                )
+              )
+            }
+            {
               props.user.sapid && (
                 <div>
                   <strong>Matricule SAP</strong> : <span onClick={async () => copyContentToClipboard(props.user.sapid)} style={{cursor: 'copy', marginRight: '50px'}}>{props.user.sapid}</span>
