@@ -380,6 +380,12 @@ function UserDetails(props:{user:DigestUser}) {
                       )
                     }
                     {
+                      adData.pwdLastSet && (
+                        <li><strong>Dernier changement de mot de passe</strong> : {adData.pwdLastSet == 0 ? 'Jamais' : new Date(((adData.pwdLastSet / 10000000) - 11644473600) * 1000).toLocaleDateString('fr-FR', 
+                        { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</li>
+                      )
+                    }
+                    {
                       !!adData.badPasswordTime && (
                         <li><strong>Dernier mot de passe erroné</strong> : {adData.badPasswordTime == 0 ? 'Jamais' : new Date(((adData.badPasswordTime / 10000000) - 11644473600) * 1000).toLocaleDateString('fr-FR',
                         { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</li>
