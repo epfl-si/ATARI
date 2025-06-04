@@ -14,15 +14,11 @@ npm:
 
 # run everything
 all:
-	$(MAKE) -j3 tunnel meteor dev
+	$(MAKE) -j3 meteor dev
 
 # frontend
 meteor:
 	ATARI_ENVIRONMENT=local meteor
-
-# https://gitlab.epfl.ch/si-idevfsd/bastion
-tunnel:
-	ssh -N -L3307:db-cadi-staging.epfl.ch:3306 bastion-test
 
 users:
 	node server/special_users.js

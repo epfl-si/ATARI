@@ -21,9 +21,8 @@ while Meteor simplifies accessing information from the backend for the frontend.
 
 **Back-end**: The application's back-end is developed using the Meteor framework.
 
-**Data sources**: Information about the organization's members is retrieved from
-an external databases (CADI_HELPDESK), but also from the AD and
-https://api.epfl.ch.
+**Data sources**: Information about the organization's members is retreived from
+https://api.epfl.ch, but also from the AD.
 
 **Security**: Measures have been implemented to protect the sensitive data of
 the organization's members. These measures include authentication with EPFL's
