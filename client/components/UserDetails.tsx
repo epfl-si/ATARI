@@ -364,7 +364,7 @@ function UserDetails(props:{user:DigestUser}) {
                 <>
                   <ul>
                     {adData.userPrincipalName && (
-                      <li><strong>Domaine\login</strong> : {`${adData.userPrincipalName?.split('@')[1].split('.')[0].toUpperCase()}\\${adData.sAMAccountName}`}</li>
+                      <li><strong>Domaine\login</strong> : INTRANET\{`${adData.sAMAccountName}`}</li>
                     )}
                     <li><strong>Status du compte</strong> : {
                       adData.userAccountControl
