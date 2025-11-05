@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@types/meteor": "^2.9.2",
-    "@types/node": "^20.1.2",
+    "@types/node": "^22.18.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
