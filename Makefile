@@ -3,10 +3,10 @@
 dev: up logs
 
 up:
-	docker compose -f docker-compose-dev.yml up -d
+	docker compose up -d
 
 logs:
-	docker compose -f docker-compose-dev.yml logs atari-meteor
+	docker compose logs atari-meteor
 
 npm:
 	npm i
