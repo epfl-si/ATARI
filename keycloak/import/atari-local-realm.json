@@ -1,12 +1,12 @@
 {
-  "realm" : "react-starter-kit",
+  "realm" : "atari-local",
   "enabled" : true,
   "loginTheme": "EPFL",
   "groups" : [ {
-    "name" : "react-starter-kit_acces_lecture",
-    "path" : "/react-starter-kit_acces_lecture",
+    "name" : "atari-local_acces_lecture",
+    "path" : "/atari-local_acces_lecture",
     "attributes" : {
-      "groups" : [ "react-starter-kit_acces_lecture" ]
+      "groups" : [ "atari-local_acces_lecture" ]
     }
   } ],
   "users" : [ {
@@ -24,9 +24,9 @@
     } ],
     "disableableCredentialTypes" : [ ],
     "requiredActions" : [ ],
-    "realmRoles" : [ "default-roles-react-starter-kit" ],
+    "realmRoles" : [ ],
     "notBefore" : 0,
-    "groups" : [ "/react-starter-kit_acces_lecture" ]
+    "groups" : [ "/atari-local_acces_lecture" ]
   } ],
   "clients" : [
     {
@@ -43,7 +43,7 @@
       "protocol" : "openid-connect"
     },
     {
-      "clientId" : "react-starter-kit",
+      "clientId" : "ATARI",
       "baseUrl" : "http://localhost:3000/",
       "enabled" : true,
       "redirectUris" : [ "*" ],
