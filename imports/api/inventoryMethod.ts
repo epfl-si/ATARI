@@ -1,8 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import { fetch } from 'meteor/fetch';
+import { ensure, canQueryInventory } from "/server/policy";
 
 Meteor.methods({
     'checkInventory.inventoryNumber': async function(inventoryNumber) {
+        await ensure(canQueryInventory);
         const viewstate = '/wEPDwULLTE3NDI5NTY5MjEPZBYCZg9kFgICAQ9kFgQCAw8PFgIeBFRleHQFBDIwMTlkZAIFDw8WAh8ABRImbmJzcDsmbmJzcDsmbmJzcDtkZGQnjKQXSJB9+8frbaKVFavOwPeEdQ=='
         const viewstateGenerator = '82FF7E29'
         const eventval = '/wEWAwLz84SMBgLc3uCnBAKA4sljyHPDmcQFnRVpw78LCG65+A618GI='

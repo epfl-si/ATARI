@@ -2,7 +2,6 @@ import * as React from 'react'
 import Search from './components/Search'
 import { useTracker } from 'meteor/react-meteor-data'
 import { Meteor } from 'meteor/meteor'
-import '../imports/types/UserInfo'
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import EPFLHeader from './components/EPFLHeader';
 import PleaseLogin from './components/PleaseLogin';

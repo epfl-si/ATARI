@@ -1,9 +1,11 @@
 import { Meteor } from 'meteor/meteor';
-const { Client } = require('ldapts');
+import { ensure, canQueryPersons } from "/server/policy";
 
+const { Client } = require('ldapts');
 
 Meteor.methods({
     'AD.user': async function(sciper) {
+        await ensure(canQueryPersons);
         const bindDN = Meteor.settings.ad.username;
         const password = Meteor.settings.ad.password;
         const searchDN = 'dc=intranet,dc=epfl,dc=ch';
