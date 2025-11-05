@@ -15,7 +15,7 @@ services:
   # details on the startup sequence of Keycloak (and the
   # --import-realm flag) in ./keycloak/README.md
   keycloak:
-    image: quay.io/keycloak/keycloak
+    image: quay.io/keycloak/keycloak:26.4
     command:
       - start-dev
       - --import-realm
