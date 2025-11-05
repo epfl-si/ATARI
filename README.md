@@ -44,7 +44,7 @@ Install the necessary dependancies of this project using Meteor:
 meteor npm i
 ```
 
-Then, you can run the integrality of the project just by using one make command:
+Then, you can run the entire project just by using one make command:
 ```sh
 make all
 ```
