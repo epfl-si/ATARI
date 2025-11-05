@@ -5,6 +5,13 @@ dev: up logs
 up:
 	docker compose up -d
 
+down:
+	docker compose stop
+
+purge: down
+	docker compose rm -f
+	docker volume rm atari_mariadb
+
 logs:
 	docker compose logs atari-meteor
 
@@ -18,7 +25,7 @@ all:
 
 # frontend
 meteor:
-	ATARI_ENVIRONMENT=local meteor
+	meteor --settings settings.json
 
 users:
 	node server/special_users.js

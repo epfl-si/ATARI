@@ -1,12 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 const { Client } = require('ldapts');
-import * as settings from '../../settings.json';
 
 
 Meteor.methods({
     'AD.user': async function(sciper) {
-        const bindDN = settings.ad.username;
-        const password = settings.ad.password;
+        const bindDN = Meteor.settings.ad.username;
+        const password = Meteor.settings.ad.password;
         const searchDN = 'dc=intranet,dc=epfl,dc=ch';
 
         let activeDirectories:any = [

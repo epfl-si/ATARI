@@ -3,6 +3,10 @@
     "This is a template for settings.json; see README.md for instructions.",
     "/* 2 */":
     "If you have access to it, please copy /keybase/team/epfl_atari/settings-dev.json here instead",
+    "debug": true,
+    "security": {
+        "accessGroup": "atari-local_acces_lecture"
+    },
     "ad": {
         "username": "active_directory_username",
         "password": "active_directory_password"
