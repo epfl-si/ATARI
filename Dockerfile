@@ -1,18 +1,24 @@
-FROM node:22.18.0
+ARG BASE_IMAGE=node:22.18.0
 
+FROM $BASE_IMAGE AS build
+
+RUN npx meteor
+ENV NODE_ENV=production
+
+ENV PATH=$PATH:/root/.meteor
 ENV METEOR_ALLOW_SUPERUSER=true
 ENV ROOT_URL="http://localhost:3000"
 
-COPY meteor-install.sh .
-
-RUN sh meteor-install.sh
-
 COPY . /usr/src/app
 WORKDIR /usr/src/app
+RUN meteor npm install
+RUN set -e -x; mkdir /app; meteor build --directory /app; \
+    cd /app/bundle/programs/server ; meteor npm install --production
 
-RUN if ! [ -d .meteor/local ] ; then  mkdir -p .meteor/local ; chmod -R 700 .meteor/local ; fi;
-# RUN meteor npm install
-EXPOSE 3000
+FROM $BASE_IMAGE
 
-# Starting meteor app. The application might take a while to start properly
-CMD ["meteor"]
+ENV NODE_ENV=production
+COPY --from=build /app /app
+WORKDIR /app/bundle
+
+CMD ["node", "main.js"]
