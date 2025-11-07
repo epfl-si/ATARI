@@ -52,7 +52,6 @@ export default function Home() {
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <WelcomeUser />
             <Routes>
               <Route path="/">
                 {isLoggedIn ? (
@@ -104,10 +103,4 @@ export default function Home() {
         </div>
       );
     }
-  
-}
-
-function WelcomeUser() {
-  const user = useTracker(() => Meteor.user());
-  return <>{user ? `Hello, ${user.given_name} ${user.family_name}!` : "Please log in."}</>
 }
