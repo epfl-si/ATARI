@@ -40,6 +40,6 @@
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
-    "patch-package": "^7.0.0"
+    "patch-package": "^8.0.1"
   }
 }
