@@ -1,7 +1,6 @@
 import * as React from 'react'
 
-import { Base, Header, FooterLight } from "@epfl/epfl-sti-react-library";
-import { StateEnum, LoginButton, IfOIDCState, useOpenIDConnectContext } from '@epfl-si/react-appauth'
+import { StateEnum, IfOIDCState, useOpenIDConnectContext } from '@epfl-si/react-appauth'
 import Search from './components/Search'
 import { Accounts } from 'meteor/accounts-base'
 import { useTracker } from 'meteor/react-meteor-data'
