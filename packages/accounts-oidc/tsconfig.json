@@ -1,0 +1,6 @@
+{
+  "compilerOptions": { "skipLibCheck": true },
+ "files": ["index.ts", "accounts-oidc-client.ts", "accounts-oidc-server.ts"],
+  "typeRoots": ["./@types"],
+  "include": ["@types/**/*.d.ts"]
+}

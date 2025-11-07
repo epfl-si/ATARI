@@ -5,7 +5,13 @@
     "skipLibCheck": true,
     "paths": {
        // allow absolute imports from project root:
-       "/*": ["./*"]
+       "/*": ["./*"],
+       // Give TypeScript a hand to figure out in-tree zodern:types'd packages
+       // Maybe we'll be able to remove this later, once we eject the package...
+       // Maybe not 🤷‍♂️
+       "meteor/epfl:accounts-oidc": [
+        "./.meteor/local/types/packages.d.ts"
+      ]
     }
   }
 }

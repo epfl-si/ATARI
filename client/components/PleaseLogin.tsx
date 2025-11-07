@@ -1,8 +1,6 @@
-import { Container } from "@mui/material";
-import React from "react";
-import {
-  useOpenIDConnectContext,
-} from "@epfl-si/react-appauth";
+import React from "react"
+import { Container } from "@mui/material"
+import { OIDC } from "meteor/epfl:accounts-oidc"
 
 function PleaseLogin() {
   return (
@@ -22,7 +20,7 @@ function PleaseLogin() {
       </p>
 
       <h2>Getting started</h2>
-      <p>To get started, you will first need to <a href="#" onClick={useOpenIDConnectContext().login}>Login</a> using
+      <p>To get started, you will first need to <a href="#" onClick={() => OIDC.login()}>log in</a> using
       your GASPAR credentials.</p>
       <p>Then, search someone in the search bar using first name, last name, email, sciper, ...</p>
 

@@ -33,8 +33,8 @@ system. The group `ATARI-access` is used to grants access to the application.
 
 First of all, clone the repository on your own device.
 
-Then, rename the `settings-mock.json` file in `settings.json` and replace the
-data with your own data.
+Then, either copy `/keybase/team/epfl_atari/settings-dev.json` to `settings.json` or (in case you lack access, or you don't use Keybase in the first place) rename the `settings-mock.json` file in `settings.json` and replace the
+data with your own data
 
 If not already done, [install the Meteor command-line tool](https://docs.meteor.com/install.html)
 and [Docker](https://docker.com) (You will only need to do this once.)

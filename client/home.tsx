@@ -1,8 +1,5 @@
 import * as React from 'react'
-
-import { StateEnum, IfOIDCState, useOpenIDConnectContext } from '@epfl-si/react-appauth'
 import Search from './components/Search'
-import { Accounts } from 'meteor/accounts-base'
 import { useTracker } from 'meteor/react-meteor-data'
 import { Meteor } from 'meteor/meteor'
 import '../imports/types/UserInfo'
@@ -15,13 +12,9 @@ import Footer from './components/Footer';
 import CheckAD from './components/CheckAD';
 
 export default function Home() {
-    const isLogged = useOpenIDConnectContext().state === StateEnum.LoggedIn || Meteor.user() !== null
-    const userInfos = useOpenIDConnectContext().idToken
+    const isLoggedIn = useTracker(() => !! Meteor.userId());
     const [alert, setAlert] = React.useState(false)
     const [alertInfos, setAlertInfos] = React.useState({reason: '', from: '', to: ''})
-    if (!isLogged) {
-      Meteor.logout()
-    }
 
     React.useEffect(() => {
       const maintenance = require('../maintenance.json')
@@ -34,7 +27,7 @@ export default function Home() {
     }, [])
 
     const urlParams = new URLSearchParams(window.location.search);
-    if(!isLogged && urlParams.get('error_description')) {
+    if(!isLoggedIn && urlParams.get('error_description')) {
       return (
         <div className="d-flex flex-column min-vh-100">
           <EPFLHeader />
@@ -62,42 +55,42 @@ export default function Home() {
             <WelcomeUser />
             <Routes>
               <Route path="/">
-                {isLogged ? (
+                {isLoggedIn ? (
                   <Route index element={<Search />} />
                 ) : (
                   <Route index element={<PleaseLogin />} />
                 )}
               </Route>
               <Route path="/:sciper">
-                {isLogged ? (
+                {isLoggedIn ? (
                   <Route index element={<Search />} />
                 ) : (
                   <Route index element={<PleaseLogin />} />
                 )}
               </Route>
               <Route path="/checkAD/:sciper">
-                {isLogged ? (
+                {isLoggedIn ? (
                   <Route index element={<CheckAD />} />
                   ) : (
                   <Route index element={<PleaseLogin />} />
                 )}
               </Route>
               <Route path="/checkLDAP/:sciper">
-                {isLogged ? (
+                {isLoggedIn ? (
                   <Route index element={<CheckLDAP />} />
                   ) : (
                   <Route index element={<PleaseLogin />} />
                 )}
               </Route>
               <Route path="/inv">
-                {isLogged ? (
+                {isLoggedIn ? (
                   <Route index element={<CheckInv />} />
                   ) : (
                   <Route index element={<PleaseLogin />} />
                 )}
               </Route>
               <Route path="/inv/:inventoryParam">
-                {isLogged ? (
+                {isLoggedIn ? (
                   <Route index element={<CheckInv />} />
                   ) : (
                   <Route index element={<PleaseLogin />} />
@@ -114,10 +107,7 @@ export default function Home() {
   
 }
 
-const WelcomeUser: React.FC = () => {
-  const user = useTracker(() => Meteor.user())
-  
-  return <IfOIDCState is={StateEnum.LoggedIn}>
-    {/* {user ? `Hello, ${user.given_name} ${user.family_name}!` : `Hello! For some reason you are logged into OIDC, but not on Meteor.` } */}
-  </IfOIDCState>
+function WelcomeUser() {
+  const user = useTracker(() => Meteor.user());
+  return <>{user ? `Hello, ${user.given_name} ${user.family_name}!` : "Please log in."}</>
 }

@@ -1,12 +1,10 @@
-import React from "react";
-import {
-  StateEnum,
-  useOpenIDConnectContext,
-} from "@epfl-si/react-appauth";
-
+import React from "react"
+import { Meteor } from "meteor/meteor"
+import { useTracker } from 'meteor/react-meteor-data'
+import { OIDC } from "meteor/epfl:accounts-oidc"
 
 function EPFLHeader() {
-  const isLogged = useOpenIDConnectContext().state === StateEnum.LoggedIn || Meteor.user() !== null
+  const isLoggedIn = useTracker(() => !! Meteor.userId());
   return (
     <header
       role="banner"
@@ -123,10 +121,10 @@ function EPFLHeader() {
           <ul>
             <li className="nav-item">
               <span>
-                {isLogged ? <a href="#" onClick={useOpenIDConnectContext().logout}>
+                {isLoggedIn ? <a href="#" onClick={() => Meteor.logout()}>
                     Logout
                   </a> : 
-                  <a href="#" onClick={useOpenIDConnectContext().login}>
+                  <a href="#" onClick={() => OIDC.login()}>
                     Login
                   </a>
                   }
