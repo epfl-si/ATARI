@@ -1,85 +1,26 @@
 import { Meteor } from 'meteor/meteor';
-import { fetch } from 'meteor/fetch';
 import { ensure, canQueryPersons, canQueryUnits } from "/server/policy";
+import { fetchEPFLAPI } from "/imports/server/epfl_api";
 
 Meteor.methods({
     'getUser.sciper': async function(sciper) {
-        await ensure(canQueryPersons);
-        const auth = Buffer.from(`${Meteor.settings.api.username}:${Meteor.settings.api.password}`).toString("base64");
-        return fetch(encodeURI(`https://api.epfl.ch/v1/persons/${sciper}`), {
-          method: "GET",
-          headers: {
-            "Content-type": "application/json",
-            Authorization: `Basic ${auth}`,
-          },
-        })
-        .then((response) => response.json())
-        .then((response) => {
-            return response;
-        });
-        
+      await ensure(canQueryPersons);
+      return await fetchEPFLAPI(`/v1/persons/${sciper}`);
     },
     'getUser.query': async function(query) {
       await ensure(canQueryPersons);
-      const auth = Buffer.from(`${Meteor.settings.api.username}:${Meteor.settings.api.password}`).toString("base64");
-      return fetch(encodeURI(`https://api.epfl.ch/v1/persons?query=${query}`), {
-        method: "GET",
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `Basic ${auth}`,
-        },
-      })
-      .then((response) => response.json())
-      .then((response) => {
-          return response;
-      });
-    
+      return await fetchEPFLAPI(`/v1/persons?query=${query}`);
     },
     'getAccreds.sciper': async function(sciper) {
       await ensure(canQueryPersons);
-      const auth = Buffer.from(`${Meteor.settings.api.username}:${Meteor.settings.api.password}`).toString("base64");
-      return fetch(encodeURI(`https://api.epfl.ch/v1/accreds?persid=${sciper}`), {
-        method: "GET",
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `Basic ${auth}`,
-        },
-      })
-      .then((response) => response.json())
-      .then((response) => {
-          return response;
-      });
-    
+      return await fetchEPFLAPI(`/v1/accreds?persid=${sciper}`);
     },
     'getAdminsIT.unit': async function(unitid) {
       await ensure(canQueryUnits);
-      const auth = Buffer.from(`${Meteor.settings.api.username}:${Meteor.settings.api.password}`).toString("base64");
-      return fetch(encodeURI(`https://api.epfl.ch/v1/authorizations?resid=${unitid}&authid=adminit&type=role&alldata=1`), {
-        method: "GET",
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `Basic ${auth}`,
-        },
-      })
-      .then((response) => response.json())
-      .then((response) => {
-          return response;
-      });
-    
+      return await fetchEPFLAPI(`/v1/authorizations?resid=${unitid}&authid=adminit&type=role&alldata=1`);
     },
     'getOwnEmailAddressProperty.user': async function(sciper) {
       await ensure(canQueryPersons);
-      const auth = Buffer.from(`${Meteor.settings.api.username}:${Meteor.settings.api.password}`).toString("base64");
-      return fetch(encodeURI(`https://api.epfl.ch/v1/authorizations?persid=${sciper}&type=property&authid=11`), {
-        method: "GET",
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `Basic ${auth}`,
-        },
-      })
-      .then((response) => response.json())
-      .then((response) => {
-          return response;
-      });
+      return await fetchEPFLAPI(`/v1/authorizations?persid=${sciper}&type=property&authid=11`);
     }
 })
