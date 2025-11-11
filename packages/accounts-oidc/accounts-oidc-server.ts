@@ -20,8 +20,8 @@ Accounts.oauth.registerService('oidc');
 //
 // RTFS at https://github.com/search?q=repo%3Ameteor%2Fmeteor+symbol%3AregisterService+path%3Aoauth_common.js&type=code
 OAuth.registerService('oidc', 2, null, async function(query) {
-  const accessToken = await fetchAccessToken(query);
-  const identity = await fetchIdentity(accessToken);
+  const { id_token, access_token } = await getTokens(query);
+  const identity = await fetchIdentity(access_token);
 
   const profileForNewUser = {};
   for (const k of ['given_name', 'family_name']) {
@@ -36,7 +36,8 @@ OAuth.registerService('oidc', 2, null, async function(query) {
     // both creations and updates):
     serviceData: {
       id: identity.email,
-      accessToken: accessToken,
+      accessToken: access_token,
+      claims: id_token ? decodeJWT(id_token).payload : undefined,
       ...identity
     },
     // The aforementioned
@@ -49,7 +50,7 @@ OAuth.registerService('oidc', 2, null, async function(query) {
   };
 });
 
-async function fetchAccessToken(query: {code: string, state: string}) {
+async function getTokens(query: {code: string, state: string}) {
   let { clientId, secret } = await getConfiguration();
   const clientSecret = secret?.clientSecret;
   let tokenEndpoint = await getTokenEndpoint();
@@ -75,7 +76,7 @@ async function fetchAccessToken(query: {code: string, state: string}) {
     throw new Error(await response.text());
   }
 
-  return (await response.json()).access_token;
+  return await response.json();
 }
 
 async function fetchIdentity (accessToken: string) {
@@ -88,4 +89,28 @@ async function fetchIdentity (accessToken: string) {
     });
 
   return await response.json();
+}
+
+/**
+ * Decode a JWT token **without** checking its signature.
+ *
+ * Fine to use here, because we were on the phone with the IdP (as
+ * certified by the standard TLS security), so we know the ID token
+ * wasn't forged.
+ */
+function decodeJWT(idToken : string) {
+  function decodeJWTFragment(fragmentBase64Url : string) {
+    const base64 = fragmentBase64Url
+      .replace(/-/g, '+')
+      .replace(/_/g, '/') + '=='.slice(0, (4 - (fragmentBase64Url.length % 4)) % 4);
+
+    return JSON.parse(Buffer.from(base64, 'base64').toString('utf8'));
+  }
+
+  const [headerBase64Url, payloadBase64Url, signatureBase64Url] = idToken.split('.');
+  return {
+    header: decodeJWTFragment(headerBase64Url),
+    payload: decodeJWTFragment(payloadBase64Url),
+    signature: signatureBase64Url
+  };
 }
