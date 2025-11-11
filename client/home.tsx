@@ -121,21 +121,3 @@ const WelcomeUser: React.FC = () => {
     {/* {user ? `Hello, ${user.given_name} ${user.family_name}!` : `Hello! For some reason you are logged into OIDC, but not on Meteor.` } */}
   </IfOIDCState>
 }
-
-
-(window as any).attack = function() {
-  Accounts.callLoginMethod({
-    methodArguments: [
-      {
-        oidcToken: "H@XX",
-      },
-    ],
-    userCallback: serverSideError => {
-      if (serverSideError) {
-        alert("Attack failed! Drats")
-      } else {
-        alert("Attack successful! We are now known as " + JSON.stringify(Meteor.user()))
-      }
-    }  
-  })
-}
