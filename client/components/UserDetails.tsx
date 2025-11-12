@@ -3,7 +3,6 @@ import { DigestUser } from '../../imports/api/DigestUser'
 import styled from "styled-components"
 import CopyButton from './CopyButton'
 import Unit from './Unit'
-import { UserDetails } from '../../imports/api/UserDetails';
 import { Link } from 'react-router-dom'
 import '../css/UserDetails.css'
 
