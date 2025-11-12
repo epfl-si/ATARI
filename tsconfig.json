@@ -2,6 +2,10 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "jsx": "preserve",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "paths": {
+       // allow absolute imports from project root:
+       "/*": ["./*"]
+    }
   }
 }
