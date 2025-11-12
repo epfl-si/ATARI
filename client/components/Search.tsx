@@ -1,12 +1,12 @@
 import React from 'react'
 import UserDetails from './UserDetails';
-import { DigestUser } from '../../imports/api/DigestUser';
+import { Person } from '/imports/api/persons';
 import { useParams } from 'react-router-dom';
 import SearchBar from './SearchBar';
 
 function Search() {
   const { sciper } = useParams();
-  const [searchUser, setSearchUser] = React.useState<DigestUser | undefined>(undefined)
+  const [searchUser, setSearchUser] = React.useState<Person | undefined>(undefined)
   return (
     <>
       <div className='container-full'>
@@ -17,7 +17,7 @@ function Search() {
             marginBottom:'80px',
             height:'56px',
           }}>
-          <SearchBar handleOneLastResult={(e, user)=>setSearchUser(e as DigestUser)} sciper={sciper} />
+          <SearchBar handleOneLastResult={(e, user)=>setSearchUser(e as Person)} sciper={sciper} />
         </div>
         {searchUser === undefined ? <></> : <UserDetails user={searchUser}/>}
       </div>

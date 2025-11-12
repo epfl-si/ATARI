@@ -1,4 +1,4 @@
-export interface DigestUser {
+export interface Person {
   _id?: string;
   firstname: string;
   lastname: string;

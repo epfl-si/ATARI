@@ -1,6 +1,6 @@
 import { Autocomplete, TextField } from '@mui/material'
 import React from 'react'
-import { DigestUser } from '../../imports/api/DigestUser';
+import { Person } from '/imports/api/persons';
 import CircularProgress from '@mui/material/CircularProgress';
 import '../css/SearchBar.css'
 
@@ -33,7 +33,7 @@ function SearchBar(props:{handleOneLastResult: Function, sciper: string | undefi
                     if(res.count == 1) {
                         window.history.pushState({ id:"100" }, "Page", `/${newPersons[0].id}`);
                         setValue(newPersons[0].display)
-                        stateProps.handleOneLastResult(newPersons[0] as DigestUser);
+                        stateProps.handleOneLastResult(newPersons[0] as Person);
                     }
                     setUsers(newPersons)
                     setLoading(false)
@@ -54,7 +54,7 @@ function SearchBar(props:{handleOneLastResult: Function, sciper: string | undefi
                 if(newValue?.id) {
                     setValue(newValue?.display)
                     window.history.pushState({ id:"100" }, "Page", `/${newValue?.id}`);
-                    stateProps.handleOneLastResult(newValue as DigestUser);
+                    stateProps.handleOneLastResult(newValue as Person);
                 }
             }}
             disablePortal

@@ -1,5 +1,5 @@
 import React from 'react'
-import { DigestUser } from '../../imports/api/DigestUser'
+import { Person } from '/imports/api/persons'
 import styled from "styled-components"
 import CopyButton from './CopyButton'
 import Unit from './Unit'
@@ -109,7 +109,7 @@ const UserInfoContainer = styled.div`
   }
 `
 
-function UserDetails(props:{user:DigestUser}) {
+function UserDetails(props:{user:Person}) {
     const [accreds, setAccreds] = React.useState([]);
     const [easterStyle, setEasterStyle] = React.useState("");
     const [ownEmailAddrAuth, setOwnEmailAddrAuth] = React.useState(false);

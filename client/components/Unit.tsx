@@ -1,9 +1,9 @@
 import React from 'react'
 import { UnitInfos } from '../../imports/types/UnitInfos'
 import Chevron from './Chevron'
-import { DigestUser } from '../../imports/api/DigestUser';
+import { Person } from '/imports/api/persons';
 
-function Unit(props:{show?: boolean, infos: UnitInfos, user: DigestUser}) {
+function Unit(props:{show?: boolean, infos: UnitInfos, user: Person}) {
   const [show, setShow] = React.useState(false)
 
   const addressForUnit = props.user.addresses ? props.user.addresses.filter(e => parseInt(e.unitid) == props.infos.unitid) : []
