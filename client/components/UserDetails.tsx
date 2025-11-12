@@ -169,7 +169,6 @@ function UserDetails(props:{user:DigestUser}) {
 
     React.useEffect(() => {
       function handleKeyDown(e) {
-        // console.log(e.keyCode);
         if (e.keyCode === 27) { // Escape
           document.getElementById('atariSearchBar').value = '';
           document.getElementById('atariSearchBar').focus();

@@ -5,9 +5,6 @@ import { useParams } from 'react-router-dom';
 import SearchBar from './SearchBar';
 
 function Search() {
-  function consoleLog(user) {
-    setSearchUser(user as DigestUser)
-  }
   const { sciper } = useParams();
   const [searchUser, setSearchUser] = React.useState<DigestUser | undefined>(undefined)
   return (
