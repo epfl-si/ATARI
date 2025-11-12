@@ -1,7 +1,7 @@
 import * as React from 'react'
-import Search from './components/Search'
 import { useTracker } from 'meteor/react-meteor-data'
 import { Meteor } from 'meteor/meteor'
+import { SearchPerson } from './components/SearchPerson'
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import EPFLHeader from './components/EPFLHeader';
 import PleaseLogin from './components/PleaseLogin';
@@ -54,14 +54,14 @@ export default function Home() {
             <Routes>
               <Route path="/">
                 {isLoggedIn ? (
-                  <Route index element={<Search />} />
+                  <Route index element={<SearchPerson />} />
                 ) : (
                   <Route index element={<PleaseLogin />} />
                 )}
               </Route>
               <Route path="/:sciper">
                 {isLoggedIn ? (
-                  <Route index element={<Search />} />
+                  <Route index element={<SearchPerson />} />
                 ) : (
                   <Route index element={<PleaseLogin />} />
                 )}

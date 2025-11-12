@@ -8,6 +8,30 @@ import { fetchEPFLAPI } from '/imports/server/epfl_api'
 import { Client as LDAPClient } from 'ldapts'
 import { ensure, canQueryPersons } from "/server/policy"
 
+const personSearchStringRegExp = /^[a-zA-Z' ]+$/,
+      sciperRegExp = /^G?[0-9]+$/;
+
+Meteor.publish("searchPersons", async function (personSearchString) {
+  await ensure(canQueryPersons);
+  ensureValidPersonSearchString(personSearchString);
+
+  const response = await fetchEPFLAPI(`/v1/persons?query=${personSearchString}`);
+  for (const person of response.persons) {
+    this.added("persons", person.id, { ...person, searchResultFor: personSearchString });
+  }
+  this.ready();
+})
+
+function ensureValidPersonSearchString (personSearchString : string) {
+  if (personSearchString.match(personSearchStringRegExp)) {
+    return;
+  } else if (personSearchString.match(sciperRegExp)) {
+    return;
+  } else {
+    throw new Error("Bad search string");
+  }
+}
+
 Meteor.publish("personAPI", async function (sciper : string) {
   await ensure(canQueryPersons);
   ensureValidSciper(sciper);
@@ -26,7 +50,7 @@ Meteor.publish("personAPI", async function (sciper : string) {
 })
 
 function ensureValidSciper (sciper : string) {
-  if (! sciper.match(/^G?[0-9]+$/)) {
+  if (! sciper.match(sciperRegExp)) {
     throw new Error("Bad SCIPER");
   }
 }

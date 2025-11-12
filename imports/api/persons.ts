@@ -10,6 +10,7 @@ export interface Person {
   _id?: string;
   firstname: string;
   lastname: string;
+  display: string;
   phone_number: string;
   id: string;
   account: {
@@ -93,6 +94,9 @@ export interface Person {
 
   // Only for `personScoldap` subscriptions:
   scoldap: {};
+
+  // Only for `searchPersons` subscriptions:
+  searchResultFor: string;
 }
 
 /**

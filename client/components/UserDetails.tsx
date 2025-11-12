@@ -111,21 +111,16 @@ const UserInfoContainer = styled.div`
   }
 `
 
+/**
+ * Full-width widget to render the details of one user under the search bar.
+ *
+ * @params props.person Whom to render
+ */
 export function UserDetails(props: {person: Person}) {
     const sciper = props.person.id;
 
     // Same person, different (moar) fields:
     const { isLoading, person } = useQueryPerson(sciper, 'personAPI', 'personActiveDirectory');
-
-    useEffect(() => {
-      function handleKeyDown(e) {
-        if (e.keyCode === 27) { // Escape
-          document.getElementById('atariSearchBar').value = '';
-          document.getElementById('atariSearchBar').focus();
-        }
-      }
-      document.addEventListener('keydown', handleKeyDown);
-    }, []);
 
     if (isLoading()) return <LoadingSpinner/>;
     // TODO: we could speed up the rendering, because `props.person`
