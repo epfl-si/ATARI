@@ -1,5 +1,3 @@
-import { Mongo } from 'meteor/mongo';
-
 export interface DigestUser {
   _id?: string;
   firstname: string;
@@ -56,6 +54,3 @@ export interface DigestUser {
   type: string;
   sapid: string;
 }
-
-export const DigestUsersCollection : Mongo.Collection<DigestUser> =
-    Meteor.isClient ? new Mongo.Collection('digestusers') : undefined as any;;

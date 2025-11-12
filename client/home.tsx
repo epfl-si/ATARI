@@ -4,8 +4,7 @@ import { Base, Header, FooterLight } from "@epfl/epfl-sti-react-library";
 import { StateEnum, LoginButton, IfOIDCState, useOpenIDConnectContext } from '@epfl-si/react-appauth'
 import Search from './components/Search'
 import { Accounts } from 'meteor/accounts-base'
-import { useTracker, useSubscribe } from 'meteor/react-meteor-data'
-import { DigestUser, DigestUsersCollection } from '../imports/api/DigestUser';
+import { useTracker } from 'meteor/react-meteor-data'
 import { Meteor } from 'meteor/meteor'
 import '../imports/types/UserInfo'
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -18,8 +17,6 @@ import CheckAD from './components/CheckAD';
 
 export default function Home() {
     const isLogged = useOpenIDConnectContext().state === StateEnum.LoggedIn || Meteor.user() !== null
-    const isLoading = useSubscribe('digestusers');
-    let digestUsers = useTracker(() => DigestUsersCollection.find().fetch())
     const userInfos = useOpenIDConnectContext().idToken
     const [alert, setAlert] = React.useState(false)
     const [alertInfos, setAlertInfos] = React.useState({reason: '', from: '', to: ''})
