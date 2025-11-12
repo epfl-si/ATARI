@@ -16,7 +16,7 @@ const Container = styled.div`
     text-align: center;
 `
 
-function LoadingSpinner() {
+export function LoadingSpinner() {
   return (
     <Container>
       <Spiner>
@@ -60,8 +60,6 @@ function LoadingSpinner() {
     </Container>
   )
 }
-
-export default LoadingSpinner
 
     
 

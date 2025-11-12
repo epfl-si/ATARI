@@ -1,3 +1,11 @@
+import { Meteor } from 'meteor/meteor'
+import { Mongo } from 'meteor/mongo'
+
+interface Accred {
+  unitid : number
+  order: number
+}
+
 export interface Person {
   _id?: string;
   firstname: string;
@@ -53,4 +61,44 @@ export interface Person {
   status: string;
   type: string;
   sapid: string;
+  ownEmailAddrAuth: boolean;
+  accreds?: Accred[];
+
+  // Only for `personActiveDirectory` subscriptions:
+  activeDirectory: {
+    description: string;
+    displayName: string;
+    mail: string;
+    userPrincipalName: string;
+    sAMAccountName: string;
+    uidNumber: number;
+    gidNumber: number;
+    memberOf: string[];
+    unixHomeDirectory: string;
+    loginShell: string;
+    lastLogon: number;
+    pwdLastSet: number;
+    badPwdCount: number;
+    badPasswordTime: number;
+    baseUserAccountControl: string;
+    userAccountControl: string;
+    accountExpires: number;
+    msExchRecipientTypeDetails: string;
+  },
+
+  // Only for `personLdap` subscriptions:
+  ldap: {
+    homeDirectory?: string;
+  },
+
+  // Only for `personScoldap` subscriptions:
+  scoldap: {};
 }
+
+/**
+ * Client-only collection for subscription results
+ *
+ * @locus Client
+ */
+export const Persons : Mongo.Collection<Person> | null = Meteor.isServer ? null :
+  new Mongo.Collection("persons");

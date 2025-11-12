@@ -1,5 +1,5 @@
 import React from 'react'
-import UserDetails from './UserDetails';
+import { UserDetails } from './UserDetails';
 import { Person } from '/imports/api/persons';
 import { useParams } from 'react-router-dom';
 import SearchBar from './SearchBar';
@@ -19,7 +19,7 @@ function Search() {
           }}>
           <SearchBar handleOneLastResult={(e, user)=>setSearchUser(e as Person)} sciper={sciper} />
         </div>
-        {searchUser === undefined ? <></> : <UserDetails user={searchUser}/>}
+        {searchUser === undefined ? <></> : <UserDetails person={searchUser}/>}
       </div>
     </>
   )

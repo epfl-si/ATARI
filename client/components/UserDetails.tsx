@@ -3,7 +3,9 @@ import { Person } from '/imports/api/persons'
 import styled from "styled-components"
 import CopyButton from './CopyButton'
 import Unit from './Unit'
+import { useQueryPerson } from '/imports/ui/use-hooks'
 import { Link } from 'react-router-dom'
+import { LoadingSpinner } from './LoadingSpinner'
 import '../css/UserDetails.css'
 
 const Container = styled.div`
@@ -109,65 +111,13 @@ const UserInfoContainer = styled.div`
   }
 `
 
-function UserDetails(props:{user:Person}) {
-    const [accreds, setAccreds] = React.useState([]);
-    const [easterStyle, setEasterStyle] = React.useState("");
-    const [ownEmailAddrAuth, setOwnEmailAddrAuth] = React.useState(false);
+export function UserDetails(props: {person: Person}) {
+    const sciper = props.person.id;
 
-    React.useEffect(() => {
-      Meteor.call('getAccreds.sciper', props.user.id, function(err, res) {
-        if(err) {
-          console.log(err)
-        } else {
-          res.accreds ? setAccreds(res.accreds) : setAccreds([]);
-        }
-      })
-    }, [props.user.id])
+    // Same person, different (moar) fields:
+    const { isLoading, person } = useQueryPerson(sciper, 'personAPI', 'personActiveDirectory');
 
-    React.useEffect(() => {
-      setEasterStyle("hover-rotate");
-
-      if (props.user.id == 169419) return setEasterStyle('hover-rotate nbo-special');
-      if (props.user.id == 348084) return setEasterStyle('hover-rotate sami-special');
-      if (props.user.id == 316897) return setEasterStyle('hover-rotate jerome-special');
-
-    }, [props.user.id])
-
-    React.useEffect(() => {
-      accreds.map(unit => {
-        if(props.user.id == 169419 || props.user.id == 348084 || props.user.id == 316897) return;
-        if (unit.unitid == 13030) return setEasterStyle('hover-rotate fsd-special');
-        if (unit.unitid == 13034) return setEasterStyle('hover-rotate sdesk-special');
-      });
-    })
-    const [adData, setAdData] = React.useState({})
-
-    React.useEffect(() => {
-      Meteor.call('AD.user', props.user.id, function(err, res) {
-        if(err) {
-          console.log(err)
-        } else {
-          setAdData(res[0]);
-        }
-      })
-    }, [props.user.id])
-
-    React.useEffect(() => {
-      Meteor.call('getOwnEmailAddressProperty.user', props.user.id, function(err, res) {
-        if(err) {
-          console.log(err)
-        } else {
-          if(res.authorizations.length > 0) {
-            const filteredResAuth = res.authorizations.filter((e) => e.status == 'active')
-            setOwnEmailAddrAuth(filteredResAuth.length > 0);
-          } else {
-            setOwnEmailAddrAuth(false);
-          }
-        }
-      })
-    }, [props.user.id])
-
-    React.useEffect(() => {
+    useEffect(() => {
       function handleKeyDown(e) {
         if (e.keyCode === 27) { // Escape
           document.getElementById('atariSearchBar').value = '';
@@ -177,15 +127,36 @@ function UserDetails(props:{user:Person}) {
       document.addEventListener('keydown', handleKeyDown);
     }, []);
 
+    if (isLoading()) return <LoadingSpinner/>;
+    // TODO: we could speed up the rendering, because `props.person`
+    // contains a lot of stuff already (passed on from caller) before
+    // `useQueryPerson` is done loading. But then we would have to
+    // tolerate some fields being temporarily missing. (Meaning, we
+    // would need moar <LoadingSpinner/>'s.)
+
+    if (! person) return <>No results.</>;
+
+    const ownEmailAddrAuth = person.ownEmailAddrAuth,
+          adData = person.activeDirectory,
+          accreds = person.accreds;
+
+    const easterStyle =
+        (sciper == "169419") ? 'nbo-special':
+        (sciper == "348084") ? 'sami-special' :
+        (sciper == "316897") ? 'jerome-special' :
+        accreds.find((unit) => unit.unitid == 13030) ? 'fsd-special' :
+        accreds.find((unit) => unit.unitid == 13034) ? 'sdesk-special' :
+        "";
+
     const serviceNowCreateTicketLinkGenerator = () => {
       const url = `https://epfl.service-now.com/incident.do?
                 sys_id=-1
                 &sysparm_stack=incident_list.do
-                &sysparm_query=short_description=Ticket pour ${props.user.firstname} ${props.user.lastname}^
+                &sysparm_query=short_description=Ticket pour ${person.firstname} ${person.lastname}^
                 caller_id=javascript:
-                  var userRecord = new GlideRecord('sys_user'); 
-                  userRecord.addQuery('user_name', '${props.user.id}'); 
-                  userRecord.query(); 
+                  var userRecord = new GlideRecord('sys_user');
+                  userRecord.addQuery('user_name', '${sciper}');
+                  userRecord.query();
                   if(userRecord.next()) { userRecord.sys_id }^
                 category=incident^
                 assigned_to=javascript:
@@ -200,69 +171,62 @@ function UserDetails(props:{user:Person}) {
                   businessService.addQuery('name', 'Service Desk');
                   businessService.query();
                   if(businessService.next()) { businessService.getValue('sys_id') }^
-                description=%0ANote: Ticket ouvert pour ${props.user.firstname} ${props.user.lastname} le ${new Date().toLocaleString('en-GB')} via ATARI (<https://atari.epfl.ch>).`;
+                description=%0ANote: Ticket ouvert pour ${person.firstname} ${person.lastname} le ${new Date().toLocaleString('en-GB')} via ATARI (<https://atari.epfl.ch>).`;
       return url.replace(/  +/g, '');
-    };
-
-    const copyContentToClipboard = async (text) => {
-      navigator.clipboard.writeText(text).then(
-        () => {/*ok*/},
-        () => { console.error("😢 An error occurred during the copy process");}
-      );
     };
 
   return (
     <Container>
       <div className="d-lg-flex flex-row" style={{ marginBottom: '40px' }}>
         <div className="card-body d-flex flex-column align-items-center" style={{ minWidth: '40%', }}>
-          <figure className={easterStyle}>
+          <figure className={`hover-rotate ${easterStyle}`}>
             <img
               className="img-fluid"
-              src={`https://people.epfl.ch/private/common/photos/links/${props.user.id}.jpg`}
+              src={`https://people.epfl.ch/private/common/photos/links/${sciper}.jpg`}
               onError={({ currentTarget }) => {
                 currentTarget.onerror = null;
                 currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTYgMjU2Ij48cGF0aCBkPSJNMTAyLjQzIDEyNC41M1MxMDUuNSAxNTIgMTI4IDE1MnMyNS41Ny0yNy40NiAyNS41Ny0yNy40NiA0Ljg1IDEgNy4xOS05LjI4YzEuNS02LjctLjUtOC40OS0xLjc2LTguNDloLTEuMkMxNjMuNjggNzQuMjggMTQwIDY0IDEyOCA2NHMtMzUuNjggMTAuMjgtMjkuOCA0Mi43Nkg5N2MtMS4yNiAwLTMuMjYgMS43OS0xLjc2IDguNDkgMi4zNCAxMC4zMyA3LjE5IDkuMjggNy4xOSA5LjI4ek0xNzAuMzYgMTY0Yy0yMC4yNi0zLjg5LTI0LjM0LTgtMjUuMS0xMS42NGEyOS4xNSAyOS4xNSAwIDAgMS0zNC41MiAwYy0uNzQgMy42NC00Ljg0IDcuNzItMjUuMSAxMS42NC0yMC44NSA0LTIwLjU3IDIxLjE4LTIwLjU3IDI0aDEyNS44NmMwLTIuODUuMjgtMjAtMjAuNTctMjR6Ii8+PC9zdmc+Cg=='
               }}
-              alt={`${props.user.firstname} ${props.user.lastname} profile picture`}
+              alt={`${person.firstname} ${person.lastname} profile picture`}
             />
           </figure>
-          <h3 
-            onClick={async () => copyContentToClipboard(`${props.user.firstname} ${props.user.lastname}`)}
+          <h3
+            onClick={() => copyContentToClipboard(`${person.firstname} ${person.lastname}`)}
             style={{ textAlign: 'center', marginTop: '15px', textDecoration: 'underline', textDecorationColor: 'red', textUnderlineOffset: '6px', cursor: 'copy'}}>
-            {`${props.user.firstname} ${props.user.lastname}`}
+            {`${person.firstname} ${person.lastname}`}
           </h3>
           <div style={{ textAlign: 'start', display: 'grid' }}>
             <div>
-              <strong>Sciper</strong> : <span onClick={async () => copyContentToClipboard(props.user.id)} style={{cursor: 'copy', marginRight: '50px'}}>{props.user.id}</span>
+              <strong>Sciper</strong> : <span onClick={() => copyContentToClipboard(sciper)} style={{cursor: 'copy', marginRight: '50px'}}>{sciper}</span>
               <CopyButton
-                text={props.user.id}
+                text={sciper}
               />
             </div>
             {
-              props.user.email && (
+              person.email && (
               <div>
-                <strong>Email</strong> : <span onClick={async () => copyContentToClipboard(props.user.email)} style={{cursor: 'copy', marginRight: '50px'}}>{props.user.email}</span>
+                <strong>Email</strong> : <span onClick={() => copyContentToClipboard(person.email)} style={{cursor: 'copy', marginRight: '50px'}}>{person.email}</span>
                 <CopyButton
-                  text={props.user.email}
+                  text={person.email}
                 />
               </div>
               )
             }
             {
-              props.user.account && (
+              person.account && (
                 <div>
-                  <strong>Nom d'utilisateur</strong> : <span onClick={async () => copyContentToClipboard(props.user.account.username)} style={{cursor: 'copy', marginRight: '50px'}}>{props.user.account.username}</span>
+                  <strong>Nom d'utilisateur</strong> : <span onClick={() => copyContentToClipboard(person.account.username)} style={{cursor: 'copy', marginRight: '50px'}}>{person.account.username}</span>
                   <CopyButton
-                    text={props.user.account.username}
+                    text={person.account.username}
                   />
                 </div>
               )
             }
             {
-              props.user.phones && props.user.phones.length > 0 && (
-                props.user.phones.slice(0, 2).map((phone, index) => 
+              person.phones && person.phones.length > 0 && (
+                person.phones.slice(0, 2).map((phone, index) =>
                   <div key={phone.id}>
-                    <strong>Téléphone</strong> : <span onClick={async () => copyContentToClipboard(phone.number)} style={{cursor: 'copy', marginRight: '50px'}}>{phone.number}</span>
+                    <strong>Téléphone</strong> : <span onClick={() => copyContentToClipboard(phone.number)} style={{cursor: 'copy', marginRight: '50px'}}>{phone.number}</span>
                     <CopyButton
                       text={phone.number}
                     />
@@ -271,11 +235,11 @@ function UserDetails(props:{user:Person}) {
               )
             }
             {
-              props.user.sapid && (
+              person.sapid && (
                 <div>
-                  <strong>Matricule SAP</strong> : <span onClick={async () => copyContentToClipboard(props.user.sapid)} style={{cursor: 'copy', marginRight: '50px'}}>{props.user.sapid}</span>
+                  <strong>Matricule SAP</strong> : <span onClick={() => copyContentToClipboard(person.sapid)} style={{cursor: 'copy', marginRight: '50px'}}>{person.sapid}</span>
                   <CopyButton
-                    text={props.user.sapid}
+                    text={person.sapid}
                   />
                 </div>
               )
@@ -283,7 +247,7 @@ function UserDetails(props:{user:Person}) {
             {
               adData.gidNumber && (
                 <div>
-                  <strong>GID</strong> : <span onClick={async () => copyContentToClipboard(adData.gidNumber)} style={{cursor: 'copy', marginRight: '50px'}}>{adData.gidNumber}</span>
+                  <strong>GID</strong> : <span onClick={() => copyContentToClipboard(String(adData.gidNumber))} style={{cursor: 'copy', marginRight: '50px'}}>{adData.gidNumber}</span>
                   <CopyButton
                     text={adData.gidNumber}
                   />
@@ -293,7 +257,7 @@ function UserDetails(props:{user:Person}) {
             {
               adData.uidNumber && (
                 <div>
-                  <strong>UID</strong> : <span onClick={async () => copyContentToClipboard(adData.uidNumber)} style={{cursor: 'copy', marginRight: '50px'}}>{adData.uidNumber}</span>
+                  <strong>UID</strong> : <span onClick={() => copyContentToClipboard(adData.uidNumber)} style={{cursor: 'copy', marginRight: '50px'}}>{adData.uidNumber}</span>
                   <CopyButton
                     text={adData.uidNumber}
                   />
@@ -303,7 +267,7 @@ function UserDetails(props:{user:Person}) {
             {
               adData.unixHomeDirectory && (
                 <div>
-                  <strong>Home</strong> : <span onClick={async () => copyContentToClipboard(adData.unixHomeDirectory)} style={{cursor: 'copy', marginRight: '50px'}}>{adData.unixHomeDirectory}</span>
+                  <strong>Home</strong> : <span onClick={() => copyContentToClipboard(adData.unixHomeDirectory)} style={{cursor: 'copy', marginRight: '50px'}}>{adData.unixHomeDirectory}</span>
                   <CopyButton
                     text={adData.unixHomeDirectory}
                   />
@@ -313,7 +277,7 @@ function UserDetails(props:{user:Person}) {
             {
               adData.loginShell && (
                 <div>
-                  <strong>Shell</strong> : <span onClick={async () => copyContentToClipboard(adData.loginShell)} style={{cursor: 'copy', marginRight: '50px'}}>{adData.loginShell}</span>
+                  <strong>Shell</strong> : <span onClick={() => copyContentToClipboard(adData.loginShell)} style={{cursor: 'copy', marginRight: '50px'}}>{adData.loginShell}</span>
                   <CopyButton
                     text={adData.loginShell}
                   />
@@ -321,7 +285,7 @@ function UserDetails(props:{user:Person}) {
               )
             }
             {
-              props.user.account && (
+              person.account && (
                 <div style={{ paddingTop: '15px' }}>
                   <a href={serviceNowCreateTicketLinkGenerator()} target="_blank">
                     <Button className="btn btn-primary">Créer un ticket pour cet utilisateur</Button>
@@ -347,9 +311,9 @@ function UserDetails(props:{user:Person}) {
             <h3 id="general"><a href="#" className="link-pretty">Général</a></h3>
             <>
               <ul>
-                <li key="gender"><strong>Genre</strong> : {props.user.gender}</li>
+                <li key="gender"><strong>Genre</strong> : {person.gender}</li>
                 {accreds ? (
-                  accreds.sort((a,b) => a.order - b.order).map((x, i) => <li key={i}><div>{<Unit infos={x} user={props.user} />}</div></li>)
+                  accreds.sort((a,b) => a.order - b.order).map((x, i) => <li key={i}><div>{<Unit infos={x} user={person} />}</div></li>)
                 ) : (
                   <></>
                 )}
@@ -364,7 +328,7 @@ function UserDetails(props:{user:Person}) {
                     {adData.userPrincipalName && (
                       <li><strong>Domaine\login</strong> : INTRANET\{`${adData.sAMAccountName}`}</li>
                     )}
-                    <li><strong>Status du compte</strong> : {
+                    <li><strong>Statut du compte</strong> : {
                       adData.userAccountControl
                     }</li>
                     <li><strong>Expiration du compte</strong> : {
@@ -373,13 +337,13 @@ function UserDetails(props:{user:Person}) {
                     </li>
                     {
                       adData.lastLogon && (
-                        <li><strong>Dernière connexion</strong> : {adData.lastLogon == 0 ? 'Jamais' : new Date(((adData.lastLogon / 10000000) - 11644473600) * 1000).toLocaleDateString('fr-FR', 
+                        <li><strong>Dernière connexion</strong> : {adData.lastLogon == 0 ? 'Jamais' : new Date(((adData.lastLogon / 10000000) - 11644473600) * 1000).toLocaleDateString('fr-FR',
                         { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</li>
                       )
                     }
                     {
                       adData.pwdLastSet && (
-                        <li><strong>Dernier changement de mot de passe</strong> : {adData.pwdLastSet == 0 ? 'Jamais' : new Date(((adData.pwdLastSet / 10000000) - 11644473600) * 1000).toLocaleDateString('fr-FR', 
+                        <li><strong>Dernier changement de mot de passe</strong> : {adData.pwdLastSet == 0 ? 'Jamais' : new Date(((adData.pwdLastSet / 10000000) - 11644473600) * 1000).toLocaleDateString('fr-FR',
                         { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</li>
                       )
                     }
@@ -400,28 +364,28 @@ function UserDetails(props:{user:Person}) {
             )}
             <h3 id="tools"><a id="tools-a" href="#" className="link-pretty">Tools</a></h3>
             <Buttons>
-              <Link to={`https://accred.epfl.ch/#/catalog/persons/${props.user.id}`} target='_blank'>
+              <Link to={`https://accred.epfl.ch/#/catalog/persons/${sciper}`} target='_blank'>
                 <Button className="btn btn-secondary">Accred</Button>
               </Link>
               {
-                props.user.account && (
+                person.account && (
                   <>
-                    <Link to={`/checkAD/${props.user.id}`} target='_blank'>
+                    <Link to={`/checkAD/${sciper}`} target='_blank'>
                       <Button className="btn btn-secondary">Check AD</Button>
                     </Link>
-                    <Link to={`/checkLDAP/${props.user.id}`} target='_blank'>
+                    <Link to={`/checkLDAP/${sciper}`} target='_blank'>
                       <Button className="btn btn-secondary">Check LDAP</Button>
                     </Link>
-                    <Link to={`https://it.epfl.ch/backoffice/sys_user.do?sysparm_query=user_name=${props.user.id}`} target='_blank'>
+                    <Link to={`https://it.epfl.ch/backoffice/sys_user.do?sysparm_query=user_name=${sciper}`} target='_blank'>
                       <Button className="btn btn-secondary">ServiceNow</Button>
                     </Link>
-                    <Link to={'https://people.epfl.ch/' + (props.user.email ? props.user.email.replace('@epfl.ch', '') : props.user.id)} target='_blank'>
+                    <Link to={'https://people.epfl.ch/' + (person.email ? person.email.replace('@epfl.ch', '') : sciper)} target='_blank'>
                       <Button className="btn btn-secondary">People</Button>
                     </Link>
-                    <Link to={`https://mailwww.epfl.ch/emailStatus.cgi?query=${props.user.email}`} target='_blank'>
+                    <Link to={`https://mailwww.epfl.ch/emailStatus.cgi?query=${person.email}`} target='_blank'>
                       <Button className="btn btn-secondary">Check Email</Button>
                     </Link>
-                    <Link to={`https://mycamipro.epfl.ch/admin/home.php?page=cmpcardmgt&sciper=${props.user.id}`} target='_blank'>
+                    <Link to={`https://mycamipro.epfl.ch/admin/home.php?page=cmpcardmgt&sciper=${sciper}`} target='_blank'>
                       <Button className="btn btn-secondary">Camipro admin</Button>
                     </Link>
                   </>
@@ -435,8 +399,6 @@ function UserDetails(props:{user:Person}) {
   );
 }
 
-export default UserDetails
-
-function WaitForIt() {
-  return <>⌛</>
+function copyContentToClipboard (content : string | number) {
+  navigator.clipboard.writeText(String(content));
 }
