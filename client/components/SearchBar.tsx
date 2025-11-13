@@ -74,7 +74,7 @@ export function SearchBar(props: SearchBarProps) {
             ListboxProps={{ style: { maxHeight: 200, overflow: 'auto' } }}
             autoHighlight={true}
             sx={{ width: "60%", margin: "auto" }}
-            value={ props.initialText }
+            value={ props.initialText  || null /* https://stackoverflow.com/a/72136454 */ }
             onChange={(_event, newPerson : Person) => {
                 if(newPerson?._id) {
                     if (props.onSearchResultSelected) {
