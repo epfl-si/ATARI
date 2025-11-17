@@ -3,7 +3,6 @@ ARG BASE_IMAGE=node:22.18.0
 FROM $BASE_IMAGE AS build
 
 RUN npx meteor
-RUN npm i -g patch-package   # epfl-sti-react-library bugware
 ENV NODE_ENV=production
 
 ENV PATH=$PATH:/root/.meteor

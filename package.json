@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "postinstall": "set -e  -x; patch-package"
+    "postinstall": "set -e  -x; npx patch-package"
   },
   "author": "",
   "license": "ISC",
