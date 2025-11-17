@@ -6,7 +6,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import EPFLHeader from './components/EPFLHeader';
 import PleaseLogin from './components/PleaseLogin';
 import { CheckLDAP } from './components/CheckLDAP';
-import CheckInv from './components/CheckInv';
+import { CheckInv } from './components/CheckInv';
 import Footer from './components/Footer';
 import { CheckAD } from './components/CheckAD';
 

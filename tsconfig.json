@@ -1,8 +1,10 @@
 {
   "compilerOptions": {
+    "lib": ["es2021", "dom"],
     "esModuleInterop": true,
     "jsx": "preserve",
     "skipLibCheck": true,
+    "downlevelIteration": true,
     "paths": {
        // allow absolute imports from project root:
        "/*": ["./*"],

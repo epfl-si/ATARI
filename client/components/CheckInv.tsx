@@ -1,23 +1,23 @@
-import React from "react";
-import { Meteor } from "meteor/meteor";
-import { Button, Container } from "@mui/material";
-import { useState } from "react";
-import { parse } from 'node-html-parser';
+import React, { useState } from 'react'
+import { useParams } from "react-router-dom"
+import { useSubscribe, useFind } from 'meteor/react-meteor-data'
+import { Container } from '@mui/material'
+import { Inventory, InventoryEntry } from '/imports/api/inventory'
 import { differenceInDays, intervalToDuration } from "date-fns";
 import styled from "styled-components"
-import { useParams } from "react-router-dom";
+import { LoadingSpinner } from './LoadingSpinner'
 
-
-function CheckInv() {
-
+export function CheckInv() {
   const { inventoryParam } = useParams();
-  const [inventoryItem, setInventoryItem] = useState(<></>);
+  const [yellowStickerCode, setYellowStickerCode] = useState<string | undefined>(inventoryParam);
 
-  React.useEffect(() => {
-    if(inventoryParam) {
-      checkInventoryNumber(inventoryParam)
-    }
-  }, [])
+  const isLoading = useSubscribe(
+    yellowStickerCode ? "inventory" : undefined, yellowStickerCode);
+
+  const found : InventoryEntry[] = useFind(() => yellowStickerCode ?
+    Inventory.find({ _id: yellowStickerCode }) : null,
+    [yellowStickerCode]);
+  const entry = found?.length === 1 ? found[0] : null;
 
   const Button = styled.button`
     padding: 10px;
@@ -26,164 +26,123 @@ function CheckInv() {
     /* margin: 10px; */
     border-radius: 5px;
     /* width: 50vw; */
-  `
+  `;  // Warning, counts as a React use hook 🤷‍♂️
 
-  function checkValidInvNumber(parsedHtml) {
-    /* If true : Inventory number is INVALID
-    If false : Inventory number is VALID */
-    return !parsedHtml.querySelector('#ctl00_ContentPlaceHolder1_Label1')?.childNodes[0].rawTagName &&
-        parsedHtml.querySelector('#ctl00_ContentPlaceHolder1_Label1')?.childNodes[0].rawText.includes('Oups')
-  }
+  if (isLoading()) return <LoadingSpinner/>;
 
-  function checkInventoryNumber(inventoryNumber) {
+  window.history.pushState({ id:"100" }, "Page", `/inv/${yellowStickerCode}`);
 
-    if(!inventoryNumber) {
-      alert(`Merci d'entrer un numéro d'inventaire.`)
-    }
-
-    Meteor.call('checkInventory.inventoryNumber', inventoryNumber, function(err, res) {
-      if(err) {
-        console.log(err)
-      } else {
-        const parsedHtml = parse(res)
-
-        window.history.pushState({ id:"100" }, "Page", `/inv/${inventoryNumber}`);
-        if(checkValidInvNumber(parsedHtml)) {
-          setInventoryItem(<></>)
-          return alert(`Ce numéro d'inventaire est invalide !`)
-        } else {
-          const bulletList:any = [];
-          let itemDate;
-          parsedHtml.querySelector('#ctl00_ContentPlaceHolder1_Label1')?.childNodes.map(e => {
-            if(e._rawText) {
-              let splittedRaw = e._rawText.split(' = ')
-              if(splittedRaw[0] !== 'EQKTX' && splittedRaw[0] !== 'MSGRP') {
-                splittedRaw[1] = splittedRaw[1].replaceAll(' ', '')
-              }
-              
-              switch (splittedRaw[0]) {
-                case 'EQUNR':
-                  bulletList.push(`Numéro d'équipement : ${splittedRaw[1]}`)
-                break;
-                case'EQKTX':
-                  bulletList.push(`Désignation de l'équipement : ${splittedRaw[1]}`)
-                break;
-                case'EQTYP':
-                  bulletList.push(`Catégorie de l'équipement : ${splittedRaw[1]}`)
-                break;
-                case'INVNR':
-                  bulletList.push(`N° d'inventaire : ${splittedRaw[1]}`)
-                break;
-                case'ANSDT':
-                  let dateArray = splittedRaw[1].match(/^(\d{4})(\d{2})(\d{2})$/).slice(1)
-                  bulletList.push(`Date d'acquisition : ${dateArray[0]}-${dateArray[1]}-${dateArray[2]}`)
-                  
-                  itemDate = new Date(parseInt(dateArray[0]), parseInt(dateArray[1]) - 1, parseInt(dateArray[2]))
-                  var ageDate = intervalToDuration({start: itemDate, end: new Date()})
-                  bulletList.push(<><b>+++ AGE = {differenceInDays(new Date(), itemDate)} jours
-                    soit {ageDate.years} an{ageDate.years > 1 && 's'},&nbsp;
-                    {ageDate.months} mois,&nbsp;
-                    {ageDate.days} jour{ageDate.days > 1 && 's'}
-                    </b>
-                  </>)
-                break;
-                case 'ANSWT':
-                  bulletList.push(`Valeur d'acquisition : ${splittedRaw[1]}`)
-                break;
-                case 'WAERS':
-                  bulletList.push(`Clé de devise : ${splittedRaw[1]}`)
-                break;
-                case 'HERST':
-                  bulletList.push(`Fabricant : ${splittedRaw[1]}`)
-                break;
-                case 'TYPBZ':
-                  bulletList.push(`Type/Modèle : ${splittedRaw[1]}`)
-                break;
-                case 'SERGE':
-                  bulletList.push(<><span style={{color: 'red', fontWeight: 'bold'}}>N° de série</span> (SERGE) : {splittedRaw[1]}</>)
-                break;
-                case 'MSGRP':
-                  bulletList.push(`Local : ${splittedRaw[1]}`)
-                break;
-                case 'KOSTL':
-                  bulletList.push(`Centre de coût : ${splittedRaw[1]}`)
-                break;
-                case 'CLAID':
-                  bulletList.push(`Classe : ${splittedRaw[1]}`)
-                break;
-                case 'CLATX':
-                  bulletList.push(`Désignation de la classe : ${splittedRaw[1]}`)
-                break;
-                case 'CLASSIF':
-                  bulletList.push(`Identifiant de la classe : ${splittedRaw[1]}`)
-                break;
-                case 'ZIMG_024':
-                  bulletList.push(`No de poste de commande : ${splittedRaw[1]}`)
-                break;
-                case 'ZIMG_037':
-                  bulletList.push(`Centre de coût d'achat : ${splittedRaw[1]}`)
-                break;
-                case 'ZIMG_001':
-                  bulletList.push(`N° de commande d'achat EPFL : ${splittedRaw[1]}`)
-                break;
-                case 'ZIMG_002':
-                  bulletList.push(`Propriété de : ${splittedRaw[1]}`)
-                break;
-                default:
-                  bulletList.push(`${splittedRaw[0]} : ${splittedRaw[1]}`)
-                break;
-              }
-
-            }
-          })
-
-          var ageDate = new Date(+new Date() - +itemDate);
-          var itemYears = Math.abs(ageDate.getFullYear()) - 1970
-
-          const fullHTML =
-          <>
-            <b>{parsedHtml.querySelector('#ctl00_ContentPlaceHolder1_Label1')?.childNodes[0].childNodes[0].rawText}</b>
-            {
-              checkValidInvNumber(parsedHtml) == false &&
-              (
-                <p>{itemYears >= 6 ? '❌' : '✅'} La machine a {itemYears >= 6 ? 'plus' : 'moins'} de 6 ans.</p>
-              )
-            }
-            <ul>
-              {
-                bulletList.map(e => (
-                  <li>{e}</li>
-                ))
-              }
-            </ul>
-            {
-              checkValidInvNumber(parsedHtml) == false &&
-              (
-                <b>{parsedHtml.querySelector('#ctl00_ContentPlaceHolder1_Label2')?.childNodes[0].childNodes[0].childNodes[0].rawText}</b>
-              )
-            }
-          </>
-          setInventoryItem(fullHTML)
-        }
-      }
-    })
-  }
-
-
-  return (
-    <Container>
-      <h1>Check Inventory</h1>
-      <form onSubmit={e => {
-          e.preventDefault();
-          checkInventoryNumber(e.target['invNumberInput'].value)
-        }}
-        style={{ display: 'flex', gap: '10px' }}>
-        <input defaultValue={inventoryParam} id="invNumberInput" placeholder="A123456789..." />
-        <Button className="btn btn-secondary" type="submit">Check</Button>
-      </form>
-      {inventoryItem}
-    </Container>
-  );
+  return <Container>
+           <h1>Check Inventory</h1>
+           <form onSubmit={e => {
+             e.preventDefault();
+             setYellowStickerCode(e.target['invNumberInput'].value);
+           }}
+             style={{ display: 'flex', gap: '10px' }}>
+             <input defaultValue={yellowStickerCode} id="invNumberInput" placeholder="A123456789..." />
+             <Button className="btn btn-secondary" type="submit">Check</Button>
+           </form>
+           {entry ? renderEntry(entry) : <>Non trouvé dans l'inventaire.</> }
+         </Container>;
 }
 
-export default CheckInv;
+function renderEntry (entry : InventoryEntry) {
+
+  const ageDate = new Date(+new Date() - +entry.purchaseDate);
+  const itemYears = Math.abs(ageDate.getFullYear()) - 1970;
+  const bulletPoints : any[] = [<>{itemYears >= 6 ? '❌' : '✅'} La machine a {itemYears >= 6 ? 'plus' : 'moins'} de 6 ans.</>];
+
+  let value;
+
+  function consumeKey (key) {
+    const val = entry.features[key];
+    delete entry.features[key];
+    return val;
+  }
+
+  if (value = consumeKey('ANSDT')) {
+        const ageDate = intervalToDuration({start: value, end: new Date()});
+        bulletPoints.push(`Date d'acquisition : ${value.toISOString().slice(0, 10)}`);
+        bulletPoints.push(
+          <b>+++ AGE = {differenceInDays(new Date(), value)} jours
+            soit {ageDate.years} an{ageDate.years > 1 && 's'},&nbsp;
+            {ageDate.months} mois,&nbsp;
+            {ageDate.days} jour{ageDate.days > 1 && 's'}
+          </b>);
+  }
+  if (value = consumeKey('EQUNR')) {
+        bulletPoints.push(`Numéro d'équipement : ${value}`);
+  }
+  if (value = consumeKey('EQKTX')) {
+        bulletPoints.push(`Désignation de l'équipement : ${value}`);
+  }
+  if (value = consumeKey('EQTYP')) {
+        bulletPoints.push(`Catégorie de l'équipement : ${value}`);
+  }
+  if (value = consumeKey('INVNR')) {
+        bulletPoints.push(`N° d'inventaire : ${value}`);
+  }
+  if (value = consumeKey('ANSWT')) {
+        bulletPoints.push(`Valeur d'acquisition : ${value}`);
+  }
+  if (value = consumeKey('WAERS')) {
+        bulletPoints.push(`Clé de devise : ${value}`);
+  }
+  if (value = consumeKey('HERST')) {
+        bulletPoints.push(`Fabricant : ${value}`);
+  }
+  if (value = consumeKey('TYPBZ')) {
+        bulletPoints.push(`Type/Modèle : ${value}`);
+  }
+  if (value = consumeKey('SERGE')) {
+        bulletPoints.push(<><span style={{color: 'red', fontWeight: 'bold'}}>N° de série</span> (SERGE) : {value}</>);
+  }
+  if (value = consumeKey('MSGRP')) {
+        bulletPoints.push(`Local : ${value}`);
+  }
+  if (value = consumeKey('KOSTL')) {
+        bulletPoints.push(`Centre de coût : ${value}`);
+  }
+  if (value = consumeKey('CLAID')) {
+        bulletPoints.push(`Classe : ${value}`);
+  }
+  if (value = consumeKey('CLATX')) {
+        bulletPoints.push(`Désignation de la classe : ${value}`);
+  }
+  if (value = consumeKey('CLASSIF')) {
+        bulletPoints.push(`Identifiant de la classe : ${value}`);
+  }
+  if (value = consumeKey('ZIMG_024')) {
+        bulletPoints.push(`No de poste de commande : ${value}`);
+  }
+  if (value = consumeKey('ZIMG_037')) {
+        bulletPoints.push(`Centre de coût d'achat : ${value}`);
+  }
+  if (value = consumeKey('ZIMG_001')) {
+        bulletPoints.push(`N° de commande d'achat EPFL : ${value}`);
+  }
+  if (value = consumeKey('ZIMG_002')) {
+        bulletPoints.push(`Propriété de : ${value}`);
+  }
+  if (value = consumeKey('ZIMG_005')) {
+        bulletPoints.push(`Attribué à (SCIPER) : ${value}`);
+  }
+  if (value = consumeKey('ZIMG_017')) {
+        bulletPoints.push(`Valeur résiduelle : ${value}`);
+  }
+
+  for (const [key, value] of Object.entries(entry.features)) {
+    bulletPoints.push(`${key} : ${value}`);
+  }
+
+  return <>
+           <b>{entry.header}</b>
+           <ul>
+             <li></li>
+             { bulletPoints.map(e => <li>{e}</li>) }
+           </ul>
+           {
+             <b>{entry.softwareStatus}</b>
+           }
+         </>;
+}
