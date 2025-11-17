@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "postinstall": "set -e  -x; patch-package; rm -rf node_modules/@epfl/epfl-sti-react-library/node_modules/react-router-dom"
+    "postinstall": "set -e  -x; patch-package"
   },
   "author": "",
   "license": "ISC",
@@ -12,7 +12,6 @@
     "@babel/runtime": "^7.21.0",
     "@emotion/react": "^11.10.8",
     "@emotion/styled": "^11.10.8",
-    "@epfl/epfl-sti-react-library": "^5.0.2",
     "@mui/material": "^5.12.3",
     "@types/styled-components": "^5.1.26",
     "assert": "^2.1.0",
