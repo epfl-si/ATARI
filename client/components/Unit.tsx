@@ -1,14 +1,13 @@
 import React from 'react'
-import { UnitInfos } from '../../imports/types/UnitInfos'
+import { Accred, Person } from '/imports/api/persons'
 import Chevron from './Chevron'
-import { Person } from '/imports/api/persons';
 
-function Unit(props:{show?: boolean, infos: UnitInfos, user: Person}) {
+export function Unit(props:{show?: boolean, infos: Accred, user: Person}) {
   const [show, setShow] = React.useState(false)
 
   const addressForUnit = props.user.addresses ? props.user.addresses.filter(e => parseInt(e.unitid) == props.infos.unitid) : []
   const [explicitsAdminsIT, setExplicitsAdminsIT] = React.useState([]);
-  const [inheritedsAdminsIT, setInheritedsAdminsIT] = React.useState({});
+  const [inheritedsAdminsIT, setInheritedsAdminsIT] = React.useState([]);
 
   React.useEffect(() => {
     Meteor.call('getAdminsIT.unit', props.infos.unitid, function(err, res) {
@@ -153,5 +152,3 @@ function Unit(props:{show?: boolean, infos: UnitInfos, user: Person}) {
     </>
   )
 }
-
-export default Unit
