@@ -16,6 +16,10 @@ RUN meteor npm install
 RUN set -e -x; mkdir /app; meteor build --directory /app; \
     cd /app/bundle/programs/server ; meteor npm install --production
 
+COPY docker/npm-mongo.patch /tmp/
+RUN set -e -x; cd /app/bundle; \
+  patch -p0 < /tmp/npm-mongo.patch
+
 FROM $BASE_IMAGE
 
 ENV NODE_ENV=production

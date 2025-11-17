@@ -1,0 +1,19 @@
+--- programs/server/packages/npm-mongo.js.ORIG	2025-11-17 19:33:18.192042649 +0000
++++ programs/server/packages/npm-mongo.js	2025-11-17 19:29:22.926842920 +0000
+@@ -36,12 +36,13 @@
+ if (process.env.MONGO_URL && (/^mongodb(\+srv)?:\/\//.test(process.env.MONGO_URL))) {
+   try {
+     connect(new MongoClient(process.env.MONGO_URL, {
+-      tls: true,
+-      tlsAllowInvalidCertificates: true,
++      // tls: true,
++      // tlsAllowInvalidCertificates: true,
+     })).then(client => {
+       if (client) client.close();
+     });
+   } catch (e) {
+-    console.warn('Invalid MongoDB connection string in MONGO_URL:', process.env.MONGO_URL);
++    console.warn('Unable to connect to MongoDB using the connection string in MONGO_URL:', process.env.MONGO_URL);
++    console.error(e);
+   }
+ }
