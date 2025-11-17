@@ -85,19 +85,7 @@ export interface Person {
       fromdefault: number;
     }
   ];
-  addresses: [
-    {
-      unitid: string;
-      type: string;
-      address: string;
-      country: string;
-      part1: string;
-      part2: string;
-      part3: string;
-      part4: string;
-      fromdefault: number;
-    }
-  ];
+  addresses: Address[];
   automap: {
     protocol: string;
     server: string;
@@ -150,6 +138,18 @@ export interface Person {
   // Only for `searchPersons` subscriptions:
   searchResultFor: string;
 }
+
+export interface Address {
+  unitid: string;
+  type: string;
+  address: string;
+  country: string;
+  part1: string;
+  part2: string;
+  part3: string;
+  part4: string;
+  fromdefault: number;
+};
 
 /**
  * Client-only collection for subscription results

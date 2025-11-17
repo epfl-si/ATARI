@@ -2,7 +2,7 @@ import React from 'react'
 import { Person } from '/imports/api/persons'
 import styled from "styled-components"
 import CopyButton from './CopyButton'
-import Unit from './Unit'
+import { Unit } from './Unit'
 import { useQueryPerson } from '/imports/ui/use-hooks'
 import { Link } from 'react-router-dom'
 import { LoadingSpinner } from './LoadingSpinner'
