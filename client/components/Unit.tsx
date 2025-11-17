@@ -1,28 +1,10 @@
 import React from 'react'
 import { useSubscribe, useFind } from 'meteor/react-meteor-data'
-import styled from "styled-components"
 import { Accred, Person, Address as AddressInterface } from '/imports/api/persons'
 import { Authorization, Unit, Units } from '/imports/api/units'
-import Chevron from './Chevron'
+import { Collapsible } from './Collapsible'
 
 export function Unit(props:{infos: Accred, user: Person}) {
-  const [show, setShow] = React.useState(false);
-
-  const [showAdminsIT, setShowAdminsIT] = React.useState(false);
-
-  const [rotateChevron, setRotateChevron] = React.useState(false);
-  const [rotateChevronAdminsIT, setRotateChevronAdminsIT] = React.useState(false);
-
-  const HoverableTextButton = styled.button`
-    padding-top: 0;
-    padding-bottom: 0;
-    border: 0;
-    transition: all 0.1s linear;
-    &:hover {
-      color: red;
-    }
-  `;  // Warning, counts as a React use hook 🤷‍♂️
-
   const unitId = props.infos.unitid;
 
   const isLoading = useSubscribe(unitId ? "unitAdminIT" : undefined, unitId);
@@ -41,9 +23,6 @@ export function Unit(props:{infos: Accred, user: Person}) {
     authorizations.filter((a) => a.attribution === "inherited"),
     ({ reasonname }) => reasonname);
 
-  const handleRotate = () => setRotateChevron(!rotateChevron);
-  const handleRotateAdminsIT = () => setRotateChevronAdminsIT(!rotateChevronAdminsIT);
-
   var phone_numbers = props.infos.phone_numbers?.map(x=> {
     return <><a href={"999"} className="btn btn-sm btn-secondary mb-2 align-baseline">{"999"}</a>
              <br/></>
@@ -53,17 +32,11 @@ export function Unit(props:{infos: Accred, user: Person}) {
 
   return (
     <>
-      <HoverableTextButton
-        className={`collapse-title ${show ? '' : 'collapsed'}`}
-        type="button" onClick={()=> { setShow(!show); handleRotate() }}
-        aria-expanded="false"
-        aria-controls={`collapse-${unitId}`}>
-        {props.infos.position && <span style={{ display: props.infos.position.labelfr ? '' : 'none' }}><strong>{props.infos.position.labelfr}</strong>,</span>} <span className="font-weight-normal">{props.infos.unit.labelfr}</span>&nbsp;
-        <Chevron handleRotate={handleRotate} rotateChevron={rotateChevron} setRotateChevron={setRotateChevron} />
-      </HoverableTextButton>
-
-      <div>
-        <div className={`collapse ${show ? 'show' : ''} collapse-item collapse-item-desktop`} id={`collapse-${unitId}`}>
+      <Collapsible ariaControls={`collapse-${unitId}`}>
+        <Collapsible.Summary>
+          {props.infos.position && <span style={{ display: props.infos.position.labelfr ? '' : 'none' }}><strong>{props.infos.position.labelfr}</strong>,</span>} <span className="font-weight-normal">{props.infos.unit.labelfr}</span>&nbsp;
+        </Collapsible.Summary>
+        <Collapsible.Details>
           <div className="row pt-2 pb-2">
             <Address address={ (props?.user?.addresses || []).find((e) => parseInt(e.unitid) === unitId) } />
             <div className="col-md">
@@ -82,47 +55,40 @@ export function Unit(props:{infos: Accred, user: Person}) {
           { (! entry) ? <>Impossible de charger les droits Admin IT dans l'unité {unitId}</> :
             <div className="row">
               <div className="col-md">
-                <HoverableTextButton
-                  className={`collapse-title ${showAdminsIT ? '' : 'collapsed'}`}
-                  type="button"
-                  onClick={()=> { setShowAdminsIT(!showAdminsIT); handleRotateAdminsIT() }}
-                  aria-expanded="false"
-                  aria-controls={`collapse-adminsIT-${unitId}`}>
-                  <strong>Admins IT</strong>&nbsp;
-                  <Chevron handleRotate={handleRotateAdminsIT} rotateChevron={rotateChevronAdminsIT} setRotateChevron={setRotateChevronAdminsIT} />
-                </HoverableTextButton>
-                <div className={`collapse ${showAdminsIT ? 'show' : ''} collapse-item collapse-item-desktop`} id={`collapse-adminsIT-${unitId}`}>
-                  <ol>
-                    {explicitAdminsIT.length > 0 && (
-                      <>
-                        <strong className="pb-5">Admins IT de {explicitAdminsIT[0].resource.name}</strong>
-                        {explicitAdminsIT.map(admin => (
-                          <li>
-                            <a href={`mailto:${admin.person.email}`}>{admin.person.email}</a>
-                          </li>
-                        ))}
-                      </>
-                    )}
-                    { Object.keys(inheritedAdminsIT).map((key) =>
-                      <>
-                        <strong>Admins IT hérités de {key}</strong>
-                        {
-                          inheritedAdminsIT[key].map(admin =>
+                <Collapsible ariaControls={`collapse-adminsIT-${unitId}`}>
+                  <Collapsible.Summary><strong>Admins IT</strong>&nbsp;</Collapsible.Summary>
+                  <Collapsible.Details>
+                    <ol>
+                      {explicitAdminsIT.length > 0 && (
+                        <>
+                          <strong className="pb-5">Admins IT de {explicitAdminsIT[0].resource.name}</strong>
+                          {explicitAdminsIT.map(admin => (
                             <li>
                               <a href={`mailto:${admin.person.email}`}>{admin.person.email}</a>
                             </li>
-                          )
-                        }
-                      </>
-                    )}
-                  </ol>
-                </div>
+                          ))}
+                        </>
+                      )}
+                      { Object.keys(inheritedAdminsIT).map((key) =>
+                        <>
+                          <strong>Admins IT hérités de {key}</strong>
+                          {
+                            inheritedAdminsIT[key].map(admin =>
+                              <li>
+                                <a href={`mailto:${admin.person.email}`}>{admin.person.email}</a>
+                              </li>
+                            )
+                          }
+                        </>
+                      )}
+                    </ol>
+                  </Collapsible.Details>
+                </Collapsible>
               </div>
             </div>
           }
-        </div>
-      </div>
-
+          </Collapsible.Details>
+         </Collapsible>
     </>
   );
 }
