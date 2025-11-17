@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Autocomplete, TextField } from '@mui/material'
 import { useFind, useSubscribe } from 'meteor/react-meteor-data'
 import { Person, Persons } from '/imports/api/persons'
@@ -48,9 +48,12 @@ export function SearchBar(props: SearchBarProps) {
 
     const searchResultPersons = choosablePersons.filter(
         (p) => p.searchResultFor === searchQuery);
-    if (searchResultPersons.length == 1 && props.onSingleSearchResult) {
-        props.onSingleSearchResult(searchResultPersons[0]);
-    }
+
+    useEffect(() => {
+        if (searchResultPersons.length == 1 && props.onSingleSearchResult) {
+            props.onSingleSearchResult(searchResultPersons[0]);
+        }
+    }, [searchResultPersons]);
 
     // Keyboard things go here
     const onTyping = useDeadMansSwitch<string>(setSearchQuery, 1000);
