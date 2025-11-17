@@ -5,6 +5,7 @@
     "jsx": "preserve",
     "skipLibCheck": true,
     "downlevelIteration": true,
+    "resolveJsonModule": true,
     "paths": {
        // allow absolute imports from project root:
        "/*": ["./*"],
