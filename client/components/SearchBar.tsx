@@ -38,7 +38,7 @@ export function SearchBar(props: SearchBarProps) {
     const [searchQuery, setSearchQuery] = useState<string>();
     const [error, setError] = useState<Meteor.Error>();
 
-    const isLoading = (! searchQuery) ? useSubscribe(null) :
+    const isLoading = (error || ! searchQuery) ? useSubscribe(null) :
         useSubscribe("searchPersons", searchQuery,
             {
                 onStop (error ?: Meteor.Error) {
