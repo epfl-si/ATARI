@@ -8,7 +8,7 @@ import { fetchEPFLAPI } from '/imports/server/epfl_api'
 import { Client as LDAPClient } from 'ldapts'
 import { ensure, canQueryPersons } from "/server/policy"
 
-const personSearchStringRegExp = /^[a-zA-Z' ]+$/,
+const personSearchStringRegExp = /^[\p{Script=Latin}' -]+$/u,
       sciperRegExp = /^G?[0-9]+$/;
 
 Meteor.publish("searchPersons", async function (personSearchString) {
