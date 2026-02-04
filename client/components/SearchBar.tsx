@@ -36,8 +36,15 @@ type SearchBarProps = {
 export function SearchBar(props: SearchBarProps) {
     // Whatever the user typed:
     const [searchQuery, setSearchQuery] = useState<string>();
-    const isLoading = searchQuery ? useSubscribe("searchPersons", searchQuery) :
-        useSubscribe(null);
+    const [error, setError] = useState<Meteor.Error>();
+
+    const isLoading = (! searchQuery) ? useSubscribe(null) :
+        useSubscribe("searchPersons", searchQuery,
+            {
+                onStop (error ?: Meteor.Error) {
+                    if (error) setError(error);
+                }
+            });
 
     // While the search is in progress, we want to still be able to
     // click on the previously-retrieved search items. Meteor
@@ -56,7 +63,11 @@ export function SearchBar(props: SearchBarProps) {
     }, [searchResultPersons]);
 
     // Keyboard things go here
-    const onTyping = useDeadMansSwitch<string>(setSearchQuery, 1000);
+    const onTyping = useDeadMansSwitch<string>(
+        function (typedText) {
+            setError(undefined);
+            setSearchQuery(typedText);
+        }, 1000);
 
     useGlobalKeyboardEvent('Escape', function() {
         const searchBar = document.getElementById('atariSearchBar') as HTMLInputElement;
@@ -116,7 +127,7 @@ export function SearchBar(props: SearchBarProps) {
                         ...params.InputProps,
                         endAdornment: (
                             <>
-                                {isLoading() ? <CircularProgress color="inherit" size={20}/> : null}
+                                <SearchStateAdornment isLoading={ isLoading() } error={ error } />
                                 {params.InputProps.endAdornment}
                             </>
                         )
@@ -125,4 +136,23 @@ export function SearchBar(props: SearchBarProps) {
             )}
         />
     )
+}
+
+type SearchStateAdornmentProps = {
+    isLoading: boolean;
+    error ?: Meteor.Error;
+};
+
+function SearchStateAdornment ({ isLoading, error } : SearchStateAdornmentProps) {
+    if (error) {
+        return <>
+                   <span aria-describedby="search-error-details"
+                       id="search-state-error">🤮</span>
+                   <pre role="tooltip" id="search-state-error">
+                       { error.message }
+                   </pre>
+               </>;
+    } else if (isLoading) {
+        return <CircularProgress color="inherit" size={20}/>;
+    }
 }
