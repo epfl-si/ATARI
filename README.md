@@ -24,10 +24,11 @@ while Meteor simplifies accessing information from the backend for the frontend.
 **Data sources**: Information about the organization's members is retreived from
 https://api.epfl.ch, but also from the AD.
 
-**Security**: Measures have been implemented to protect the sensitive data of
-the organization's members. These measures include authentication with EPFL's
-authentication system, Tequila, role-based authorization, and a strict policy
-system. The group `ATARI-access` is used to grants access to the application.
+**Security**: Measures have been implemented to protect the sensitive
+data of the organization's members. These measures include
+authentication with EPFL's Web-based Single Sign-on (SSO) system;
+role-based authorization; and a strict policy system. The group
+`ATARI-access` is used to grants access to the application.
 
 ## Getting Started (development)
 
