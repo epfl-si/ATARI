@@ -3,9 +3,6 @@
   "version": "1.2.12",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "postinstall": "set -e  -x; npx patch-package"
-  },
   "author": "",
   "license": "ISC",
   "dependencies": {
