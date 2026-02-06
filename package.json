@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "author": "",
+  "meteor": {
+      "modern": true
+  },
   "license": "ISC",
   "dependencies": {
     "@babel/runtime": "^7.28.6",
