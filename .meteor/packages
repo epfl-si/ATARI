@@ -23,3 +23,4 @@ zodern:types            # Pull in type declarations from other Meteor packages
 
 accounts-base@3.2.0
 epfl:accounts-oidc
+rspack
