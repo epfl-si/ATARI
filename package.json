@@ -22,7 +22,6 @@
     "assert": "^2.1.0",
     "date-fns": "^4.1.0",
     "events": "^3.3.0",
-    "fs": "0.0.1-security",
     "ldapts": "^8.1.6",
     "meteor-node-stubs": "^1.2.25",
     "mysql": "^2.18.1",
