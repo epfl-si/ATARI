@@ -5,17 +5,26 @@
   "main": "index.js",
   "author": "",
   "license": "ISC",
+  "meteor": {
+    "modern": true,
+    "mainModule": {
+      "client": "client/main.tsx",
+      "server": "server/main.ts"
+    }
+  },
   "dependencies": {
     "@babel/runtime": "^7.28.6",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@mui/material": "^7.3.7",
+    "@swc/helpers": "^0.5.17",
     "@types/styled-components": "^5.1.36",
     "assert": "^2.1.0",
     "date-fns": "^4.1.0",
     "events": "^3.3.0",
     "fs": "0.0.1-security",
     "ldapts": "^8.1.6",
+    "meteor-node-stubs": "^1.2.25",
     "mysql": "^2.18.1",
     "net": "^1.0.2",
     "node-html-parser": "^7.0.2",
@@ -30,11 +39,17 @@
     "url": "^0.11.4"
   },
   "devDependencies": {
+    "@meteorjs/rspack": "^1.0.0",
+    "@rsdoctor/rspack-plugin": "^1.2.3",
+    "@rspack/cli": "^1.7.1",
+    "@rspack/core": "^1.7.1",
+    "@rspack/plugin-react-refresh": "^1.4.3",
     "@types/meteor": "^2.9.11",
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.19.8",
     "@types/react": "^19.2.11",
     "@types/react-dom": "^19.2.3",
-    "babel-plugin-transform-inline-environment-variables": "^0.4.4"
+    "babel-plugin-transform-inline-environment-variables": "^0.4.4",
+    "react-refresh": "^0.17.0"
   }
 }
