@@ -12,6 +12,29 @@ sciper number, gaspar username, units, etc.
 ATARI can be accessed at https://atari.epfl.ch within EPFL by individuals with 
 the appropriate access rights.
 
+## Development
+
+### Prep Work
+
+1. Copy `settings-mock.json` to `settings.json`
+2. Edit `settings.json`
+3. ```bash
+   meteor npm install
+   ```
+  💡 Do the latter again whenever `package.json` changes (e.g. when switching Git branches)
+
+### Day-to-day development
+
+To start the application, run
+
+```bash
+meteor --settings settings.json
+```
+
+and direct your browser to http://localhost:3000/
+
+Meteor features hot code reload for both client and server, so that you can start editing the source code and (most of the time) see the changes happen immediately.
+
 ## Tech stack and environment
 
 **Front-end**: The application is built using the Meteor framework and the React
