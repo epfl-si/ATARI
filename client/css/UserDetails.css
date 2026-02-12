@@ -32,7 +32,7 @@
 }
 .nbo-special:hover img {
   animation: skew-x-shakeng 0.25s infinite;
-  cursor:url('tumblr_luaznhDpRB1qmvaoo540.gif') 10 3, auto;
+  cursor:url('/tumblr_luaznhDpRB1qmvaoo540.gif') 10 3, auto;
 }
 
 @keyframes jump-shaking {
