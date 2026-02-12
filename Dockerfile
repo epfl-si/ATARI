@@ -5,10 +5,6 @@ FROM $BASE_IMAGE AS build
 RUN npx meteor
 ENV NODE_ENV=production
 
-# https://github.com/meteor/reify/pull/14
-RUN curl https://patch-diff.githubusercontent.com/raw/meteor/reify/pull/14.patch | \
-  (cd /root/.meteor/packages/meteor-tool/.3.4.0*/mt-os.linux.x86_64/dev_bundle/lib/node_modules/@meteorjs/reify && patch -p1)
-
 ENV PATH=$PATH:/root/.meteor
 ENV METEOR_ALLOW_SUPERUSER=true
 ENV ROOT_URL="http://localhost:3000"
