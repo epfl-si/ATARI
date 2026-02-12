@@ -42,7 +42,7 @@ Meteor.publish("personAPI", async function (sciper : string) {
   const person : Person =
         { ... await fetchEPFLAPI(`/v1/persons/${sciper}`),
           accreds: (await fetchEPFLAPI(`/v1/accreds?persid=${sciper}`)).accreds,
-          ownEmailAddrAuth: authorizations.find((auth) => auth.status === 'active'),
+          ownEmailAddrAuth: authorizations.find((auth: any) => auth.status === 'active'),
         };
 
   this.added("persons", sciper, person as any);
@@ -89,7 +89,7 @@ async function queryEPFLActiveDirectory (sciper : string) {
   let allBadPasswordTime : number[] = []
   let allBadPasswordCount : number[] = []
 
-  adResults.forEach(ad => {
+  adResults.forEach((ad: any) => {
     if(ad?.result[0]?.badPasswordTime) {
       allBadPasswordTime.push(parseInt(ad.result[0].badPasswordTime))
     }

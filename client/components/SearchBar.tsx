@@ -1,3 +1,4 @@
+import { Meteor } from "meteor/meteor"
 import React, { useState, useEffect } from 'react'
 import { Autocomplete, TextField } from '@mui/material'
 import { useFind, useSubscribe } from 'meteor/react-meteor-data'
@@ -38,7 +39,7 @@ export function SearchBar(props: SearchBarProps) {
     const [searchQuery, setSearchQuery] = useState<string>();
     const [error, setError] = useState<Meteor.Error>();
 
-    const isLoading = (error || ! searchQuery) ? useSubscribe(null) :
+    const isLoading = (error || ! searchQuery) ? useSubscribe(undefined) :
         useSubscribe("searchPersons", searchQuery,
             {
                 onStop (error ?: Meteor.Error) {
@@ -51,7 +52,8 @@ export function SearchBar(props: SearchBarProps) {
     // conveniently guarantees that it will publish the new search
     // results over DDP before unpublishing the stale ones:
     const choosablePersons = useFind(() =>
-        Persons.find({ searchResultFor: { $exists: true } }));
+         Persons?.find({ searchResultFor: { $exists: true } })
+    ) ?? [];
 
     const searchResultPersons = choosablePersons.filter(
         (p) => p.searchResultFor === searchQuery);
@@ -85,7 +87,9 @@ export function SearchBar(props: SearchBarProps) {
             ListboxProps={{ style: { maxHeight: 200, overflow: 'auto' } }}
             autoHighlight={true}
             sx={{ width: "60%", margin: "auto" }}
+            //@ts-ignore
             value={ props.initialText  || null /* https://stackoverflow.com/a/72136454 */ }
+            //@ts-ignore
             onChange={(_event, newPerson : Person) => {
                 if(newPerson?._id) {
                     if (props.onSearchResultSelected) {
