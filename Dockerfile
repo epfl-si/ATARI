@@ -3,7 +3,6 @@ ARG BASE_IMAGE=node:22.22.0
 FROM $BASE_IMAGE AS build
 
 RUN npx meteor
-ENV NODE_ENV=production
 
 ENV PATH=$PATH:/root/.meteor
 ENV METEOR_ALLOW_SUPERUSER=true
