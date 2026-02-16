@@ -16,8 +16,9 @@ the appropriate access rights.
 
 ### Prep Work
 
-1. Copy `settings-mock.json` to `settings.json`
-2. Edit `settings.json`
+1. Copy `settings-mock.json` to `settings.json`, or, if your access rights permit it,
+copy `/keybase/team/epfl_atari/settings-dev.json` to `settings.json`
+2. Optionnaly, edit `settings.json`
 3. ```bash
    meteor npm install
    ```
@@ -25,13 +26,13 @@ the appropriate access rights.
 
 ### Day-to-day development
 
-If you need to bypass the offical authentification system with a local one, do firstly:
+If you need to bypass the official authentification system with a local one, start firstly:
 
 ```bash
 docker compose up
 ```
 
-To start the application, run
+Start the application with:
 
 ```bash
 meteor --settings settings.json
@@ -59,37 +60,6 @@ authentication with EPFL's Web-based Single Sign-on (SSO) system;
 role-based authorization; and a strict policy system. The group
 `ATARI-access` is used to grants access to the application.
 
-## Getting Started (development)
-
-First of all, clone the repository on your own device.
-
-Then, either copy `/keybase/team/epfl_atari/settings-dev.json` to `settings.json` or (in case you lack access, or you don't use Keybase in the first place) rename the `settings-mock.json` file in `settings.json` and replace the
-data with your own data
-
-If not already done, [install the Meteor command-line tool](https://docs.meteor.com/install.html)
-and [Docker](https://docker.com) (You will only need to do this once.)
-
-Install the necessary dependancies of this project using Meteor:
-```sh
-meteor npm i
-```
-
-Then, you can run the entire project just by using one make command:
-```sh
-make all
-```
-*The app is auto-refreshing whenever you save a file while coding, no need to 
-restart the application.*
-
-Wait a bit and open [http://localhost:3000](http://localhost:3000) with your
-browser to see the result.
-
 ## Deployment (prod)
 
-The code to deploy this app is hosted on the https://github.com/epfl-si/ATARI.ops 
-directory. The deployment uses [Ansible] wrapped in a convenient [suitcase], 
-called [`atarisible`].
-
-[Ansible]: https://www.ansible.com (Ansible is Simple IT Automation)
-[suitcase]: https://github.com/epfl-si/ansible.suitcase (Install Ansible and its dependency stack into a temporary directory)
-[`atarisible`]: https://github.com/epfl-si/atari.ops/blob/main/atarisible
+See https://github.com/epfl-si/ATARI.ops
