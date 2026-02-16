@@ -25,6 +25,12 @@ the appropriate access rights.
 
 ### Day-to-day development
 
+If you need to bypass the offical authentification system with a local one, do firstly:
+
+```bash
+docker compose up
+```
+
 To start the application, run
 
 ```bash
