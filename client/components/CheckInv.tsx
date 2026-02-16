@@ -14,9 +14,12 @@ export function CheckInv() {
   const isLoading = useSubscribe(
     yellowStickerCode ? "inventory" : undefined, yellowStickerCode);
 
-  const found : InventoryEntry[] = useFind(() => yellowStickerCode ?
-    Inventory.find({ _id: yellowStickerCode }) : null,
-    [yellowStickerCode]);
+  const found : InventoryEntry[] = useFind(() =>
+      yellowStickerCode && Inventory ?
+        Inventory.find({ _id: yellowStickerCode }) :
+        null,
+    [yellowStickerCode]
+  ) ?? [];
   const entry = found?.length === 1 ? found[0] : null;
 
   const Button = styled.button`
@@ -54,7 +57,7 @@ function renderEntry (entry : InventoryEntry) {
 
   let value;
 
-  function consumeKey (key) {
+  function consumeKey (key: any) {
     const val = entry.features[key];
     delete entry.features[key];
     return val;
@@ -65,9 +68,9 @@ function renderEntry (entry : InventoryEntry) {
         bulletPoints.push(`Date d'acquisition : ${value.toISOString().slice(0, 10)}`);
         bulletPoints.push(
           <b>+++ AGE = {differenceInDays(new Date(), value)} jours
-            soit {ageDate.years} an{ageDate.years > 1 && 's'},&nbsp;
+            soit {ageDate.years} an{ageDate.years && ageDate.years > 1 && 's'},&nbsp;
             {ageDate.months} mois,&nbsp;
-            {ageDate.days} jour{ageDate.days > 1 && 's'}
+            {ageDate.days} jour{ageDate.days && ageDate.days > 1 && 's'}
           </b>);
   }
   if (value = consumeKey('EQUNR')) {

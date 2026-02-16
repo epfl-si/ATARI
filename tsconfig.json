@@ -1,20 +1,48 @@
 {
   "compilerOptions": {
-    "lib": ["es2021", "dom"],
-    "esModuleInterop": true,
+    /* Basic Options */
+    "target": "es2018",
+    "module": "esNext",
+    "lib": ["esnext", "dom"],
+    "allowJs": true,
+    "checkJs": false,
     "jsx": "preserve",
-    "skipLibCheck": true,
-    "downlevelIteration": true,
-    "resolveJsonModule": true,
+    "incremental": true,
+    "noEmit": true,
+
+    /* Strict Type-Checking Options */
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+
+    /* Additional Checks */
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": false,
+    "noFallthroughCasesInSwitch": false,
+
+    /* Module Resolution Options */
+    "baseUrl": ".",
     "paths": {
-       // allow absolute imports from project root:
-       "/*": ["./*"],
-       // Give TypeScript a hand to figure out in-tree zodern:types'd packages
-       // Maybe we'll be able to remove this later, once we eject the package...
-       // Maybe not 🤷‍♂️
-       "meteor/epfl:accounts-oidc": [
-        "./.meteor/local/types/packages.d.ts"
+      /* Support absolute /imports/* with a leading '/' */
+      "/*": ["*"],
+      /* Pull in type declarations for Meteor packages from either zodern:types or @types/meteor packages */
+      "meteor/*": [
+        "node_modules/@types/meteor/*",
+        ".meteor/local/types/packages.d.ts"
       ]
-    }
-  }
+    },
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "types": ["node", "mocha"],
+    "esModuleInterop": true,
+    "preserveSymlinks": true
+  },
+  "exclude": [
+    "./.meteor/**",
+    "./packages/**",
+    "./_build/**",
+    "./public/build-chunks/**",
+    "./public/build-assets/**"
+  ]
 }

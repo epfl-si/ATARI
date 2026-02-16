@@ -50,23 +50,34 @@ export function CheckAD() {
         <span><strong>Display Name</strong> : {person?.activeDirectory?.displayName}</span>
         <span><strong>Email</strong> : {person?.activeDirectory?.mail}</span>
         <span><strong>UPN</strong> : {person?.activeDirectory?.userPrincipalName}</span>
-        <span><strong>Status (User Account Control)</strong> : 0x{parseInt(person?.activeDirectory?.baseUserAccountControl).toString(16)}</span>
         <span>
-          <ul>
-            {UACDetails(parseInt(person?.activeDirectory?.baseUserAccountControl)).map(e => (
-              <li>{e}</li>
-            ))}
-          </ul>
+          <strong>Status (User Account Control)</strong> : {
+            person?.activeDirectory?.baseUserAccountControl &&
+              <>0x{parseInt(person?.activeDirectory?.baseUserAccountControl).toString(16)}</>
+          }
         </span>
-        <span><strong>Expire</strong> : {person?.activeDirectory?.accountExpires == 9223372036854775807 ? 'Jamais' : new Date(((person?.activeDirectory?.accountExpires / 10000000) - 11644473600) * 1000).toLocaleDateString('en-US')}</span>
+        <span>
+          { person?.activeDirectory?.baseUserAccountControl && <>
+            <ul>
+              {UACDetails(parseInt(person?.activeDirectory?.baseUserAccountControl)).map(e => (
+                <li>{e}</li>
+              ))}
+            </ul>
+          </>}
+        </span>
+        <span>
+          <strong>Expire</strong> : {
+            !(person?.activeDirectory?.accountExpires) ?
+              <></> :
+              person.activeDirectory.accountExpires == 9223372036854775807 ?
+                'Jamais' :
+                new Date(((person.activeDirectory.accountExpires / 10000000) - 11644473600) * 1000).toLocaleDateString('en-US')
+          }
+        </span>
         <span><strong>Exchange mailbox</strong> : {person?.activeDirectory?.msExchRecipientTypeDetails ? "Oui" : "Non"}</span>
         <span><strong>Where is the mailbox ?</strong> : {person?.activeDirectory?.msExchRecipientTypeDetails == "1" ? "Exchange OnPrem" : person?.activeDirectory?.msExchRecipientTypeDetails == "2147483648" ? "Exchange Online" : "N/A"}</span>
         <span><strong>A le droit Distrilog</strong> : {hasDistrilog ? 'Oui' : 'Non'}</span>
-
-
-
       </div>
-
     </Container>
   );
 }

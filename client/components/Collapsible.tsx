@@ -29,11 +29,11 @@ export function Collapsible ({ children, ariaControls } : CollapsibleProps) {
     if (!React.isValidElement(child)) return;
 
     if (child.type === Collapsible.Summary) {
-      summary = child.props.children;
+      summary = (child as any).props.children;
     }
 
     if (child.type === Collapsible.Details) {
-      details = child.props.children;
+      details = (child  as any).props.children;
     }
   });
 
