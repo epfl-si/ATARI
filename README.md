@@ -81,9 +81,6 @@ make all
 *The app is auto-refreshing whenever you save a file while coding, no need to 
 restart the application.*
 
-To have a deeper understanding about how the project is started, you can have a
-look at the [Makefile](Makefile).
-
 Wait a bit and open [http://localhost:3000](http://localhost:3000) with your
 browser to see the result.
 
