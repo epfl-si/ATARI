@@ -9,9 +9,10 @@ export function Unit(props:{infos: Accred, user: Person}) {
 
   const isLoading = useSubscribe(unitId ? "unitAdminIT" : undefined, unitId);
   const found : Unit[] = useFind(
-    (() => unitId ?
+    (() => unitId && Units ?
       Units.find({ _id: String(unitId) }) : null),
-    [unitId]);
+    [unitId]
+  ) ?? [];
   const entry = found?.length === 1 ? found[0] : null;
 
   if (isLoading()) return <></>;
@@ -23,7 +24,7 @@ export function Unit(props:{infos: Accred, user: Person}) {
     authorizations.filter((a) => a.attribution === "inherited"),
     ({ reasonname }) => reasonname);
 
-  var phone_numbers = props.infos.phone_numbers?.map(x=> {
+  const phone_numbers = props.infos.phone_numbers?.map(() => {
     return <><a href={"999"} className="btn btn-sm btn-secondary mb-2 align-baseline">{"999"}</a>
              <br/></>
   })
@@ -73,7 +74,7 @@ export function Unit(props:{infos: Accred, user: Person}) {
                         <>
                           <strong>Admins IT hérités de {key}</strong>
                           {
-                            inheritedAdminsIT[key].map(admin =>
+                            inheritedAdminsIT[key]!.map(admin =>
                               <li>
                                 <a href={`mailto:${admin.person.email}`}>{admin.person.email}</a>
                               </li>

@@ -13,7 +13,7 @@ Meteor.publish("inventory", async function (yellowStickerCode) {
   await ensure(canQueryInventory);
   ensureValidYellowStickercode(yellowStickerCode);
 
-  const inventoryDocument : InventoryEntry | undefined =
+  const inventoryDocument : Partial<InventoryEntry> | undefined =
         parseZztoolsResponse(await queryInventory(yellowStickerCode));
 
   if (inventoryDocument) {
@@ -71,7 +71,7 @@ function parseZztoolsResponse (zzHTML : string) {
   const header = parsedHtml.querySelector('#ctl00_ContentPlaceHolder1_Label1')?.childNodes[0].childNodes[0].rawText;
   const softwareStatus = parsedHtml.querySelector('#ctl00_ContentPlaceHolder1_Label2')?.childNodes[0].childNodes[0].childNodes[0].rawText;
 
-  let purchaseDate : Date;
+  let purchaseDate : Date | undefined;
   const features = parsedHtml.querySelector('#ctl00_ContentPlaceHolder1_Label1')?.childNodes.flatMap(e => {
 
     const nodeText = e.toString();
@@ -82,13 +82,17 @@ function parseZztoolsResponse (zzHTML : string) {
     key = key.replace(/^[ >]*/, "");
 
     if (key === 'ANSDT') {
-      const dateArray = value.match(/^(\d{4})(\d{2})(\d{2})$/).slice(1);
-      purchaseDate = new Date(parseInt(dateArray[0]), parseInt(dateArray[1]) - 1, parseInt(dateArray[2]));
-      return [[key, purchaseDate]];
+      const dateArray = value.match(/^(\d{4})(\d{2})(\d{2})$/)?.slice(1);
+      if (dateArray) {
+        purchaseDate = new Date(parseInt(dateArray[0]), parseInt(dateArray[1]) - 1, parseInt(dateArray[2]));
+        return [[key, purchaseDate]];
+      } else {
+        return [[key, value]];
+      }
     } else {
       return [[key, value]];
     }
   });
 
-  return { header, softwareStatus, purchaseDate, features: Object.fromEntries(features) }
+  return { header, softwareStatus, purchaseDate, features: Object.fromEntries(features ?? []) }
 }

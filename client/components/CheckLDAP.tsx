@@ -30,7 +30,7 @@ export function CheckLDAP() {
   );
 }
 
-function dumpLDAPStruct (obj) {
+function dumpLDAPStruct (obj: any) {
   if (obj === undefined) return <></>;
   return Object.entries(obj).map(([key,val]) => (
     Array.isArray(val) ? (

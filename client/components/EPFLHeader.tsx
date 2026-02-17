@@ -1,7 +1,7 @@
 import React from "react"
 import { Meteor } from "meteor/meteor"
 import { useTracker } from 'meteor/react-meteor-data'
-import { OIDC } from "meteor/epfl:accounts-oidc"
+import { OIDC, OIDCClient } from "meteor/epfl:accounts-oidc"
 
 function EPFLHeader() {
   const isLoggedIn = useTracker(() => !! Meteor.userId());
@@ -124,7 +124,7 @@ function EPFLHeader() {
                 {isLoggedIn ? <a href="#" onClick={() => Meteor.logout()}>
                     Logout
                   </a> : 
-                  <a href="#" onClick={() => OIDC.login()}>
+                  <a href="#" onClick={() => (OIDC as OIDCClient).login()}>
                     Login
                   </a>
                   }

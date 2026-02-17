@@ -1,3 +1,9 @@
 node_modules/
 keycloak/themes/EPFL
 settings.json
+
+# Meteor Modern-Tools build context directories
+_build
+*/build-assets
+*/build-chunks
+.rsdoctor

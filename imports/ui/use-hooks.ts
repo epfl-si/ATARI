@@ -22,7 +22,7 @@ type PublicationName = typeof publications[number];
  * @locus Client
  */
 export function useQueryPerson (
-  sciper : string | null,
+  sciper : string | undefined,
   ...subscriptions: PublicationName[]
 ) : {
   isLoading: () => boolean
@@ -35,16 +35,18 @@ export function useQueryPerson (
     } else {
       // Keep number of “use” hooks constant, even in case our caller
       // changed our parameters inbetween re-renders:
-      useSubscribe(null);
+      useSubscribe(undefined);
     }
   }
 
   const personOrPersons = useFind(
-    () => (sciper === null ? null : Persons.find({ _id: sciper })),
-    [ sciper ]);
+      () => (sciper && Persons ? Persons.find({ _id: sciper }) : null
+    ),
+    [ sciper ]
+  );
 
   return {
-    person: Object.values(personOrPersons)[0],
+    person: personOrPersons ? Object.values(personOrPersons)[0] : undefined,
     isLoading() : boolean {
       for (const l of isLoadings) {
         if (l()) { return true; }
@@ -85,7 +87,7 @@ export function useGlobalKeyboardEvent (
  * unless the owner component unmaps or `set()` is invoked again
  * before the delay expires.
  */
-export function useDeadMansSwitch<T> (idleCallback : (lastVal : T) => void, delay : number) {
+export function useDeadMansSwitch<T> (idleCallback : (lastVal : T | undefined) => void, delay : number) {
   type State<T> = {
     lastVal?: T;
     timeout?: ReturnType<typeof setTimeout>;

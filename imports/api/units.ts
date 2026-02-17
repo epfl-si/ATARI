@@ -45,6 +45,7 @@ export interface Authorization {
 }
 
 export type Unit = {
+  _id: string
   authorizations: Authorization[]
 }
 

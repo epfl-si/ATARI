@@ -133,7 +133,7 @@ export function UserDetails(props: {person: Person}) {
 
     const ownEmailAddrAuth = person.ownEmailAddrAuth,
           adData = person.activeDirectory,
-          accreds = person.accreds;
+          accreds = person.accreds ?? [];
 
     const easterStyle =
         (sciper == "169419") ? 'nbo-special':
@@ -219,7 +219,7 @@ export function UserDetails(props: {person: Person}) {
             }
             {
               person.phones && person.phones.length > 0 && (
-                person.phones.slice(0, 2).map((phone, index) =>
+                person.phones.slice(0, 2).map((phone) =>
                   <div key={phone.id}>
                     <strong>Téléphone</strong> : <span onClick={() => copyContentToClipboard(phone.number)} style={{cursor: 'copy', marginRight: '50px'}}>{phone.number}</span>
                     <CopyButton

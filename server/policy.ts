@@ -2,7 +2,7 @@ import { Meteor } from "meteor/meteor";
 
 async function canUseApp() {
   const user = await Meteor.userAsync()
-  return user?.services?.oidc?.claims?.groups?.some((g) => g === Meteor.settings.security.accessGroup)
+  return user?.services?.oidc?.claims?.groups?.some((g: any) => g === Meteor.settings.security.accessGroup)
 }
 
 export async function canQueryPersons() {
