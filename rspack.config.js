@@ -1,4 +1,5 @@
 import { defineConfig } from "@meteorjs/rspack";
+import { rspack } from '@rspack/core';
 import { TsCheckerRspackPlugin } from "ts-checker-rspack-plugin";
 
 /**
@@ -11,8 +12,10 @@ import { TsCheckerRspackPlugin } from "ts-checker-rspack-plugin";
  *
  * Use these flags to adjust your build settings based on environment.
  */
-export default defineConfig((/* Meteor */) => {
+export default defineConfig((Meteor) => {
   return {
-    plugins: [new TsCheckerRspackPlugin()],
+    plugins: [
+      !Meteor.isBuild && new TsCheckerRspackPlugin()
+    ],
   };
 });
