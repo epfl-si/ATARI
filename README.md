@@ -26,19 +26,19 @@ copy `/keybase/team/epfl_atari/settings-dev.json` to `settings.json`
 
 ### Day-to-day development
 
-If you need to bypass the official authentification system with a local one, start firstly:
+If the configuration choices you made previously (i.e. your `settings.json`) require a local Keycloak for authentication, then start it first with:
 
 ```bash
 docker compose up
 ```
 
-Start the application with:
+Then, start the application itself with:
 
 ```bash
 meteor --settings settings.json
 ```
 
-and direct your browser to http://localhost:3000/
+and finally, direct your browser to http://localhost:3000/
 
 Meteor features hot code reload for both client and server, so that you can start editing the source code and (most of the time) see the changes happen immediately.
 
