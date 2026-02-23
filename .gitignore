@@ -2,7 +2,7 @@ node_modules/
 keycloak/themes/EPFL
 settings.json
 
-# Meteor Modern-Tools build context directories
+# Meteor Modern-Tools build products:
 _build
 */build-assets
 */build-chunks
