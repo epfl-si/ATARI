@@ -31,7 +31,7 @@ docker compose up
 5. Test that your changes load into Keycloak correctly:
    1. flush the Keycloak state as per the procedure in the previous §
    2. <pre>docker compose up</pre>
-   3. Browse http://localhost:8080/ , log in and check that the new state is there as expected.
+   3. Browse http://localhost:8084/ , log in and check that the new state is there as expected.
 6. Commit your changes to the JSON files under `import/`.
 7. Iterate back to step 4 (using `git commit --amend` in step 6) until you have eliminated all the contingent stuff, and can vouch that every single line of diff in your commit is necessary for whatever change it is that you wanted to make.
 

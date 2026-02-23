@@ -56,6 +56,8 @@ export interface Accred {
     labelinclusive: string,
     restricted: string
   }
+  office: unknown,
+  phone_numbers: unknown[],
 }
 
 export interface Person {

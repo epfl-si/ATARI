@@ -29,7 +29,7 @@ services:
     ports:
       # Since the Keycloak password is easy to guess, opening up this
       # port further than localhost is *not* recommended.
-      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:8084:8080"
     volumes:
       - ./keycloak/import:/opt/keycloak/data/import
       # Please run:

@@ -3,11 +3,11 @@ ARG BASE_IMAGE=node:22.22.0
 FROM $BASE_IMAGE AS build
 
 RUN npx meteor
-ENV NODE_ENV=production
 
 ENV PATH=$PATH:/root/.meteor
 ENV METEOR_ALLOW_SUPERUSER=true
 ENV ROOT_URL="http://localhost:3000"
+ENV METEOR_DISABLE_OPTIMISTIC_CACHING=1
 
 COPY . /usr/src/app
 WORKDIR /usr/src/app
