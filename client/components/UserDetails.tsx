@@ -371,6 +371,9 @@ export function UserDetails(props: {person: Person}) {
                     <Link to={`/checkLDAP/${sciper}`} target='_blank'>
                       <Button className="btn btn-secondary">Check LDAP</Button>
                     </Link>
+                    <Link to={'https://entra.microsoft.com/?feature.msaljs=true#view/Microsoft_AAD_UsersAndTenants/UserManagementMenuBlade/~/AllUsers/menuId/'} target='_blank'>
+                      <Button className="btn btn-secondary">EntraID</Button>
+                    </Link>
                     <Link to={`https://it.epfl.ch/backoffice/sys_user.do?sysparm_query=user_name=${sciper}`} target='_blank'>
                       <Button className="btn btn-secondary">ServiceNow</Button>
                     </Link>
