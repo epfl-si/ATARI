@@ -1,0 +1,22 @@
+services:
+  app:
+    container_name: atari-app
+    image: oven/bun:1-slim
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    command: sh -c "bun install && bun dev"
+    environment:
+      NODE_ENV: development
+    env_file:
+      - .env
+    networks:
+      - atari-network
+
+networks:
+  atari-network:
+    name: atari-network

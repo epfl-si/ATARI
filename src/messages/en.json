@@ -29,7 +29,11 @@
       "title": "ATARI"
     },
     "home": {
-      "title": "Welcome"
+      "title": "Welcome",
+      "search": {
+        "placeholder": "Search for a person...",
+        "noResults": "No results"
+      }
     },
     "footer": {
       "gethelp": "Get help",
