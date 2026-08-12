@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { searchPeople } from "@/services/people";
+import { searchPerson } from "@/services/person";
 import type { ApiPerson } from "@/types/api";
 
 export function SearchBar() {
@@ -34,13 +34,17 @@ export function SearchBar() {
   }, []);
 
   const selectedSciper = results.length === 1 ? results[0].id : null;
+  const hasSearchNavigatedRef = useRef(false);
 
   // Once a single match remains, navigate to its /<sciper> page (pushed to history) and close the dropdown.
+  // Only bounce back to "/" if a search we drove had previously navigated away from it — never on initial
+  // load, otherwise landing directly on /<sciper> would immediately redirect to "/".
   useEffect(() => {
     if (selectedSciper) {
+      hasSearchNavigatedRef.current = true;
       setShowDropdown(false);
-      router.push(`/${selectedSciper}`, { scroll: false });
-    } else {
+      router.push(`/${selectedSciper}#details`, { scroll: false });
+    } else if (hasSearchNavigatedRef.current) {
       router.replace("/", { scroll: false });
     }
   }, [selectedSciper, router]);
@@ -58,7 +62,7 @@ export function SearchBar() {
     setShowDropdown(true);
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(async () => {
-      const found = await searchPeople(value);
+      const found = await searchPerson(value);
       setResults(found);
       setSearching(false);
     }, 300);
@@ -67,7 +71,7 @@ export function SearchBar() {
   function selectPerson(person: ApiPerson) {
     setQuery(person.name || person.display);
     setShowDropdown(false);
-    router.push(`/${person.id}`, { scroll: false });
+    router.push(`/${person.id}#details`, { scroll: false });
   }
 
   return (

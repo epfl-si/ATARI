@@ -1,10 +1,23 @@
 "use server";
 
+import { unstable_cache } from "next/cache";
 import { makeApiCall } from "@/lib/api";
 import { getUser } from "@/services/auth";
 import type { ApiPerson } from "@/types/api";
 
-export async function searchPeople(query: string): Promise<ApiPerson[]> {
+const getCachedPerson = unstable_cache(
+  async (sciper: string) => {
+    const person = await makeApiCall<ApiPerson>(`/v1/persons/${encodeURIComponent(sciper)}`);
+    return {
+      ...person,
+      name: person.firstname && person.lastname ? `${person.firstname} ${person.lastname}` : person.display,
+    };
+  },
+  ["person-by-sciper"],
+  { revalidate: 300 },
+);
+
+export async function searchPerson(query: string): Promise<ApiPerson[]> {
   await getUser();
 
   const searchTerm = query.trim();
@@ -24,7 +37,7 @@ export async function searchPeople(query: string): Promise<ApiPerson[]> {
       name: person.firstname && person.lastname ? `${person.firstname} ${person.lastname}` : person.display,
     }));
   } catch (error) {
-    console.error("Error searching people:", error);
+    console.error("Error searching persons:", error);
     return [];
   }
 }
@@ -33,12 +46,7 @@ export async function getPersonBySciper(sciper: string): Promise<ApiPerson | nul
   await getUser();
 
   try {
-    const person = await makeApiCall<ApiPerson>(`/v1/persons/${encodeURIComponent(sciper)}`);
-
-    return {
-      ...person,
-      name: person.firstname && person.lastname ? `${person.firstname} ${person.lastname}` : person.display,
-    };
+    return await getCachedPerson(sciper);
   } catch (error) {
     console.error("Error fetching person details:", error);
     return null;
