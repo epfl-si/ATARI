@@ -1,0 +1,42 @@
+{
+  "app": {
+    "title": "ATARI"
+  },
+  "navigation": {
+    "signin": "Se connecter",
+    "signout": "Se déconnecter"
+  },
+  "actions": {
+    "retry": "Réessayer",
+    "backToHome": "Retour à l'accueil",
+    "previousPage": "Page précédente",
+    "signin": "Se connecter",
+    "signout": "Se déconnecter"
+  },
+  "errors": {
+    "generic": {
+      "title": "Une erreur est survenue",
+      "description": "Une erreur inattendue s'est produite. Veuillez réessayer.",
+      "errorCode": "Code d'erreur"
+    },
+    "notFound": {
+      "title": "Cette page n'existe pas.",
+      "contact": "Besoin d'aide ? Contactez"
+    }
+  },
+  "pages": {
+    "welcome": {
+      "title": "ATARI"
+    },
+    "home": {
+      "title": "Bienvenue"
+    },
+    "footer": {
+      "gethelp": "Obtenir de l'aide",
+      "accessibility": "Accessibilité",
+      "disclaimer": "Mentions légales",
+      "privacy": "Politique de confidentialité",
+      "allRightsReserved": "Tous droits réservés"
+    }
+  }
+}

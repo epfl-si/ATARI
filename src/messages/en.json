@@ -1,0 +1,42 @@
+{
+  "app": {
+    "title": "ATARI"
+  },
+  "navigation": {
+    "signin": "Sign in",
+    "signout": "Sign out"
+  },
+  "actions": {
+    "retry": "Try again",
+    "backToHome": "Back to home",
+    "previousPage": "Previous page",
+    "signin": "Sign in",
+    "signout": "Sign out"
+  },
+  "errors": {
+    "generic": {
+      "title": "Something went wrong",
+      "description": "An unexpected error occurred. Please try again.",
+      "errorCode": "Error code"
+    },
+    "notFound": {
+      "title": "This page does not exist.",
+      "contact": "Need help? Contact"
+    }
+  },
+  "pages": {
+    "welcome": {
+      "title": "ATARI"
+    },
+    "home": {
+      "title": "Welcome"
+    },
+    "footer": {
+      "gethelp": "Get help",
+      "accessibility": "Accessibility",
+      "disclaimer": "Legal notice",
+      "privacy": "Privacy policy",
+      "allRightsReserved": "All rights reserved"
+    }
+  }
+}
