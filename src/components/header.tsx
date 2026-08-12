@@ -36,6 +36,11 @@ export const Header: React.FC<{ user: User | undefined }> = ({ user }) => {
             <h1 className="text-base sm:text-2xl font-bold -ml-1 sm:ml-0">{translations.app("title")}</h1>
           </Link>
         </div>
+        <nav className="hidden sm:flex items-center gap-4 text-sm font-medium text-muted-foreground">
+          <Link href="/inventory" className="hover:text-foreground">
+            {translations.navigation("inventory")}
+          </Link>
+        </nav>
       </div>
 
       <div className="flex items-center gap-2 sm:gap-6">

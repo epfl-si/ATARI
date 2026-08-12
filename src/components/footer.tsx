@@ -36,17 +36,26 @@ export const Footer: React.FC = () => {
               <div className="flex flex-wrap gap-4 text-sm mb-2">
                 <Link
                   href="https://www.epfl.ch/about/overview/fr/reglements-et-directives/mentions-legales/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="hover:underline"
                 >
                   {translations.footer("accessibility")}
                 </Link>
                 <Link
                   href="https://www.epfl.ch/about/overview/fr/reglements-et-directives/mentions-legales/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="hover:underline"
                 >
                   {translations.footer("disclaimer")}
                 </Link>
-                <Link href="https://go.epfl.ch/protection-des-donnees/" className="hover:underline">
+                <Link
+                  href="https://go.epfl.ch/protection-des-donnees/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline"
+                >
                   {translations.footer("privacy")}
                 </Link>
               </div>
@@ -54,7 +63,9 @@ export const Footer: React.FC = () => {
                 <p className="text-xs text-gray-500 mt-2">{translations.app("title")}</p>
                 <Link
                   className="text-xs text-gray-500 mt-2"
-                  href={`https://github.com/epfl-si/next-starterkit/releases/tag/v${version}`}
+                  href={`https://github.com/epfl-si/atari/releases/tag/v${version}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   v{version}
                 </Link>
