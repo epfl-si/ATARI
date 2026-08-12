@@ -1,28 +1,38 @@
-ARG BASE_IMAGE=node:22.22.0
+# ─── deps ────────────────────────────────────────────────────────────────────
+FROM oven/bun:1-slim AS deps
+WORKDIR /app
+COPY package.json bun.lock* ./
+RUN bun install --frozen-lockfile
 
-FROM $BASE_IMAGE AS build
+# ─── builder ─────────────────────────────────────────────────────────────────
+FROM oven/bun:1-slim AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+ENV NEXT_TELEMETRY_DISABLED=1
+RUN node node_modules/.bin/next build
 
-RUN npx meteor
+# ─── runner ──────────────────────────────────────────────────────────────────
+FROM oven/bun:1-slim AS runner
+WORKDIR /app
 
-ENV PATH=$PATH:/root/.meteor
-ENV METEOR_ALLOW_SUPERUSER=true
-ENV ROOT_URL="http://localhost:3000"
-ENV METEOR_DISABLE_OPTIMISTIC_CACHING=1
+RUN groupadd --system --gid 1001 nodejs && \
+    useradd --system --uid 1001 --gid nodejs nextjs
 
-COPY . /usr/src/app
-WORKDIR /usr/src/app
-RUN meteor npm install
-RUN set -e -x; mkdir /app; meteor build --directory /app; \
-    cd /app/bundle/programs/server ; meteor npm install --production
-
-COPY docker/npm-mongo.patch /tmp/
-RUN set -e -x; cd /app/bundle; \
-  patch -p0 < /tmp/npm-mongo.patch
-
-FROM $BASE_IMAGE
+COPY package.json bun.lock* ./
+RUN bun install --frozen-lockfile --production && \
+    bun pm cache rm
 
 ENV NODE_ENV=production
-COPY --from=build /app /app
-WORKDIR /app/bundle
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
 
-CMD ["node", "main.js"]
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+
+USER nextjs
+EXPOSE 3000
+
+CMD ["node", "server.js"]
