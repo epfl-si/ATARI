@@ -4,7 +4,8 @@
   },
   "navigation": {
     "signin": "Sign in",
-    "signout": "Sign out"
+    "signout": "Sign out",
+    "inventory": "Inventory"
   },
   "actions": {
     "retry": "Try again",
@@ -22,6 +23,142 @@
     "notFound": {
       "title": "This page does not exist.",
       "contact": "Need help? Contact"
+    }
+  },
+  "common": {
+    "yes": "Yes",
+    "no": "No",
+    "never": "Never"
+  },
+  "person": {
+    "fields": {
+      "sciper": "Sciper",
+      "email": "Email",
+      "username": "Username",
+      "phone": "Phone",
+      "sapId": "SAP ID",
+      "uid": "UID",
+      "gid": "GID",
+      "home": "Home",
+      "shell": "Shell",
+      "gender": "Gender",
+      "position": "Position",
+      "unit": "Unit",
+      "status": "Status",
+      "accredited": "Accredited",
+      "emailAuth": "Has an email address"
+    },
+    "sections": {
+      "general": "General",
+      "addresses": "Addresses",
+      "accreditations": "Accreditations",
+      "activeDirectory": "Active Directory",
+      "tools": "Tools"
+    },
+    "accred": {
+      "status": "Status",
+      "from": "From",
+      "to": "To",
+      "hierarchy": "Unit"
+    },
+    "toolLabels": {
+      "accred": "Accred",
+      "checkAd": "Check AD",
+      "checkLdap": "Check LDAP",
+      "serviceNow": "ServiceNow",
+      "people": "People",
+      "checkEmail": "Check Email",
+      "camiproAdmin": "Camipro admin",
+      "createTicket": "Create a ticket for this user"
+    }
+  },
+  "tools": {
+    "ad": {
+      "title": "Check AD - {sciper}",
+      "noInfo": "No Active Directory information for {sciper}.",
+      "description": "Description",
+      "displayName": "Display Name",
+      "email": "Email",
+      "upn": "UPN",
+      "domainLogin": "Domain\\login",
+      "accountControl": "Status (User Account Control)",
+      "expires": "Expires",
+      "lastLogon": "Last logon",
+      "pwdLastSet": "Last password change",
+      "badPasswordTime": "Last failed password attempt",
+      "badPwdCount": "Failed password attempts",
+      "exchangeMailbox": "Exchange mailbox",
+      "mailboxLocation": "Where is the mailbox?",
+      "distrilog": "Has Distrilog right",
+      "ACCOUNT_DISABLED": "Disabled account",
+      "ACCOUNT_ENABLED": "Enabled account",
+      "ACCOUNT_UNKNOWN": "Unknown account type",
+      "MAILBOX_ONPREM": "Exchange OnPrem",
+      "MAILBOX_ONLINE": "Exchange Online",
+      "MAILBOX_NA": "N/A",
+      "UAC_SCRIPT": "Logon script executed",
+      "UAC_HOMEDIR_REQUIRED": "Homedir required",
+      "UAC_LOCKOUT": "Locked",
+      "UAC_PASSWD_NOTREQD": "No password required",
+      "UAC_PASSWD_CANT_CHANGE": "User cannot change password",
+      "UAC_ENCRYPTED_TEXT_PWD_ALLOWED": "User can send encrypted password",
+      "UAC_TEMP_DUPLICATE_ACCOUNT": "Temporary duplicate account",
+      "UAC_NORMAL_ACCOUNT": "Normal account by default",
+      "UAC_INTERDOMAIN_TRUST_ACCOUNT": "Permissions granted via a trusted domain",
+      "UAC_WORKSTATION_TRUST_ACCOUNT": "Computer account for this domain",
+      "UAC_SERVER_TRUST_ACCOUNT": "Computer account for a (backup) domain controller",
+      "UAC_DONT_EXPIRE_PASSWORD": "Password never expires",
+      "UAC_MNS_LOGON_ACCOUNT": "This is an MNS account",
+      "UAC_SMARTCARD_REQUIRED": "A smartcard (or biometric) is required",
+      "UAC_TRUSTED_FOR_DELEGATION": "Trusted account for delegation (Kerberos)",
+      "UAC_NOT_DELEGATED": "Non-delegated account (Kerberos)",
+      "UAC_USE_DES_KEY_ONLY": "Requires and only allows DES key encryption",
+      "UAC_DONT_REQ_PREAUTH": "Does not require Kerberos pre-authentication for login",
+      "UAC_PASSWORD_EXPIRED": "Password is expired!",
+      "UAC_TRUSTED_TO_AUTH_FOR_DELEGATION": "This account is allowed to manage delegations",
+      "UAC_NONE": "No valid attribute"
+    },
+    "ldap": {
+      "title": "Check LDAP - {sciper}",
+      "sectionLdap": "Info from ldap.epfl.ch",
+      "sectionAutomap": "User homedir info",
+      "sectionScoldap": "Info from scoldap.epfl.ch",
+      "noEntry": "No entry.",
+      "noAttributes": "No attributes."
+    },
+    "inventory": {
+      "title": "Check Inventory",
+      "placeholder": "A123456789...",
+      "check": "Check",
+      "invalidCode": "Invalid inventory code.",
+      "notFound": "Not found in the inventory.",
+      "ageOk": "✅ The machine is less than 6 years old.",
+      "ageWarning": "❌ The machine is more than 6 years old.",
+      "purchaseDate": "Purchase date: {date}",
+      "ageLine": "AGE = {days, plural, one {# day} other {# days}}",
+      "years": "{count, plural, one {# year} other {# years}}",
+      "months": "{count, plural, one {# month} other {# months}}",
+      "remainingDays": "{count, plural, one {# day} other {# days}}",
+      "EQUNR": "Equipment number",
+      "EQKTX": "Equipment designation",
+      "EQTYP": "Equipment category",
+      "INVNR": "Inventory number",
+      "ANSWT": "Acquisition value",
+      "WAERS": "Currency code",
+      "HERST": "Manufacturer",
+      "TYPBZ": "Type/Model",
+      "SERGE": "Serial number (SERGE)",
+      "MSGRP": "Room",
+      "KOSTL": "Cost center",
+      "CLAID": "Class",
+      "CLATX": "Class designation",
+      "CLASSIF": "Class identifier",
+      "ZIMG_024": "Purchase order item number",
+      "ZIMG_037": "Purchase cost center",
+      "ZIMG_001": "EPFL purchase order number",
+      "ZIMG_002": "Owned by",
+      "ZIMG_005": "Assigned to (SCIPER)",
+      "ZIMG_017": "Residual value"
     }
   },
   "pages": {

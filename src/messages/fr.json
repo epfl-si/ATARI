@@ -4,7 +4,8 @@
   },
   "navigation": {
     "signin": "Se connecter",
-    "signout": "Se déconnecter"
+    "signout": "Se déconnecter",
+    "inventory": "Inventaire"
   },
   "actions": {
     "retry": "Réessayer",
@@ -22,6 +23,142 @@
     "notFound": {
       "title": "Cette page n'existe pas.",
       "contact": "Besoin d'aide ? Contactez"
+    }
+  },
+  "common": {
+    "yes": "Oui",
+    "no": "Non",
+    "never": "Jamais"
+  },
+  "person": {
+    "fields": {
+      "sciper": "Sciper",
+      "email": "Email",
+      "username": "Nom d'utilisateur",
+      "phone": "Téléphone",
+      "sapId": "Matricule SAP",
+      "uid": "UID",
+      "gid": "GID",
+      "home": "Home",
+      "shell": "Shell",
+      "gender": "Genre",
+      "position": "Fonction",
+      "unit": "Unité",
+      "status": "Statut",
+      "accredited": "Accrédité",
+      "emailAuth": "Dispose d'une adresse email"
+    },
+    "sections": {
+      "general": "Général",
+      "addresses": "Adresses",
+      "accreditations": "Accréditations",
+      "activeDirectory": "Active Directory",
+      "tools": "Outils"
+    },
+    "accred": {
+      "status": "Statut",
+      "from": "Du",
+      "to": "Au",
+      "hierarchy": "Unité"
+    },
+    "toolLabels": {
+      "accred": "Accred",
+      "checkAd": "Check AD",
+      "checkLdap": "Check LDAP",
+      "serviceNow": "ServiceNow",
+      "people": "People",
+      "checkEmail": "Check Email",
+      "camiproAdmin": "Camipro admin",
+      "createTicket": "Créer un ticket pour cet utilisateur"
+    }
+  },
+  "tools": {
+    "ad": {
+      "title": "Check AD - {sciper}",
+      "noInfo": "Aucune information Active Directory pour {sciper}.",
+      "description": "Description",
+      "displayName": "Display Name",
+      "email": "Email",
+      "upn": "UPN",
+      "domainLogin": "Domaine\\login",
+      "accountControl": "Statut (User Account Control)",
+      "expires": "Expire",
+      "lastLogon": "Dernière connexion",
+      "pwdLastSet": "Dernier changement de mot de passe",
+      "badPasswordTime": "Dernier mot de passe erroné",
+      "badPwdCount": "Nombre d'essais de mot de passe erronés",
+      "exchangeMailbox": "Exchange mailbox",
+      "mailboxLocation": "Où est la boîte mail ?",
+      "distrilog": "A le droit Distrilog",
+      "ACCOUNT_DISABLED": "Compte désactivé",
+      "ACCOUNT_ENABLED": "Compte activé",
+      "ACCOUNT_UNKNOWN": "Type de compte inconnu",
+      "MAILBOX_ONPREM": "Exchange OnPrem",
+      "MAILBOX_ONLINE": "Exchange Online",
+      "MAILBOX_NA": "N/A",
+      "UAC_SCRIPT": "Logon script exécuté",
+      "UAC_HOMEDIR_REQUIRED": "Homedir exigé",
+      "UAC_LOCKOUT": "Verrouillé (locked)",
+      "UAC_PASSWD_NOTREQD": "Pas de mot de passe requis",
+      "UAC_PASSWD_CANT_CHANGE": "L'utilisateur ne peut changer le mot de passe",
+      "UAC_ENCRYPTED_TEXT_PWD_ALLOWED": "L'utilisateur peut envoyer un mot de passe crypté",
+      "UAC_TEMP_DUPLICATE_ACCOUNT": "Compte dupliqué temporairement",
+      "UAC_NORMAL_ACCOUNT": "Compte normal par défaut",
+      "UAC_INTERDOMAIN_TRUST_ACCOUNT": "Permissions accordées via un domaine de confiance",
+      "UAC_WORKSTATION_TRUST_ACCOUNT": "Compte d'ordinateur de ce domaine",
+      "UAC_SERVER_TRUST_ACCOUNT": "Compte d'ordinateur pour contrôleur de domaine (backup)",
+      "UAC_DONT_EXPIRE_PASSWORD": "Le mot de passe n'expire jamais",
+      "UAC_MNS_LOGON_ACCOUNT": "C'est un compte MNS",
+      "UAC_SMARTCARD_REQUIRED": "Une carte à puce (ou biométrique) est exigée",
+      "UAC_TRUSTED_FOR_DELEGATION": "Compte de confiance pour la délégation (Kerberos)",
+      "UAC_NOT_DELEGATED": "Compte non délégué (Kerberos)",
+      "UAC_USE_DES_KEY_ONLY": "Exige et n'autorise que des cryptages par clés DES",
+      "UAC_DONT_REQ_PREAUTH": "N'exige pas de pré-authentification Kerberos pour un login",
+      "UAC_PASSWORD_EXPIRED": "Le mot de passe est expiré",
+      "UAC_TRUSTED_TO_AUTH_FOR_DELEGATION": "Ce compte est autorisé à gérer des délégations",
+      "UAC_NONE": "Aucun attribut valide"
+    },
+    "ldap": {
+      "title": "Check LDAP - {sciper}",
+      "sectionLdap": "Info from ldap.epfl.ch",
+      "sectionAutomap": "User homedir info",
+      "sectionScoldap": "Info from scoldap.epfl.ch",
+      "noEntry": "Aucune entrée.",
+      "noAttributes": "Aucun attribut."
+    },
+    "inventory": {
+      "title": "Check Inventory",
+      "placeholder": "A123456789...",
+      "check": "Check",
+      "invalidCode": "Code inventaire invalide.",
+      "notFound": "Non trouvé dans l'inventaire.",
+      "ageOk": "✅ La machine a moins de 6 ans.",
+      "ageWarning": "❌ La machine a plus de 6 ans.",
+      "purchaseDate": "Date d'acquisition : {date}",
+      "ageLine": "AGE = {days, plural, one {# jour} other {# jours}}",
+      "years": "{count, plural, one {# an} other {# ans}}",
+      "months": "{count, plural, one {# mois} other {# mois}}",
+      "remainingDays": "{count, plural, one {# jour} other {# jours}}",
+      "EQUNR": "Numéro d'équipement",
+      "EQKTX": "Désignation de l'équipement",
+      "EQTYP": "Catégorie de l'équipement",
+      "INVNR": "N° d'inventaire",
+      "ANSWT": "Valeur d'acquisition",
+      "WAERS": "Clé de devise",
+      "HERST": "Fabricant",
+      "TYPBZ": "Type/Modèle",
+      "SERGE": "N° de série (SERGE)",
+      "MSGRP": "Local",
+      "KOSTL": "Centre de coût",
+      "CLAID": "Classe",
+      "CLATX": "Désignation de la classe",
+      "CLASSIF": "Identifiant de la classe",
+      "ZIMG_024": "No de poste de commande",
+      "ZIMG_037": "Centre de coût d'achat",
+      "ZIMG_001": "N° de commande d'achat EPFL",
+      "ZIMG_002": "Propriété de",
+      "ZIMG_005": "Attribué à (SCIPER)",
+      "ZIMG_017": "Valeur résiduelle"
     }
   },
   "pages": {
