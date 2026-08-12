@@ -31,6 +31,12 @@ export function SearchBar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Silently reflect the single remaining match in the URL, without navigating.
+  useEffect(() => {
+    const path = results.length === 1 ? `/${results[0].id}` : "/";
+    window.history.replaceState(null, "", path);
+  }, [results]);
+
   function handleQueryChange(value: string) {
     setQuery(value);
 
