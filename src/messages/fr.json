@@ -30,6 +30,7 @@
     },
     "home": {
       "title": "Bienvenue",
+      "hint": "Recherchez une personne pour voir ses informations",
       "search": {
         "placeholder": "Rechercher une personne...",
         "noResults": "Aucun résultat"

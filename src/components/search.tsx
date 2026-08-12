@@ -1,6 +1,7 @@
 "use client";
 
 import { Loader2, Search, User } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
@@ -9,6 +10,7 @@ import { searchPeople } from "@/services/people";
 import type { ApiPerson } from "@/types/api";
 
 export function SearchBar() {
+  const router = useRouter();
   const translations = {
     search: useTranslations("pages.home.search"),
   };
@@ -31,11 +33,17 @@ export function SearchBar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Silently reflect the single remaining match in the URL, without navigating.
+  const selectedSciper = results.length === 1 ? results[0].id : null;
+
+  // Once a single match remains, navigate to its /<sciper> page (pushed to history) and close the dropdown.
   useEffect(() => {
-    const path = results.length === 1 ? `/${results[0].id}` : "/";
-    window.history.replaceState(null, "", path);
-  }, [results]);
+    if (selectedSciper) {
+      setShowDropdown(false);
+      router.push(`/${selectedSciper}`, { scroll: false });
+    } else {
+      router.replace("/", { scroll: false });
+    }
+  }, [selectedSciper, router]);
 
   function handleQueryChange(value: string) {
     setQuery(value);
@@ -58,8 +66,8 @@ export function SearchBar() {
 
   function selectPerson(person: ApiPerson) {
     setQuery(person.name || person.display);
-    setResults([]);
     setShowDropdown(false);
+    router.push(`/${person.id}`, { scroll: false });
   }
 
   return (
@@ -82,31 +90,32 @@ export function SearchBar() {
           {results.length === 0 && !searching && (
             <p className="px-4 py-4 text-sm text-center text-muted-foreground">{translations.search("noResults")}</p>
           )}
-          {results.slice(0, 5).map((person) => (
-            <button
-              key={person.id}
-              type="button"
-              onMouseDown={(e) => {
-                e.preventDefault();
-                selectPerson(person);
-              }}
-              className={cn(
-                "w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-muted transition-colors cursor-pointer",
-                person.isaccredited === false && "opacity-50",
-              )}
-            >
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-muted shrink-0">
-                <User className="h-4 w-4 text-muted-foreground" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-sm font-medium truncate">{person.name || person.display}</p>
-                <p className="text-xs text-muted-foreground truncate">
-                  {person.email ? `${person.email} · ` : ""}
-                  {person.id}
-                </p>
-              </div>
-            </button>
-          ))}
+          {results.length > 0 &&
+            results.slice(0, 5).map((person) => (
+              <button
+                key={person.id}
+                type="button"
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  selectPerson(person);
+                }}
+                className={cn(
+                  "w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-muted transition-colors cursor-pointer",
+                  person.isaccredited === false && "opacity-50",
+                )}
+              >
+                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-muted shrink-0">
+                  <User className="h-4 w-4 text-muted-foreground" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-sm font-medium truncate">{person.name || person.display}</p>
+                  <p className="text-xs text-muted-foreground truncate">
+                    {person.email ? `${person.email} · ` : ""}
+                    {person.id}
+                  </p>
+                </div>
+              </button>
+            ))}
         </div>
       )}
     </div>

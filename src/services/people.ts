@@ -28,3 +28,19 @@ export async function searchPeople(query: string): Promise<ApiPerson[]> {
     return [];
   }
 }
+
+export async function getPersonBySciper(sciper: string): Promise<ApiPerson | null> {
+  await getUser();
+
+  try {
+    const person = await makeApiCall<ApiPerson>(`/v1/persons/${encodeURIComponent(sciper)}`);
+
+    return {
+      ...person,
+      name: person.firstname && person.lastname ? `${person.firstname} ${person.lastname}` : person.display,
+    };
+  } catch (error) {
+    console.error("Error fetching person details:", error);
+    return null;
+  }
+}

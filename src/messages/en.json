@@ -30,6 +30,7 @@
     },
     "home": {
       "title": "Welcome",
+      "hint": "Search for a person to see their details",
       "search": {
         "placeholder": "Search for a person...",
         "noResults": "No results"
