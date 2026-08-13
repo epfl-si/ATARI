@@ -48,6 +48,16 @@ function localizedLabel(item: { labelfr?: string; labelen?: string } | undefined
   return locale === "en" ? (item.labelen ?? item.labelfr) : (item.labelfr ?? item.labelen);
 }
 
+function formatAccredDate(iso: string, locale: string): string {
+  return new Date(iso).toLocaleDateString(locale, {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
 function AdminsIT({ unitId, translations }: { unitId: number; translations: Pick<PersonTranslations, "adminsIt"> }) {
   const [admins, setAdmins] = useState<UnitAdmin[] | null>(null);
   const [loading, setLoading] = useState(false);
@@ -183,8 +193,13 @@ function AccredRow({
           {accred.startdate && (
             <p>
               <strong className="font-semibold text-foreground">{translations.accred("from")}</strong> :{" "}
-              {accred.startdate}
-              {accred.enddate && ` — ${translations.accred("to")} : ${accred.enddate}`}
+              {formatAccredDate(accred.startdate, locale)}
+            </p>
+          )}
+          {accred.enddate && (
+            <p>
+              <strong className="font-semibold text-foreground">{translations.accred("to")}</strong> :{" "}
+              {formatAccredDate(accred.enddate, locale)}
             </p>
           )}
         </div>

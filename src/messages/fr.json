@@ -56,7 +56,7 @@
     },
     "accred": {
       "status": "Statut",
-      "from": "Du",
+      "from": "Depuis",
       "to": "Au",
       "hierarchy": "Unité"
     },
