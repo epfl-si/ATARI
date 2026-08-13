@@ -3,6 +3,7 @@
 import { Check, Copy, User } from "lucide-react";
 import { useState } from "react";
 import type { PersonTranslations } from "@/components/person/types";
+import type { PersonEgg } from "@/constants/egg";
 import type { ActiveDirectoryInfo, ApiPerson } from "@/types/api";
 
 function CopyRow({ label, value }: { label: string; value: string }) {
@@ -65,14 +66,17 @@ export function PersonSidebar({
   person,
   adInfo,
   pictureUrl,
+  egg,
   translations,
 }: {
   sciper: string;
   person: ApiPerson;
   adInfo: ActiveDirectoryInfo | null;
   pictureUrl: string | null;
+  egg?: PersonEgg;
   translations: PersonTranslations;
 }) {
+  const [eggHovered, setEggHovered] = useState(false);
   const fullName = person.name || person.display;
   const hasAccount = Boolean(person.account);
   // GID/UID/Home/Shell live on the AD entry (POSIX attributes); the persons API's own
@@ -84,7 +88,13 @@ export function PersonSidebar({
 
   return (
     <div className="flex shrink-0 flex-col items-center gap-4 border-b border-destructive/25 pb-8 lg:w-96 lg:border-b-0 lg:border-r lg:pb-0 lg:pr-8">
-      <div className="relative h-40 w-40 overflow-hidden rounded-full bg-muted transition-transform hover:rotate-2">
+      {/* biome-ignore lint/a11y/noStaticElementInteractions: purely decorative hover cursor/animation, nothing to reach by keyboard */}
+      <div
+        className="relative h-40 w-40 overflow-hidden rounded-full bg-muted transition-transform hover:rotate-2"
+        style={egg && eggHovered ? { ...egg.hoverStyle, cursor: `url(${egg.cursor}) 10 3, auto` } : undefined}
+        onMouseEnter={() => egg && setEggHovered(true)}
+        onMouseLeave={() => egg && setEggHovered(false)}
+      >
         <User className="absolute inset-0 m-auto h-14 w-14 text-muted-foreground" />
         {pictureUrl && (
           // biome-ignore lint/performance/noImgElement: external EPFL photo endpoint, no next/image domain config needed

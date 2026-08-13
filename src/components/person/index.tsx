@@ -13,6 +13,7 @@ import { PersonSidebar } from "@/components/person/sidebar";
 import type { PersonTranslations } from "@/components/person/types";
 import { getAccreditations, getHasEmailAuthorization } from "@/services/accreds";
 import { getActiveDirectoryInfo } from "@/services/ad";
+import { getPersonEgg } from "@/services/egg";
 import { getProfilePicture } from "@/services/people";
 import { getPersonBySciper } from "@/services/person";
 import type { Accred, ActiveDirectoryInfo, ApiPerson } from "@/types/api";
@@ -97,6 +98,8 @@ export function PersonDetails({ sciper }: { sciper: string }) {
 
   if (!person) return null;
 
+  const egg = getPersonEgg(sciper, accreds);
+
   return (
     <div className="pt-10 flex w-full max-w-5xl flex-col gap-10 lg:flex-row" id="details">
       <PersonSidebar
@@ -104,6 +107,7 @@ export function PersonDetails({ sciper }: { sciper: string }) {
         person={person}
         adInfo={adInfo}
         pictureUrl={pictureUrl}
+        egg={egg}
         translations={translations}
       />
 
