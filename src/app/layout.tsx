@@ -44,6 +44,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang={locale} className={cn("h-full", suisse.variable)}>
+      <link rel="search" type="application/opensearchdescription+xml" title="ATARI" href="/opensearch.xml" />
       <body className="antialiased h-full flex flex-col font-sans">
         <NextIntlClientProvider messages={messages}>
           <SessionProvider session={session}>{children}</SessionProvider>

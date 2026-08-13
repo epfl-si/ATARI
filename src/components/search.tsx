@@ -1,7 +1,7 @@
 "use client";
 
 import { Loader2, Search, User } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
@@ -11,6 +11,7 @@ import type { ApiPerson } from "@/types/api";
 
 export function SearchBar() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const translations = {
     search: useTranslations("pages.home.search"),
   };
@@ -79,6 +80,14 @@ export function SearchBar() {
     hasSearchNavigatedRef.current = true;
     router.push(`/${person.id}`, { scroll: false });
   }
+
+  // Support the OpenSearch entry point (/?search=...): run it through the same
+  // search-then-redirect-on-single-match flow as typing, once, on mount.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: only the URL's initial value matters, not live changes to searchParams
+  useEffect(() => {
+    const initialQuery = searchParams.get("search");
+    if (initialQuery) handleQueryChange(initialQuery);
+  }, []);
 
   return (
     <div ref={containerRef} className="relative w-full max-w-xl">
