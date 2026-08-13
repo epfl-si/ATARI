@@ -236,6 +236,7 @@ export function GeneralSection({
     <Section label={translations.sections("general")}>
       <div className="space-y-1">
         {person.gender && <InfoRow label={translations.fields("gender")} value={person.gender} />}
+        {person.status && <InfoRow label={translations.fields("status")} value={person.status} />}
         <InfoRow
           label={translations.fields("emailAuth")}
           value={hasEmailAuth ? translations.common("yes") : translations.common("no")}
