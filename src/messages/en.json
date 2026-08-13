@@ -163,7 +163,19 @@
   },
   "pages": {
     "welcome": {
-      "title": "ATARI"
+      "title": "ATARI",
+      "heading": "Welcome to ATARI!",
+      "acronym": "ATARI stands for <red>A</red>nnuaire <red>T</red>echnique d’<red>A</red>ttributs pour <red>R</red>esponsables <red>I</red>nformatiques.",
+      "description": "It is designed to facilitate the search and retrieval of data on EPFL members. It provides a simple and efficient way to access relevant information about the members, such as their sciper number, gaspar username, units, etc.",
+      "gettingStarted": {
+        "title": "Getting started",
+        "login": "To get started, you will first need to <link>log in</link> using your ENTRA credentials.",
+        "browse": "Then, search for someone in the search bar using their first name, last name, email, sciper, etc."
+      },
+      "goingFurther": {
+        "title": "Going further",
+        "description": "If you want to learn more about this project, you can visit the <repo>GitHub repository</repo>. If you find a bug or have a feature request, feel free to <issue>open an issue</issue>."
+      }
     },
     "denied": {
       "title": "Access denied",
