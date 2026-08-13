@@ -50,7 +50,6 @@
     },
     "sections": {
       "general": "Général",
-      "addresses": "Adresses",
       "accreditations": "Accréditations",
       "activeDirectory": "Active Directory",
       "tools": "Outils"
@@ -65,6 +64,7 @@
       "accred": "Accred",
       "checkAd": "Check AD",
       "checkLdap": "Check LDAP",
+      "entraId": "EntraID",
       "serviceNow": "ServiceNow",
       "people": "People",
       "checkEmail": "Check Email",

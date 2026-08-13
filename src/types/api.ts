@@ -23,6 +23,7 @@ export interface PersonAddress {
   part3?: string;
   part4?: string;
   country?: string;
+  unitid?: string;
 }
 
 export interface ApiPerson {

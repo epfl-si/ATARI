@@ -1,14 +1,14 @@
 "use client";
 
 import { Check, ChevronDown, Copy, ExternalLink, Loader2, User } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { InfoRow } from "@/components/info/row";
 import { cn } from "@/lib/utils";
 import { getAccreditations, getHasEmailAuthorization } from "@/services/accreds";
 import { getActiveDirectoryInfo } from "@/services/ad";
 import { getPersonBySciper } from "@/services/person";
-import type { Accred, ActiveDirectoryInfo, ApiPerson } from "@/types/api";
+import type { Accred, ActiveDirectoryInfo, ApiPerson, PersonAddress } from "@/types/api";
 
 function CopyRow({ label, value }: { label: string; value: string }) {
   const [copied, setCopied] = useState(false);
@@ -54,57 +54,91 @@ function ToolLink({ href, label }: { href: string; label: string }) {
   );
 }
 
+function localizedLabel(item: { labelfr?: string; labelen?: string } | undefined, locale: string): string | undefined {
+  if (!item) return undefined;
+  return locale === "en" ? (item.labelen ?? item.labelfr) : (item.labelfr ?? item.labelen);
+}
+
 function Section({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="mt-8 first:mt-0">
-      <h3 className="mb-2 text-lg font-semibold">{label}</h3>
+    <div className="mt-6 first:mt-0">
+      <h3 className="mb-2 border-b pb-1.5 text-sm font-semibold text-muted-foreground uppercase">{label}</h3>
       {children}
     </div>
   );
 }
 
-function AccredRow({ accred, translations }: { accred: Accred; translations: { accred: (key: string) => string } }) {
-  const title = [accred.position?.labelfr, accred.unit.labelfr].filter(Boolean).join(", ");
+function AccredRow({
+  accred,
+  address,
+  translations,
+}: {
+  accred: Accred;
+  address?: PersonAddress;
+  translations: { accred: (key: string) => string };
+}) {
+  const locale = useLocale();
+  const positionLabel = localizedLabel(accred.position, locale);
+  const unitLabel = localizedLabel(accred.unit, locale);
   const hierarchy = accred.unit.path ? accred.unit.path.split(" ").filter(Boolean) : [];
+  const addressLines = address ? [address.part1, address.part2, address.part3, address.part4].filter(Boolean) : [];
+  const statusLabel = localizedLabel(accred.status, locale);
 
   return (
-    <details className="group py-2">
-      <summary className="flex cursor-pointer list-none items-center justify-between gap-2 hover:text-primary">
-        <span>{title}</span>
-        <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-180" />
+    <details className="group py-1.5">
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-2 text-sm hover:text-primary">
+        <span>
+          {positionLabel && <span className="font-semibold">{positionLabel}, </span>}
+          <span className="text-foreground">{unitLabel}</span>
+        </span>
+        <ChevronDown className="h-4 w-4 shrink-0 text-destructive transition-transform group-open:rotate-180" />
       </summary>
-      <div className="mt-2 space-y-1 pl-1 text-sm text-muted-foreground">
-        {hierarchy.length > 0 && (
-          <p>
-            <strong className="font-semibold text-foreground">{translations.accred("hierarchy")}</strong> :{" "}
-            {hierarchy.map((acro, i) => (
-              <span key={acro}>
-                {i > 0 && " › "}
-                <a
-                  href={`http://search.epfl.ch/ubrowse.action?acro=${acro}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-foreground hover:underline"
-                >
-                  {acro}
-                </a>
-              </span>
-            ))}
-          </p>
-        )}
-        {accred.status?.labelfr && (
-          <p>
-            <strong className="font-semibold text-foreground">{translations.accred("status")}</strong> :{" "}
-            {accred.status.labelfr}
-          </p>
-        )}
-        {accred.startdate && (
-          <p>
-            <strong className="font-semibold text-foreground">{translations.accred("from")}</strong> :{" "}
-            {accred.startdate}
-            {accred.enddate && ` — ${translations.accred("to")} : ${accred.enddate}`}
-          </p>
-        )}
+      <div className="mt-2 grid grid-cols-1 gap-x-6 gap-y-2 pl-1 text-sm text-muted-foreground sm:grid-cols-2">
+        <div>
+          {addressLines.length > 0 && (
+            <p>
+              {addressLines.map((line, i) => (
+                // biome-ignore lint/suspicious/noArrayIndexKey: address lines have no stable id
+                <span key={i}>
+                  {i === 0 ? <span className="font-semibold text-foreground">{line}</span> : line}
+                  {i < addressLines.length - 1 && <br />}
+                </span>
+              ))}
+            </p>
+          )}
+        </div>
+        <div className="space-y-2">
+          {hierarchy.length > 0 && (
+            <p>
+              <strong className="font-semibold text-foreground">{translations.accred("hierarchy")}</strong> :{" "}
+              {hierarchy.map((acro, i) => (
+                <span key={acro}>
+                  {i > 0 && " › "}
+                  <a
+                    href={`http://search.epfl.ch/ubrowse.action?acro=${acro}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-foreground hover:underline"
+                  >
+                    {acro}
+                  </a>
+                </span>
+              ))}
+            </p>
+          )}
+          {statusLabel && (
+            <p>
+              <strong className="font-semibold text-foreground">{translations.accred("status")}</strong> : {statusLabel}
+            </p>
+          )}
+          {accred.startdate && (
+            <p>
+              <strong className="font-semibold text-foreground">{translations.accred("from")}</strong> :{" "}
+              {accred.startdate}
+              {accred.enddate && ` — ${translations.accred("to")} : ${accred.enddate}`}
+            </p>
+          )}
+        </div>
       </div>
     </details>
   );
@@ -187,10 +221,11 @@ export function PersonDetails({ sciper }: { sciper: string }) {
     };
   }, [sciper]);
 
-  // The #details target only exists once loading is done, so a navigation-time scroll
-  // (or the browser's native hash scroll) has nothing to land on yet — do it ourselves.
+  // Scroll the details block into view once it actually exists in the DOM (it doesn't
+  // during the loading state) — independent from the URL hash, which the search bar
+  // also touches and shouldn't have to coordinate with.
   useEffect(() => {
-    if (!loading && window.location.hash === "#details") {
+    if (!loading) {
       document.getElementById("details")?.scrollIntoView({ behavior: "instant", block: "start" });
     }
   }, [loading]);
@@ -208,7 +243,7 @@ export function PersonDetails({ sciper }: { sciper: string }) {
   const fullName = person.name || person.display;
   const hasAccount = Boolean(person.account);
   const emailLocalPart = person.email ? person.email.replace("@epfl.ch", "") : sciper;
-  const addresses = (person.addresses ?? []).filter((address) => address.part1 || address.part2 || address.part3);
+  const addressByUnitId = new Map((person.addresses ?? []).map((address) => [address.unitid, address]));
   // GID/UID/Home/Shell live on the AD entry (POSIX attributes); the persons API's own
   // account object is a fallback for when AD hasn't answered yet or has no account.
   const gid = adInfo?.gidNumber ?? (person.account?.gid !== undefined ? String(person.account.gid) : undefined);
@@ -223,7 +258,7 @@ export function PersonDetails({ sciper }: { sciper: string }) {
         : "bg-muted-foreground";
 
   return (
-    <div className="pt-10 flex w-full max-w-6xl flex-col gap-10 lg:flex-row" id="details">
+    <div className="pt-10 flex w-full max-w-5xl flex-col gap-10 lg:flex-row" id="details">
       <div className="flex shrink-0 flex-col items-center gap-4 border-b border-destructive/25 pb-8 lg:w-96 lg:border-b-0 lg:border-r lg:pb-0 lg:pr-8">
         <div className="relative h-40 w-40 overflow-hidden rounded-full bg-muted transition-transform hover:rotate-2">
           <User className="absolute inset-0 m-auto h-14 w-14 text-muted-foreground" />
@@ -276,49 +311,31 @@ export function PersonDetails({ sciper }: { sciper: string }) {
         )}
       </div>
 
-      <div className="min-w-0 flex-1">
+      <div className="min-w-0 flex-1 mt-3">
         <Section label={translations.sections("general")}>
-          <div className="grid grid-cols-1 gap-x-10 gap-y-1 text-lg sm:grid-cols-2">
+          <ul className="list-[square] space-y-0.5 pl-5 marker:text-destructive">
             {person.gender && <InfoRow label={translations.fields("gender")} value={person.gender} />}
-            {person.position?.labelfr && (
-              <InfoRow label={translations.fields("position")} value={person.position.labelfr} />
-            )}
-            {person.org && <InfoRow label={translations.fields("unit")} value={person.org} />}
-            {person.status && <InfoRow label={translations.fields("status")} value={person.status} />}
-            <InfoRow
-              label={translations.fields("accredited")}
-              value={person.isaccredited === false ? translations.common("no") : translations.common("yes")}
-            />
             <InfoRow
               label={translations.fields("emailAuth")}
               value={hasEmailAuth ? translations.common("yes") : translations.common("no")}
             />
-          </div>
+            <InfoRow
+              label={translations.fields("accredited")}
+              value={person.isaccredited === false ? translations.common("no") : translations.common("yes")}
+            />
+          </ul>
         </Section>
 
         {accreds.length > 0 && (
           <Section label={translations.sections("accreditations")}>
-            <div className="divide-y divide-border text-lg">
+            <div className="divide-y divide-border">
               {accreds.map((accred) => (
-                <AccredRow key={`${accred.unit.id}-${accred.order}`} accred={accred} translations={translations} />
-              ))}
-            </div>
-          </Section>
-        )}
-
-        {addresses.length > 0 && (
-          <Section label={translations.sections("addresses")}>
-            <div className="grid grid-cols-1 gap-x-10 gap-y-4 text-lg sm:grid-cols-2">
-              {addresses.map((address, i) => (
-                // biome-ignore lint/suspicious/noArrayIndexKey: addresses have no stable id
-                <div key={i}>
-                  {address.part1 && <p className="font-semibold">{address.part1}</p>}
-                  {[address.part2, address.part3, address.part4].filter(Boolean).map((line) => (
-                    <p key={line} className="text-muted-foreground">
-                      {line}
-                    </p>
-                  ))}
-                </div>
+                <AccredRow
+                  key={`${accred.unit.id}-${accred.order}`}
+                  accred={accred}
+                  address={addressByUnitId.get(String(accred.unit.id))}
+                  translations={translations}
+                />
               ))}
             </div>
           </Section>
@@ -326,7 +343,7 @@ export function PersonDetails({ sciper }: { sciper: string }) {
 
         {adInfo && (
           <Section label={translations.sections("activeDirectory")}>
-            <div className="grid grid-cols-1 gap-x-10 gap-y-1 text-lg sm:grid-cols-2">
+            <ul className="list-[square] space-y-0.5 pl-5 marker:text-destructive">
               {adInfo.sAMAccountName && (
                 <InfoRow label={translations.ad("domainLogin")} value={`INTRANET\\${adInfo.sAMAccountName}`} />
               )}
@@ -360,7 +377,7 @@ export function PersonDetails({ sciper }: { sciper: string }) {
               {adInfo.badPwdCount !== undefined && adInfo.badPwdCount !== 0 && (
                 <InfoRow label={translations.ad("badPwdCount")} value={adInfo.badPwdCount} />
               )}
-            </div>
+            </ul>
           </Section>
         )}
 
@@ -374,6 +391,10 @@ export function PersonDetails({ sciper }: { sciper: string }) {
               <>
                 <ToolLink href={`/check-ad/${sciper}`} label={translations.toolLabels("checkAd")} />
                 <ToolLink href={`/check-ldap/${sciper}`} label={translations.toolLabels("checkLdap")} />
+                <ToolLink
+                  href="https://entra.microsoft.com/?feature.msaljs=true#view/Microsoft_AAD_UsersAndTenants/UserManagementMenuBlade/~/AllUsers/menuId/"
+                  label={translations.toolLabels("entraId")}
+                />
                 <ToolLink
                   href={`https://it.epfl.ch/backoffice/sys_user.do?sysparm_query=user_name=${sciper}`}
                   label={translations.toolLabels("serviceNow")}
