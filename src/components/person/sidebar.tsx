@@ -1,9 +1,10 @@
 "use client";
 
-import { Check, Copy, User } from "lucide-react";
+import { User } from "lucide-react";
 import { useState } from "react";
 import type { PersonTranslations } from "@/components/person/types";
 import type { PersonEgg } from "@/constants/egg";
+import { cn } from "@/lib/utils";
 import type { ActiveDirectoryInfo, ApiPerson } from "@/types/api";
 
 function CopyRow({ label, value }: { label: string; value: string }) {
@@ -18,18 +19,13 @@ function CopyRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-center justify-between gap-3 py-1.5 text-base">
       <span className="text-muted-foreground">{label}</span>
-      <button
-        type="button"
+      {/* biome-ignore lint/a11y/noStaticElementInteractions lint/a11y/useKeyWithClickEvents: click-to-copy convenience; kept as a span (not a button) so the value stays mouse-selectable */}
+      <span
         onClick={copy}
-        className="flex items-center gap-2 font-medium hover:text-primary cursor-copy"
+        className={cn("cursor-copy truncate font-medium hover:text-primary", copied && "text-gray-400")}
       >
-        <span className="truncate">{value}</span>
-        {copied ? (
-          <Check className="h-4 w-4 shrink-0 text-green-600" />
-        ) : (
-          <Copy className="h-4 w-4 shrink-0 text-muted-foreground" />
-        )}
-      </button>
+        {value}
+      </span>
     </div>
   );
 }
@@ -77,7 +73,14 @@ export function PersonSidebar({
   translations: PersonTranslations;
 }) {
   const [eggHovered, setEggHovered] = useState(false);
+  const [nameCopied, setNameCopied] = useState(false);
   const fullName = person.name || person.display;
+
+  function copyName() {
+    navigator.clipboard.writeText(fullName);
+    setNameCopied(true);
+    setTimeout(() => setNameCopied(false), 1500);
+  }
   const hasAccount = Boolean(person.account);
   // GID/UID/Home/Shell live on the AD entry (POSIX attributes); the persons API's own
   // account object is a fallback for when AD hasn't answered yet or has no account.
@@ -108,13 +111,16 @@ export function PersonSidebar({
           />
         )}
       </div>
-      <button
-        type="button"
-        onClick={() => navigator.clipboard.writeText(fullName)}
-        className="cursor-copy text-center text-2xl font-semibold underline decoration-destructive underline-offset-8"
+      {/* biome-ignore lint/a11y/noStaticElementInteractions lint/a11y/useKeyWithClickEvents: click-to-copy convenience; kept as a span (not a button) so the name stays mouse-selectable */}
+      <span
+        onClick={copyName}
+        className={cn(
+          "cursor-copy text-center text-2xl font-semibold underline decoration-destructive underline-offset-8",
+          nameCopied && "text-gray-700",
+        )}
       >
         {fullName}
-      </button>
+      </span>
 
       <div className="w-full space-y-1">
         <CopyRow label={translations.fields("sciper")} value={sciper} />
