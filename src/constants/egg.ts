@@ -31,6 +31,12 @@ export const PERSON_EGGS: PersonEgg[] = [
     hoverStyle: { animation: "egg-jump-shake 0.83s infinite" },
   },
   {
+    id: "sigrist",
+    scipers: ["420408"],
+    cursor: "/easter-eggs/sigrist.gif",
+    hoverStyle: { animation: "egg-wobble 1s ease infinite" },
+  },
+  {
     id: "fsd",
     unitIds: [13030],
     cursor: "/easter-eggs/fsd.gif",
