@@ -60,6 +60,12 @@
       "to": "Au",
       "hierarchy": "Unité"
     },
+    "adminsIt": {
+      "title": "Admins IT",
+      "explicitFor": "Admins IT de {unit}",
+      "inheritedFrom": "Admins IT hérités de {unit}",
+      "empty": "Aucun admin IT trouvé."
+    },
     "toolLabels": {
       "accred": "Accred",
       "checkAd": "Check AD",

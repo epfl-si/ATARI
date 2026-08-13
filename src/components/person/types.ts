@@ -3,6 +3,7 @@ export type PersonTranslations = {
   sections: (key: string) => string;
   toolLabels: (key: string) => string;
   accred: (key: string) => string;
+  adminsIt: (key: string, values?: Record<string, string>) => string;
   ad: (key: string, values?: Record<string, string>) => string;
   common: (key: string) => string;
 };

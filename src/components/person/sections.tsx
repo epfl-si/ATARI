@@ -1,11 +1,12 @@
 "use client";
 
-import { ChevronDown, ExternalLink } from "lucide-react";
+import { ChevronDown, ExternalLink, Loader2 } from "lucide-react";
 import { useLocale } from "next-intl";
-import type { ReactNode } from "react";
+import { type ReactNode, type SyntheticEvent, useState } from "react";
 import type { PersonTranslations } from "@/components/person/types";
 import { cn } from "@/lib/utils";
-import type { AccountStatus, Accred, ActiveDirectoryInfo, ApiPerson, PersonAddress } from "@/types/api";
+import { getUnitAdminsIT } from "@/services/units";
+import type { AccountStatus, Accred, ActiveDirectoryInfo, ApiPerson, PersonAddress, UnitAdmin } from "@/types/api";
 
 function Section({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -47,6 +48,74 @@ function localizedLabel(item: { labelfr?: string; labelen?: string } | undefined
   return locale === "en" ? (item.labelen ?? item.labelfr) : (item.labelfr ?? item.labelen);
 }
 
+function AdminsIT({ unitId, translations }: { unitId: number; translations: Pick<PersonTranslations, "adminsIt"> }) {
+  const [admins, setAdmins] = useState<UnitAdmin[] | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  function handleToggle(event: SyntheticEvent<HTMLDetailsElement>) {
+    if (!event.currentTarget.open || admins !== null || loading) return;
+    setLoading(true);
+    getUnitAdminsIT(unitId)
+      .then(setAdmins)
+      .finally(() => setLoading(false));
+  }
+
+  const explicit = (admins ?? []).filter((admin) => admin.attribution === "explicit");
+  const inheritedByReason = new Map<string, UnitAdmin[]>();
+  for (const admin of admins ?? []) {
+    if (admin.attribution !== "inherited") continue;
+    const key = admin.reasonname ?? admin.resource.name;
+    inheritedByReason.set(key, [...(inheritedByReason.get(key) ?? []), admin]);
+  }
+
+  return (
+    <details className="group/admins mt-2" onToggle={handleToggle}>
+      <summary className="flex cursor-pointer list-none items-center gap-1.5 font-semibold text-foreground hover:text-primary">
+        <ChevronDown className="h-3.5 w-3.5 shrink-0 text-destructive transition-transform group-open/admins:rotate-180" />
+        {translations.adminsIt("title")}
+      </summary>
+      <div className="mt-1.5 space-y-3 pl-5">
+        {loading && <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />}
+        {!loading && admins !== null && explicit.length === 0 && inheritedByReason.size === 0 && (
+          <p>{translations.adminsIt("empty")}</p>
+        )}
+        {explicit.length > 0 && (
+          <div>
+            <p className="mb-1 font-semibold text-foreground">
+              {translations.adminsIt("explicitFor", { unit: explicit[0].resource.name })}
+            </p>
+            <ul className="space-y-0.5">
+              {explicit.map((admin) => (
+                <li key={admin.person.sciper}>
+                  <a href={`/${admin.person.sciper}`} className="hover:text-foreground hover:underline">
+                    {admin.person.display} ({admin.person.sciper})
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {Array.from(inheritedByReason.entries()).map(([reason, reasonAdmins]) => (
+          <div key={reason}>
+            <p className="mb-1 font-semibold text-foreground">
+              {translations.adminsIt("inheritedFrom", { unit: reason })}
+            </p>
+            <ul className="space-y-0.5">
+              {reasonAdmins.map((admin) => (
+                <li key={admin.person.sciper}>
+                  <a href={`/${admin.person.sciper}`} className="hover:text-foreground hover:underline">
+                    {admin.person.display} ({admin.person.sciper})
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </details>
+  );
+}
+
 function AccredRow({
   accred,
   address,
@@ -54,7 +123,7 @@ function AccredRow({
 }: {
   accred: Accred;
   address?: PersonAddress;
-  translations: Pick<PersonTranslations, "accred">;
+  translations: Pick<PersonTranslations, "accred" | "adminsIt">;
 }) {
   const locale = useLocale();
   const positionLabel = localizedLabel(accred.position, locale);
@@ -85,6 +154,7 @@ function AccredRow({
               ))}
             </p>
           )}
+          <AdminsIT unitId={accred.unit.id} translations={translations} />
         </div>
         <div className="space-y-2">
           {hierarchy.length > 0 && (

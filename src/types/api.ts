@@ -128,6 +128,13 @@ export interface Accred {
   position?: AccredPosition;
 }
 
+export interface UnitAdmin {
+  attribution: "explicit" | "inherited";
+  person: { email: string; display: string; sciper: string };
+  resource: { name: string };
+  reasonname?: string;
+}
+
 export type LdapEntry = Record<string, unknown> | undefined;
 
 export interface LdapInfo {

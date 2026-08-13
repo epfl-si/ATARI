@@ -73,6 +73,7 @@ export function PersonDetails({ sciper }: { sciper: string }) {
     sections: useTranslations("person.sections"),
     toolLabels: useTranslations("person.toolLabels"),
     accred: useTranslations("person.accred"),
+    adminsIt: useTranslations("person.adminsIt"),
     ad: useTranslations("tools.ad"),
     common: useTranslations("common"),
   };
