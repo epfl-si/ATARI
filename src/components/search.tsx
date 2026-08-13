@@ -33,21 +33,9 @@ export function SearchBar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const selectedSciper = results.length === 1 ? results[0].id : null;
+  // Only bounce back to "/" if a search we drove had previously navigated away from it — never on
+  // initial load, otherwise landing directly on /<sciper> would immediately redirect to "/".
   const hasSearchNavigatedRef = useRef(false);
-
-  // Once a single match remains, navigate to its /<sciper> page (pushed to history) and close the dropdown.
-  // Only bounce back to "/" if a search we drove had previously navigated away from it — never on initial
-  // load, otherwise landing directly on /<sciper> would immediately redirect to "/".
-  useEffect(() => {
-    if (selectedSciper) {
-      hasSearchNavigatedRef.current = true;
-      setShowDropdown(false);
-      router.push(`/${selectedSciper}#details`, { scroll: false });
-    } else if (hasSearchNavigatedRef.current) {
-      router.replace("/", { scroll: false });
-    }
-  }, [selectedSciper, router]);
 
   function handleQueryChange(value: string) {
     setQuery(value);
@@ -55,6 +43,10 @@ export function SearchBar() {
     if (value.trim().length < 3) {
       setResults([]);
       setShowDropdown(false);
+      if (hasSearchNavigatedRef.current) {
+        hasSearchNavigatedRef.current = false;
+        router.replace("/", { scroll: false });
+      }
       return;
     }
 
@@ -65,13 +57,27 @@ export function SearchBar() {
       const found = await searchPerson(value);
       setResults(found);
       setSearching(false);
+
+      // Explicitly close the dropdown and navigate every time a single match comes back —
+      // don't derive this from a value stored in state/effect deps, since two searches in a
+      // row landing on the same sciper wouldn't produce a dependency change and would leave
+      // the dropdown open through the (no-op) redirect.
+      if (found.length === 1) {
+        hasSearchNavigatedRef.current = true;
+        setShowDropdown(false);
+        router.push(`/${found[0].id}`, { scroll: false });
+      } else if (hasSearchNavigatedRef.current) {
+        hasSearchNavigatedRef.current = false;
+        router.replace("/", { scroll: false });
+      }
     }, 300);
   }
 
   function selectPerson(person: ApiPerson) {
     setQuery(person.name || person.display);
     setShowDropdown(false);
-    router.push(`/${person.id}#details`, { scroll: false });
+    hasSearchNavigatedRef.current = true;
+    router.push(`/${person.id}`, { scroll: false });
   }
 
   return (
