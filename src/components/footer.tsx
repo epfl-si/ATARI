@@ -7,7 +7,6 @@ import packageConfig from "../../package.json" with { type: "json" };
 
 export const Footer: React.FC = () => {
   const translations = {
-    app: useTranslations("app"),
     footer: useTranslations("pages.footer"),
   };
   const version = packageConfig.version;
@@ -60,7 +59,14 @@ export const Footer: React.FC = () => {
                 </Link>
               </div>
               <div className="flex flex-wrap gap-4 text-sm mb-2">
-                <p className="text-xs text-gray-500 mt-2">{translations.app("title")}</p>
+                <Link
+                  href="https://github.com/epfl-si/atari"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-gray-500 mt-2 hover:underline"
+                >
+                  {translations.footer("sourceCode")}
+                </Link>
                 <Link
                   className="text-xs text-gray-500 mt-2"
                   href={`https://github.com/epfl-si/atari/releases/tag/v${version}`}
