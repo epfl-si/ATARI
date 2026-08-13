@@ -13,6 +13,7 @@ import { PersonSidebar } from "@/components/person/sidebar";
 import type { PersonTranslations } from "@/components/person/types";
 import { getAccreditations, getHasEmailAuthorization } from "@/services/accreds";
 import { getActiveDirectoryInfo } from "@/services/ad";
+import { getProfilePicture } from "@/services/people";
 import { getPersonBySciper } from "@/services/person";
 import type { Accred, ActiveDirectoryInfo, ApiPerson } from "@/types/api";
 
@@ -22,9 +23,17 @@ type PersonDetailsState = {
   adInfo: ActiveDirectoryInfo | null;
   accreds: Accred[];
   hasEmailAuth: boolean;
+  pictureUrl: string | null;
 };
 
-const emptyState: PersonDetailsState = { loading: true, person: null, adInfo: null, accreds: [], hasEmailAuth: false };
+const emptyState: PersonDetailsState = {
+  loading: true,
+  person: null,
+  adInfo: null,
+  accreds: [],
+  hasEmailAuth: false,
+  pictureUrl: null,
+};
 
 function usePersonDetails(sciper: string): PersonDetailsState {
   const [state, setState] = useState<PersonDetailsState>(emptyState);
@@ -33,18 +42,21 @@ function usePersonDetails(sciper: string): PersonDetailsState {
     let cancelled = false;
     setState(emptyState);
 
-    Promise.all([getPersonBySciper(sciper), getAccreditations(sciper), getHasEmailAuthorization(sciper)]).then(
-      ([person, accreds, hasEmailAuth]) => {
-        if (cancelled) return;
-        setState({ loading: false, person, adInfo: null, accreds, hasEmailAuth });
+    Promise.all([
+      getPersonBySciper(sciper),
+      getAccreditations(sciper),
+      getHasEmailAuthorization(sciper),
+      getProfilePicture(sciper),
+    ]).then(([person, accreds, hasEmailAuth, pictureUrl]) => {
+      if (cancelled) return;
+      setState({ loading: false, person, adInfo: null, accreds, hasEmailAuth, pictureUrl });
 
-        if (person?.account) {
-          getActiveDirectoryInfo(sciper)
-            .then((adInfo) => !cancelled && setState((prev) => ({ ...prev, adInfo })))
-            .catch(() => {});
-        }
-      },
-    );
+      if (person?.account) {
+        getActiveDirectoryInfo(sciper)
+          .then((adInfo) => !cancelled && setState((prev) => ({ ...prev, adInfo })))
+          .catch(() => {});
+      }
+    });
 
     return () => {
       cancelled = true;
@@ -64,7 +76,7 @@ export function PersonDetails({ sciper }: { sciper: string }) {
     common: useTranslations("common"),
   };
 
-  const { loading, person, adInfo, accreds, hasEmailAuth } = usePersonDetails(sciper);
+  const { loading, person, adInfo, accreds, hasEmailAuth, pictureUrl } = usePersonDetails(sciper);
 
   // Scroll the details block into view once it actually exists in the DOM (it doesn't
   // during the loading state) — independent from the URL hash, which the search bar
@@ -87,7 +99,13 @@ export function PersonDetails({ sciper }: { sciper: string }) {
 
   return (
     <div className="pt-10 flex w-full max-w-5xl flex-col gap-10 lg:flex-row" id="details">
-      <PersonSidebar sciper={sciper} person={person} adInfo={adInfo} translations={translations} />
+      <PersonSidebar
+        sciper={sciper}
+        person={person}
+        adInfo={adInfo}
+        pictureUrl={pictureUrl}
+        translations={translations}
+      />
 
       <div className="min-w-0 flex-1 mt-3">
         <GeneralSection person={person} hasEmailAuth={hasEmailAuth} translations={translations} />

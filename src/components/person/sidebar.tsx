@@ -64,11 +64,13 @@ export function PersonSidebar({
   sciper,
   person,
   adInfo,
+  pictureUrl,
   translations,
 }: {
   sciper: string;
   person: ApiPerson;
   adInfo: ActiveDirectoryInfo | null;
+  pictureUrl: string | null;
   translations: PersonTranslations;
 }) {
   const fullName = person.name || person.display;
@@ -84,15 +86,17 @@ export function PersonSidebar({
     <div className="flex shrink-0 flex-col items-center gap-4 border-b border-destructive/25 pb-8 lg:w-96 lg:border-b-0 lg:border-r lg:pb-0 lg:pr-8">
       <div className="relative h-40 w-40 overflow-hidden rounded-full bg-muted transition-transform hover:rotate-2">
         <User className="absolute inset-0 m-auto h-14 w-14 text-muted-foreground" />
-        {/** biome-ignore lint/performance/noImgElement: external EPFL photo endpoint, no next/image domain config needed */}
-        <img
-          src={`https://people.epfl.ch/private/common/photos/links/${sciper}.jpg`}
-          alt={fullName}
-          className="absolute inset-0 h-full w-full object-cover"
-          onError={(e) => {
-            e.currentTarget.style.display = "none";
-          }}
-        />
+        {pictureUrl && (
+          // biome-ignore lint/performance/noImgElement: external EPFL photo endpoint, no next/image domain config needed
+          <img
+            src={pictureUrl}
+            alt={fullName}
+            className="absolute inset-0 h-full w-full object-cover"
+            onError={(e) => {
+              e.currentTarget.style.display = "none";
+            }}
+          />
+        )}
       </div>
       <button
         type="button"
