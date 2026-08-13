@@ -64,8 +64,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         username: token.username,
         oid: token.oid,
         tid: token.tid,
-        groups: token.groups ?? [],
-        accreds: token.accreds ?? [],
+        access: process.env.ADMIN_GROUP ? token.groups.includes(process.env.ADMIN_GROUP) : false,
       },
     }),
   },
@@ -75,9 +74,4 @@ export async function getUser() {
   const session = await auth();
   if (!session?.user) throw new Error("User not authenticated");
   return session.user;
-}
-
-export async function getUserGroups(): Promise<string[]> {
-  const user = await getUser();
-  return user.groups ?? [];
 }

@@ -165,6 +165,11 @@
     "welcome": {
       "title": "ATARI"
     },
+    "denied": {
+      "title": "Access denied",
+      "description": "You do not have the required permissions to access this application.",
+      "contact": "Need access? Contact"
+    },
     "home": {
       "title": "Welcome",
       "hint": "Search for a person to see their details",

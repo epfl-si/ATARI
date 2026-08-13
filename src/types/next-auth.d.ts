@@ -11,15 +11,13 @@ declare module "next-auth" {
       username: string;
       oid: string;
       tid: string;
-      groups: string[];
-      accreds: string[];
+      access: boolean;
     } & DefaultSession["user"];
     expires: string;
   }
 
   interface UserInfo {
     sub: string;
-    accreds: string[];
     cfs: string[];
     groups: string[];
     name: string;
@@ -40,7 +38,6 @@ declare module "next-auth/jwt" {
     uniqueId: string;
     username: string;
     groups: string[];
-    accreds: string[];
     error?: string;
   }
 }

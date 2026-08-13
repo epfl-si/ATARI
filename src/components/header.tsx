@@ -2,7 +2,7 @@
 import { CircleUserRound } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import type { User } from "next-auth";
+import type { Session } from "next-auth";
 import { signIn, signOut } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import type React from "react";
@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LanguageSelector } from "./language";
 
-export const Header: React.FC<{ user: User | undefined }> = ({ user }) => {
+export const Header: React.FC<{ user: Session["user"] | undefined }> = ({ user }) => {
   const translations = {
     navigation: useTranslations("navigation"),
     app: useTranslations("app"),
@@ -36,11 +36,13 @@ export const Header: React.FC<{ user: User | undefined }> = ({ user }) => {
             <h1 className="text-base sm:text-2xl font-bold -ml-1 sm:ml-0">{translations.app("title")}</h1>
           </Link>
         </div>
-        <nav className="hidden sm:flex items-center gap-4 text-sm font-medium text-muted-foreground">
-          <Link href="/inventory" className="hover:text-foreground">
-            {translations.navigation("inventory")}
-          </Link>
-        </nav>
+        {user?.access && (
+          <nav className="hidden sm:flex items-center gap-4 text-sm font-medium text-muted-foreground">
+            <Link href="/inventory" className="hover:text-foreground">
+              {translations.navigation("inventory")}
+            </Link>
+          </nav>
+        )}
       </div>
 
       <div className="flex items-center gap-2 sm:gap-6">

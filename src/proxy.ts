@@ -8,6 +8,10 @@ export default async function proxy(req: NextRequest) {
     return NextResponse.rewrite(new URL("/welcome", req.url));
   }
 
+  if (!session.user.access) {
+    return NextResponse.rewrite(new URL("/denied", req.url));
+  }
+
   return NextResponse.next();
 }
 
