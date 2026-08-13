@@ -19,11 +19,6 @@ export async function makeApiCall<T = unknown>(endpoint: string, params?: Record
   const headers = new Headers();
   headers.set("Authorization", `Basic ${Buffer.from(`${username}:${password}`).toString("base64")}`);
 
-  console.log(`Making API call to: ${url.toString()}`);
-  console.log(
-    `curl -X GET "${url.toString()}" -H "Authorization: Basic ${Buffer.from(`${username}:${password}`).toString("base64")}"`,
-  );
-
   const response = await fetch(url.toString(), {
     method: "GET",
     headers,

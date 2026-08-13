@@ -13,11 +13,6 @@ const getCachedUnitAdminsIT = unstable_cache(
       type: "role",
       alldata: "1",
     });
-    console.log(`Fetched ${data.authorizations?.length || 0} IT admins for unit ${unitId}`);
-    console.log(
-      "Data received:",
-      data.authorizations.map((admin) => ({ person: admin.person })),
-    );
     return data.authorizations || [];
   },
   ["unit-admins-it-by-unit"],

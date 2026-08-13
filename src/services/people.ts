@@ -13,7 +13,6 @@ function parseProfilePicture(html: string): string | null {
 
 const getCachedProfilePicture = unstable_cache(
   async (sciper: string) => {
-    console.log(`Fetching profile picture for ${sciper} from ${PEOPLE_BASE_URL}`);
     const response = await fetch(`${PEOPLE_BASE_URL}/${encodeURIComponent(sciper)}`);
     if (!response.ok) return null;
 
