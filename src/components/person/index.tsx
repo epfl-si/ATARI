@@ -107,6 +107,7 @@ export function PersonDetails({ sciper }: { sciper: string }) {
         sciper={sciper}
         person={person}
         adInfo={adInfo}
+        accreds={accreds}
         pictureUrl={pictureUrl}
         egg={egg}
         translations={translations}

@@ -9,6 +9,12 @@ export interface PersonAccount {
 export interface PersonPhone {
   id: number;
   number: string;
+  unitid?: string;
+  roomid?: number;
+  roomname?: string;
+  hidden?: number;
+  order?: number;
+  fromdefault?: number;
 }
 
 export interface PersonPosition {
@@ -104,6 +110,7 @@ export interface ActiveDirectoryInfo {
 
 export interface AccredUnit {
   id: number;
+  name?: string;
   labelfr?: string;
   labelen?: string;
   path?: string;

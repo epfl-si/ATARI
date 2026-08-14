@@ -133,9 +133,9 @@
       "noAttributes": "Aucun attribut."
     },
     "inventory": {
-      "title": "Check Inventory",
+      "title": "Vérification de l'inventaire",
       "placeholder": "A123456789...",
-      "check": "Check",
+      "check": "Vérifier",
       "invalidCode": "Code inventaire invalide.",
       "notFound": "Non trouvé dans l'inventaire.",
       "ageOk": "✅ La machine a moins de 6 ans.",

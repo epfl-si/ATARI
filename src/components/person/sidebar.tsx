@@ -1,11 +1,11 @@
 "use client";
 
-import { User } from "lucide-react";
+import { ChevronDown, User } from "lucide-react";
 import { useState } from "react";
 import type { PersonTranslations } from "@/components/person/types";
 import type { PersonEgg } from "@/constants/egg";
 import { cn } from "@/lib/utils";
-import type { ActiveDirectoryInfo, ApiPerson } from "@/types/api";
+import type { Accred, AccredUnit, ActiveDirectoryInfo, ApiPerson, PersonPhone } from "@/types/api";
 
 function CopyRow({ label, value }: { label: string; value: string }) {
   const [copied, setCopied] = useState(false);
@@ -27,6 +27,79 @@ function CopyRow({ label, value }: { label: string; value: string }) {
         {value}
       </span>
     </div>
+  );
+}
+
+type PhoneGroup = { number: string; unitNames: string[] };
+
+// A person can have the same number registered once per accreditation, each tagged with a
+// different unitid — group by number and collect the unit names instead of showing duplicates.
+function groupPhones(phones: PersonPhone[] | undefined, unitById: Map<number, AccredUnit>): PhoneGroup[] {
+  const sorted = [...(phones ?? [])].sort(
+    (a, b) => (b.fromdefault ?? 0) - (a.fromdefault ?? 0) || (a.order ?? 0) - (b.order ?? 0),
+  );
+
+  const groups: PhoneGroup[] = [];
+  const indexByNumber = new Map<string, number>();
+  for (const phone of sorted) {
+    const unitName = phone.unitid ? unitById.get(Number(phone.unitid))?.name : undefined;
+    const existingIndex = indexByNumber.get(phone.number);
+    if (existingIndex === undefined) {
+      indexByNumber.set(phone.number, groups.length);
+      groups.push({ number: phone.number, unitNames: unitName ? [unitName] : [] });
+    } else if (unitName && !groups[existingIndex].unitNames.includes(unitName)) {
+      groups[existingIndex].unitNames.push(unitName);
+    }
+  }
+  return groups;
+}
+
+function PhoneField({
+  phones,
+  unitById,
+  translations,
+}: {
+  phones: PersonPhone[] | undefined;
+  unitById: Map<number, AccredUnit>;
+  translations: PersonTranslations;
+}) {
+  const [copied, setCopied] = useState<string | null>(null);
+  const groups = groupPhones(phones, unitById);
+
+  function copy(value: string) {
+    navigator.clipboard.writeText(value);
+    setCopied(value);
+    setTimeout(() => setCopied((current) => (current === value ? null : current)), 1500);
+  }
+
+  if (groups.length === 0) return null;
+  // A single unique number, no matter how many accreditations it's tied to, is just a plain
+  // field like the rest of the sidebar. Only distinct numbers are worth a list.
+  if (groups.length === 1) return <CopyRow label={translations.fields("phone")} value={groups[0].number} />;
+
+  return (
+    <details className="group/phones py-1.5 text-base" open>
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-3">
+        <span className="text-muted-foreground">{translations.fields("phone")}</span>
+        <ChevronDown className="h-3.5 w-3.5 shrink-0 text-destructive transition-transform group-open/phones:rotate-180" />
+      </summary>
+      <div className="mt-1.5 space-y-1.5 pl-1">
+        {groups.map((group) => (
+          <div key={group.number} className="flex items-center justify-between gap-3 text-sm">
+            {group.unitNames.length > 0 && (
+              <span className="truncate text-xs text-muted-foreground">{group.unitNames.join(", ")}</span>
+            )}
+            <button
+              type="button"
+              onClick={() => copy(group.number)}
+              className={cn("cursor-copy font-medium hover:text-primary", copied === group.number && "text-gray-400")}
+            >
+              {group.number}
+            </button>
+          </div>
+        ))}
+      </div>
+    </details>
   );
 }
 
@@ -61,6 +134,7 @@ export function PersonSidebar({
   sciper,
   person,
   adInfo,
+  accreds,
   pictureUrl,
   egg,
   translations,
@@ -68,6 +142,7 @@ export function PersonSidebar({
   sciper: string;
   person: ApiPerson;
   adInfo: ActiveDirectoryInfo | null;
+  accreds: Accred[];
   pictureUrl: string | null;
   egg?: PersonEgg;
   translations: PersonTranslations;
@@ -75,6 +150,7 @@ export function PersonSidebar({
   const [eggHovered, setEggHovered] = useState(false);
   const [nameCopied, setNameCopied] = useState(false);
   const fullName = person.name || person.display;
+  const unitById = new Map(accreds.map((accred) => [accred.unit.id, accred.unit]));
 
   function copyName() {
     navigator.clipboard.writeText(fullName);
@@ -128,9 +204,7 @@ export function PersonSidebar({
         {(person.username || person.account?.username) && (
           <CopyRow label={translations.fields("username")} value={person.username || person.account?.username || ""} />
         )}
-        {person.phones?.slice(0, 2).map((phone) => (
-          <CopyRow key={phone.id} label={translations.fields("phone")} value={phone.number} />
-        ))}
+        <PhoneField phones={person.phones} unitById={unitById} translations={translations} />
         {person.sapid && <CopyRow label={translations.fields("sapId")} value={person.sapid} />}
         {gid && <CopyRow label={translations.fields("gid")} value={gid} />}
         {uid && <CopyRow label={translations.fields("uid")} value={uid} />}
