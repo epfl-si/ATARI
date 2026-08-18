@@ -1,3 +1,9 @@
+# 1.5.0 (2025-08-18)
+* Fix the profile picture from people #125
+
+# 1.4.0 (2026-05-05)
+* Add the "Entra ID" button (see INC0681188)
+
 # 1.2.11 (2025-06-13)
 * Correct AD login handle (`INTRANET\username`)
 

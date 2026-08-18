@@ -169,6 +169,24 @@ export function UserDetails(props: {person: Person}) {
                 description=%0ANote: Ticket ouvert pour ${person.firstname} ${person.lastname} le ${new Date().toLocaleString('en-GB')} via ATARI (<https://atari.epfl.ch>).`;
       return url.replace(/  +/g, '');
     };
+    const peopleProfilePictureURL = () => {
+      /*
+       * Profile pictures used to be available at:
+       * https://people.epfl.ch/private/common/photos/links/${sciper}.jpg
+       *
+       * They are now available at:
+       * https://people.epfl.ch/${firstname}.${lastname}/photo
+       *
+       * The name is lowercase and without accented characters, so it is
+       * easier to obtain it from the email address.
+       *
+       * People without an email address do not have a People profile
+       * and therefore do not have a profile picture.
+       */
+      const username = person.email?.split('@')[0] || 'no-email';
+
+      return `https://people.epfl.ch/${username}/photo`;
+    };
 
   return (
     <Container>
@@ -177,7 +195,7 @@ export function UserDetails(props: {person: Person}) {
           <figure className={`hover-rotate ${easterStyle}`}>
             <img
               className="img-fluid"
-              src={`https://people.epfl.ch/private/common/photos/links/${sciper}.jpg`}
+              src={peopleProfilePictureURL()}
               onError={({ currentTarget }) => {
                 currentTarget.onerror = null;
                 currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTYgMjU2Ij48cGF0aCBkPSJNMTAyLjQzIDEyNC41M1MxMDUuNSAxNTIgMTI4IDE1MnMyNS41Ny0yNy40NiAyNS41Ny0yNy40NiA0Ljg1IDEgNy4xOS05LjI4YzEuNS02LjctLjUtOC40OS0xLjc2LTguNDloLTEuMkMxNjMuNjggNzQuMjggMTQwIDY0IDEyOCA2NHMtMzUuNjggMTAuMjgtMjkuOCA0Mi43Nkg5N2MtMS4yNiAwLTMuMjYgMS43OS0xLjc2IDguNDkgMi4zNCAxMC4zMyA3LjE5IDkuMjggNy4xOSA5LjI4ek0xNzAuMzYgMTY0Yy0yMC4yNi0zLjg5LTI0LjM0LTgtMjUuMS0xMS42NGEyOS4xNSAyOS4xNSAwIDAgMS0zNC41MiAwYy0uNzQgMy42NC00Ljg0IDcuNzItMjUuMSAxMS42NC0yMC44NSA0LTIwLjU3IDIxLjE4LTIwLjU3IDI0aDEyNS44NmMwLTIuODUuMjgtMjAtMjAuNTctMjR6Ii8+PC9zdmc+Cg=='
