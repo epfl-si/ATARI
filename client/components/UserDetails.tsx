@@ -258,7 +258,7 @@ export function UserDetails(props: {person: Person}) {
               )
             }
             {
-              adData.gidNumber && (
+              adData?.gidNumber && (
                 <div>
                   <strong>GID</strong> : <span onClick={() => copyContentToClipboard(String(adData.gidNumber))} style={{cursor: 'copy', marginRight: '50px'}}>{adData.gidNumber}</span>
                   <CopyButton
@@ -268,7 +268,7 @@ export function UserDetails(props: {person: Person}) {
               )
             }
             {
-              adData.uidNumber && (
+              adData?.uidNumber && (
                 <div>
                   <strong>UID</strong> : <span onClick={() => copyContentToClipboard(adData.uidNumber)} style={{cursor: 'copy', marginRight: '50px'}}>{adData.uidNumber}</span>
                   <CopyButton
@@ -278,7 +278,7 @@ export function UserDetails(props: {person: Person}) {
               )
             }
             {
-              adData.unixHomeDirectory && (
+              adData?.unixHomeDirectory && (
                 <div>
                   <strong>Home</strong> : <span onClick={() => copyContentToClipboard(adData.unixHomeDirectory)} style={{cursor: 'copy', marginRight: '50px'}}>{adData.unixHomeDirectory}</span>
                   <CopyButton
@@ -288,7 +288,7 @@ export function UserDetails(props: {person: Person}) {
               )
             }
             {
-              adData.loginShell && (
+              adData?.loginShell && (
                 <div>
                   <strong>Shell</strong> : <span onClick={() => copyContentToClipboard(adData.loginShell)} style={{cursor: 'copy', marginRight: '50px'}}>{adData.loginShell}</span>
                   <CopyButton

@@ -1,3 +1,7 @@
+# 1.6.0 (2025-08-26)
+* Fix when a person in "SAP" but not in a unit, then ATARI shows a blank page
+  (can't access property "gidNumber") #126
+
 # 1.5.0 (2025-08-18)
 * Fix the profile picture from people #125
 
@@ -14,5 +18,6 @@ lot of missing stuff
 # 1.1.1 (2023-11-15)
 * Script to log special users
 * CHANGELOG.md file
+
 # 1.1.0 (2023-11-13)
 * New UI/UX interface
